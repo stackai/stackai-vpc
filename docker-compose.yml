@@ -1,0 +1,7 @@
+include:
+  - mongodb/docker-compose.yml
+  - weaviate/docker-compose.yml
+  - supabase/docker-compose.yml
+  - unstructured/docker-compose.yml
+  - stackweb.docker-compose.yml
+  - stackend.docker-compose.yml

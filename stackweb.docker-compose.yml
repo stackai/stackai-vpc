@@ -1,0 +1,19 @@
+services:
+  stackweb:
+    container_name: stackweb
+    restart: always
+    build:
+      context: stackweb/
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_HF_API_KEY=${NEXT_PUBLIC_HF_API_KEY}
+        - NEXT_PUBLIC_MONGODB_PWD=${NEXT_PUBLIC_MONGODB_PWD}
+        - NEXT_PUBLIC_NOTION_OAUTH_CLIENT_ID=${NEXT_PUBLIC_NOTION_OAUTH_CLIENT_ID}
+        - NEXT_PUBLIC_POSTHOG_KEY=${NEXT_PUBLIC_POSTHOG_KEY}
+        - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
+        - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+        - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"

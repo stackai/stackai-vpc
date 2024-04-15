@@ -1,0 +1,7 @@
+services:
+  unstructured:
+    image: downloads.unstructured.io/unstructured-io/unstructured-api:latest
+    container_name: unstructured
+    restart: always
+    ports:
+      - 9099:8000
