@@ -1,5 +1,5 @@
 
-# StackAI local deployment using docker compose
+# StackAI local deployment using docker compose ( as of 15/04/2024)
 
 # TODO
 
