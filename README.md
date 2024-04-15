@@ -53,6 +53,8 @@ The internal connection URI for the supabase services is `http://kong:8000`. To 
 
 The supabase web interface that allows for `ANON_KEY` and `SERVICE_ROLE_KEY` generation, [see here](https://supabase.com/docs/guides/self-hosting/docker#generate-api-keys), was broken as of 15/04/2024 the generated keys were not valid.
 
+:warning: A tip to see the SQL commands needed to create the tables, functions and triggers is to go to the production supabase dashboard, navigate to the `stackweb` project, and then to the `Backup` tab. There you can download a dump of the production db. Extract it and open it with a text editor (i recommend something like `vim` or `neovim` as it quite large) to see the commands.
+
 ## MongoDB
 
 The container for mongodb and its related configuration is defined on the `mongodb` folder.
@@ -186,7 +188,7 @@ git clone git@github.com:stackai/stackweb.git
 git clone git@github.com:stackai/stackend.git
 ```
 
-### :warning: HACK WARNING :warning:: Patch the stackweb Dockerfile and set the NEXT_PUBLIC_* environment variables
+### [:warning: ](http://stackend:8000/webhooks/new_user)HACK WARNING :warning:: Patch the stackweb Dockerfile and set the NEXT_PUBLIC_* environment variables
 
 You will need to patch the `stackweb` Dockerfile in order to set the `NEXT_PUBLIC_*` environment variables to work properly with the local deployment. This is a temporal hack and needs to be fixed in the future. Inside the Dockerfile, go to the `RUN npm run buil` line, and copy paste the following lines before it: 
 
@@ -249,7 +251,9 @@ cd supabase && docker compose up
 
 Then, navigate to the supabase dashboard on `http://0.0.0.0:8800` on your browser and login using the credentials defined in the `supabase/.env` file.
 
-To initialize the database, you will need to create the tables, functions, triggers and webhooks manually (IN THAT ORDER). To help you with that, you open the file `supabase/initialization/` folder and copy-paste the contents of each file into the supabase dashboard SQL editor. This will create the tables, functions and triggers of the production db with the schema that was used as of April 15, 2024. Then, create the webhook manually (see below)
+To initialize the database, you will need to create the tables, functions, triggers, webhooks and row level security manually (IN THAT ORDER). To help you with that, you open the file `supabase/initialization/` folder and copy-paste the contents of each file into the supabase dashboard SQL editor (FOLLOW THE PREVIOUSLY DEFINED ORDER). This will create the tables, functions and triggers of the production db with the schema that was used as of April 15, 2024.
+
+: warining: If you use the SQL files, take a look at the triggers file and adjust the add_user_to_org_sso webhook url to point to stackend appropriately.
 
 Steps:
 
@@ -258,7 +262,7 @@ Steps:
  - For each table, click on `Definition`, this will give you the SQL definition of the table.
  - Go to the local deployment dashboard, navigate to SQL editor and paste the SQL definition of the table.
  - Keep in mind that the tables need to be created in a certain order, otherwise an error will be thrown.
-2. Add functions.
+2. Add functions (the most important are in the public and auth schemas, but check the rest)
  - On the supabase production deployment, navigate to `Database` and then to `Functions`.
  - Copy the function definition, open the advanced tap to see if the function is a `DEFINER` or an `INVOKER`, and the expected return type. Then, go to  `edit function` by clicking on the three dots on the right of the function name and copy its SQL definition.
  - For each function, go to the local deployment dashboard, navigate to `Database`, `Functions` and click on `Create a new function`, use the `show advanced settings` panel to set the propper security type and paste the SQL definition of the function. Dont forget about the return type.
@@ -270,6 +274,10 @@ Steps:
  - On the supabase production deployment, navigate to `Database` and then to `Webhooks`.
  - Go to `edit webhook` by clicking on the three dots on the right of the webhook name and take a look at its values.
  - On the local deployment dashboard, navigate to `Database`, `Webhooks` and click on `Create a new webhook` and fill in the values. Important, set the webhook url to point to stackend, in the case of this specific configuration, that url is `http://stackend:8000/webhooks/new_user`, do not use the production url.
+5. Enable row level security:
+  - Go to the production deployment, table editor and take a look at the row level security settings.
+  - Replicate those settings in the local deployment.
+
   
 ## 6. Start all services
     
