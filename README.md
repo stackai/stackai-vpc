@@ -251,7 +251,14 @@ cd supabase && docker compose up
 
 Then, navigate to the supabase dashboard on `http://0.0.0.0:8800` on your browser and login using the credentials defined in the `supabase/.env` file.
 
-To initialize the database, you will need to create the tables, functions, triggers, webhooks and row level security manually (IN THAT ORDER). To help you with that, you open the file `supabase/initialization/` folder and copy-paste the contents of each file into the supabase dashboard SQL editor (FOLLOW THE PREVIOUSLY DEFINED ORDER). This will create the tables, functions and triggers of the production db with the schema that was used as of April 15, 2024.
+To initialize the database, you will need to:
+1. Create the tables
+2. Create the functions
+3. Create the triggers
+4. Create row level security
+5. Prepopulate the tables (as of now, only the roles table needs to be prepopulated)
+
+To help you with that, you open the file `supabase/initialization/` folder and copy-paste the contents of each file into the supabase dashboard SQL editor (FOLLOW THE PREVIOUSLY DEFINED ORDER). This will create the tables, functions and triggers of the production db with the schema that was used as of April 15, 2024.
 
 : warining: If you use the SQL files, take a look at the triggers file and adjust the add_user_to_org_sso webhook url to point to stackend appropriately.
 
@@ -277,7 +284,9 @@ Steps:
 5. Enable row level security:
   - Go to the production deployment, table editor and take a look at the row level security settings.
   - Replicate those settings in the local deployment.
-
+6. Pre-populate the tables:
+  - Go to the production deployment, table editor and download the data in the roles table as csv
+  - On the local deployment, navigate to the roles table and import the csv file.
   
 ## 6. Start all services
     
