@@ -245,7 +245,7 @@ docker compose up mongo-express
 
 Wait for about 5 to 10 seconds. Then navigate to `http://0.0.0.0:8081` on your browser and login using the credentials defined in the `mongodb/docker-compose.yml` file.
 
-## 5. Initialize supabase database
+## 5. Initialize supabase database & storage buckets
 
 ### :warning: HACK WARNING :warning:: This should be done with a script based on the supabase cli, but we do not have access to that cli atm
 
@@ -293,6 +293,22 @@ Steps:
 6. Pre-populate the tables:
   - Go to the production deployment, table editor and download the data in the roles table as csv
   - On the local deployment, navigate to the roles table and import the csv file.
+
+
+### For the storage buckets
+
+Go to the production dashboard and navigate to the storage section. Replicate the necessary buckets. Some of the most important ones are:
+
+```
+user_documents
+indexed_documents
+dataframes
+```
+
+Replicate them in docker's supabase.
+
+### :warning: TO-DO: Create a script that does this for you if we cannot do it from supabase cli in the near future.
+
   
 ## 6. Start all services
     
