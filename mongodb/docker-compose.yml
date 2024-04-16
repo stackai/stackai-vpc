@@ -42,6 +42,8 @@ services:
       context: initialization
       dockerfile: Dockerfile
     container_name: mongodb_init
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - mongodb
 
