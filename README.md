@@ -155,6 +155,12 @@ The weaviate service is not exposed to the host machine, it is only used by the 
 
 The default connection URI (from within the docker network) is `http://weaviate:9090`, (no authentication is setup).
 
+## 0. If you are trying to set up a EC2 instance to build a stack AMI, first execute the setup script
+
+Go to the `scripts` folder and first READ and then execute the `ubuntu_server_pre_setup.sh` script to install docker, setup github, and pull the repos
+
+# :warning: Before publishing the AMI, do not forget to remove the ssh keys to your account both in the image and in the github webpage so no one can login to our github with them
+
 ## 1. Create your .env files and initialize your secrets
 
 ### Supabase secrets
