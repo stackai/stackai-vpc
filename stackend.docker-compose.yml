@@ -14,6 +14,8 @@ services:
       - stackend.env
     depends_on:
       - redis
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   flower:
     container_name: flower
@@ -43,3 +45,5 @@ services:
     ports:
       - "8000:8000"
       - "8888:8888"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
