@@ -198,34 +198,9 @@ git clone git@github.com:stackai/stackend.git
 git clone git@github.com:stackai/stackrepl.git
 ```
 
-### :warning: HACK WARNING :warning:: Patch the stackweb Dockerfile and set the NEXT_PUBLIC_* environment variables
+### :warning: HACK WARNING :warning:: Patch the .npmrc file in the stackweb repository
 
-You will need to patch the `stackweb` Dockerfile in order to set the `NEXT_PUBLIC_*` environment variables to work properly with the local deployment. This is a temporal hack and needs to be fixed in the future. Inside the Dockerfile, go to the `RUN npm run build` line, and copy paste the following lines before it:
-
-```text
-ARG NEXT_PUBLIC_INDEX_URL
-ARG NEXT_PUBLIC_CHAT_BACKEND_URL
-ARG NEXT_PUBLIC_STACKEND_URL
-ARG NEXT_PUBLIC_URL
-ARG NEXT_PUBLIC_VERCEL_ENV
-ARG NEXT_PUBLIC_REACT_APP_ENV
-ARG NEXT_PUBLIC_AIRTABLE_CLIENT_ID
-ARG NEXT_PUBLIC_AIRTABLE_CODE_VERIFIER
-ARG NEXT_PUBLIC_CHAMALEON_KEY
-ARG NEXT_PUBLIC_DROPBOX_CLIENT_ID
-ARG NEXT_PUBLIC_GOOGLE_CLIENT_ID
-ARG NEXT_PUBLIC_HUBSPOT_CLIENT_ID
-ARG NEXT_PUBLIC_NOTION_CLIENT_ID
-ARG NEXT_PUBLIC_NOTION_OAUTH_CLIENT_ID
-ARG NEXT_PUBLIC_OUTLOOK_CLIENT_ID
-ARG NEXT_PUBLIC_POSTHOG_API_KEY
-ARG NEXT_PUBLIC_POSTHOG_HOST
-ARG NEXT_PUBLIC_SENTRY_DSN
-ARG NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-ARG NEXT_PUBLIC_TYPEFORM_CLIENT_ID
-```
-
-Those lines will allow us to set the proper build arguments when building the stackweb container (they will be sourced in the `stackweb.docker-compose.yml` from the `.env` file).
+Patch it so it does not reference an environment variable but rather has the key hardcoded on it.
 
 ### :warning: HACK WARNING :warning: Change the port of the stackrepl container to 7777
 
@@ -293,55 +268,46 @@ To initialize the database, you will need to:
 4. Create row level security
 5. Prepopulate the tables (as of now, only the roles table needs to be prepopulated)
 
-To help you with that, you open the file `supabase/initialization/` folder and copy-paste the contents of each file into the supabase dashboard SQL editor (FOLLOW THE PREVIOUSLY DEFINED ORDER). This will create the tables, functions and triggers of the production db with the schema that was used as of April 15, 2024.
+To help you with that, you open the file `supabase/initialization/` folder and copy-paste the contents of the remote schema file into the supabase dashboard SQL editor.
 
-: warining: If you use the SQL files, take a look at the triggers file and adjust the add_user_to_org_sso webhook url to point to stackend appropriately.
+To generate the remote schema file, the following command was used:
 
-Steps:
+Create a temporal folder.
 
-1. Create the tables (skip if you have already have them) based on the production database schema.
+```bash
+mkdir temporal && cd temporal
+```
 
-- Go to the dashboard for the production deployment of supabase, navigate to the `stackweb` project.
-- For each table, click on `Definition`, this will give you the SQL definition of the table.
-- Go to the local deployment dashboard, navigate to SQL editor and paste the SQL definition of the table.
-- Keep in mind that the tables need to be created in a certain order, otherwise an error will be thrown.
+Initialize the supabase project.
 
-2. Add functions (the most important are in the public and auth schemas, but check the rest)
+```bash
+supabase init
+```
 
-- On the supabase production deployment, navigate to `Database` and then to `Functions`.
-- Copy the function definition, open the advanced tap to see if the function is a `DEFINER` or an `INVOKER`, and the expected return type. Then, go to  `edit function` by clicking on the three dots on the right of the function name and copy its SQL definition.
-- For each function, go to the local deployment dashboard, navigate to `Database`, `Functions` and click on `Create a new function`, use the `show advanced settings` panel to set the propper security type and paste the SQL definition of the function. Dont forget about the return type.
+Link the project to our prod supabase db.
 
-3. Add triggers.
+```bash
+supabase link
+```
 
-- On the supabase production deployment, navigate to `Database` and then to `Triggers`.
-- Go to `edit trigger` by clicking on the three dots on the right of the trigger name and take a look at its values.
-- On the local deployment dashboard, navigate to `Database`, `Triggers` and click on `Create a new trigger` and fill in the values.
+Pull the schema from our production supabase db.
 
-4. Add webhooks.
+```bash
+supabase db pull
+```
 
-- On the supabase production deployment, navigate to `Database` and then to `Webhooks`.
-- Go to `edit webhook` by clicking on the three dots on the right of the webhook name and take a look at its values.
-- On the local deployment dashboard, navigate to `Database`, `Webhooks` and click on `Create a new webhook` and fill in the values. Important, set the webhook url to point to stackend, in the case of this specific configuration, that url is `http://stackend:8000/webhooks/new_user`, do not use the production url.
-
-5. Enable row level security:
-
-- Go to the production deployment, table editor and take a look at the row level security settings.
-- Replicate those settings in the local deployment.
-
-6. Pre-populate the tables:
-
-- Go to the production deployment, table editor and download the data in the roles table as csv
-- On the local deployment, navigate to the roles table and import the csv file.
+The schema will be present inside the migrations folder.
 
 ### For the storage buckets
 
 Go to the production dashboard and navigate to the storage section. Replicate the necessary buckets. Some of the most important ones are:
 
 ```
+
 user_documents
 indexed_documents
 dataframes
+
 ```
 
 Replicate them in docker's supabase.
