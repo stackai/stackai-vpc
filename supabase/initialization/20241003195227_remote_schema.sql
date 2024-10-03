@@ -2123,3 +2123,157 @@ ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TAB
 
 
 RESET ALL;
+
+
+CREATE TRIGGER add_user_to_org_sso AFTER INSERT ON auth.users FOR EACH ROW EXECUTE FUNCTION supabase_functions.http_request('http://stackend:8000/webhooks/new_user', 'POST', '{"Content-type":"application/json"}', '{}', '5000');
+
+CREATE TRIGGER on_auth_user_created AFTER INSERT ON auth.users FOR EACH ROW EXECUTE FUNCTION handle_new_user();
+
+CREATE TRIGGER on_last_signed_in AFTER UPDATE ON auth.users FOR EACH ROW EXECUTE FUNCTION create_last_signed_in_on_profiles();
+
+
+set check_function_bodies = off;
+
+CREATE OR REPLACE FUNCTION storage.extension(name text)
+ RETURNS text
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+_parts text[];
+_filename text;
+BEGIN
+    select string_to_array(name, '/') into _parts;
+    select _parts[array_length(_parts,1)] into _filename;
+    -- @todo return the last part instead of 2
+    return split_part(_filename, '.', 2);
+END
+$function$
+;
+
+CREATE OR REPLACE FUNCTION storage.filename(name text)
+ RETURNS text
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+_parts text[];
+BEGIN
+    select string_to_array(name, '/') into _parts;
+    return _parts[array_length(_parts,1)];
+END
+$function$
+;
+
+CREATE OR REPLACE FUNCTION storage.foldername(name text)
+ RETURNS text[]
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+_parts text[];
+BEGIN
+    select string_to_array(name, '/') into _parts;
+    return _parts[1:array_length(_parts,1)-1];
+END
+$function$
+;
+
+create policy "Allow all"
+on "storage"."buckets"
+as permissive
+for all
+to public
+using (true)
+with check (true);
+
+
+create policy "Allow all"
+on "storage"."objects"
+as permissive
+for all
+to public
+using (true)
+with check (true);
+
+
+create policy "Allow user to upload screenshot"
+on "storage"."objects"
+as permissive
+for update
+to public
+using ((bucket_id = 'screenshots'::text));
+
+
+create policy "Allow user to upload screenshot."
+on "storage"."objects"
+as permissive
+for insert
+to public
+with check ((bucket_id = 'screenshots'::text));
+
+
+create policy "Anyone can upload an avatar."
+on "storage"."objects"
+as permissive
+for insert
+to public
+with check ((bucket_id = 'avatars'::text));
+
+
+create policy "Avatar images are publicly accessible."
+on "storage"."objects"
+as permissive
+for select
+to public
+using ((bucket_id = 'avatars'::text));
+
+
+create policy "Enable insert for authenticated users only"
+on "storage"."objects"
+as permissive
+for insert
+to public
+with check (true);
+
+
+create policy "Enable read access for all users"
+on "storage"."objects"
+as permissive
+for update
+to public
+using (true)
+with check (true);
+
+
+create policy "service role policy 6mo4x6_0"
+on "storage"."objects"
+as permissive
+for select
+to service_role
+using ((bucket_id = 'indexed_documents'::text));
+
+
+create policy "service role policy 6mo4x6_1"
+on "storage"."objects"
+as permissive
+for insert
+to service_role
+with check ((bucket_id = 'indexed_documents'::text));
+
+
+create policy "service role policy 6mo4x6_2"
+on "storage"."objects"
+as permissive
+for update
+to service_role
+using ((bucket_id = 'indexed_documents'::text));
+
+
+create policy "service role policy 6mo4x6_3"
+on "storage"."objects"
+as permissive
+for delete
+to service_role
+using ((bucket_id = 'indexed_documents'::text));
+
+
+
+RESET ALL;

@@ -192,15 +192,15 @@ Copy `stackend.env.template` and rename it to `stackend.env` in the root folder 
 
 They should be cloned in the same directory as this file.
 
+:warning: COPY PASTE WARNING :warning:
+
+- If you copy paste the repos from an existing folder remember to remove your .env file and the node_modules, .next, cache etc folders!!!
+
 ```bash
 git clone git@github.com:stackai/stackweb.git
 git clone git@github.com:stackai/stackend.git
 git clone git@github.com:stackai/stackrepl.git
 ```
-
-### :warning: HACK WARNING :warning:: Patch the .npmrc file in the stackweb repository
-
-Patch it so it does not reference an environment variable but rather has the key hardcoded on it.
 
 ### :warning: HACK WARNING :warning: Change the port of the stackrepl container to 7777
 
@@ -284,19 +284,41 @@ Initialize the supabase project.
 supabase init
 ```
 
+Start the containers
+
+```bash
+supabase start
+```
+
 Link the project to our prod supabase db.
 
 ```bash
 supabase link
 ```
 
-Pull the schema from our production supabase db.
+Pull the schema from our production supabase db. If you get an error, run the migration repair.
 
 ```bash
 supabase db pull
 ```
 
-The schema will be present inside the migrations folder.
+Run the migration to update the schema. If you get a manifest error, you may need to update the version of the associated service in the temporal/supabase/.temp/<service_name> file.
+
+```
+supabase migration up
+```
+
+```bash
+supabase db pull --schema public,auth,storage
+```
+
+The schema migrations files will be present inside the migrations folder.
+
+:warning: Adjust any webhooks to point to the local stackend service :warning:
+
+For example, the add_user_to_org_sso points to the production stackend service when creating the migration schema, we need to adjust it here!
+
+After that, run the query in the `prepopulate.sql` file in the supabase studio UI to initialize the database.
 
 ### For the storage buckets
 
