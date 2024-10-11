@@ -18,6 +18,12 @@ Without SSL/TLS:
 >
 > If you intend to run the whole stack on your local machine, you can use your local IP instead of a public static IP.
 > To get your local IP, you can run `ipconfig` (on Windows) or `ifconfig` (on macOS/Linux) and select your address in your wifi network.
+
+> Command to get your local ip address on mac (make sure to append the correct port at the end!):
+>
+> ```
+> ifconfig | grep inet | grep -v 127.0.0.1 | grep -v '::' | awk '{print $2}'
+> ```
 >
 
 - Set `SITE_URL` to point to the IP/domain where you will be running the frontend containers. If you are using a single machine to do the setup without SSL, it will likely be `http://<your-ip>:3000`.
