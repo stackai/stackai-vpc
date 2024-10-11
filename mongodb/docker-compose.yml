@@ -2,49 +2,12 @@ services:
   mongodb:
     image: mongo:7.0
     container_name: mongodb
-    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
     ports:
       - 27017:27017
     restart: always
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    healthcheck:
-      test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'host.docker.internal:27017'}]}) }" | mongosh --port 27017 --quiet
-      interval: 5s
-      timeout: 30s
-      start_period: 0s
-      start_interval: 1s
-      retries: 30
     volumes:
-      - "mongodb_data:/data/db"
-      - "mongodb_config:/data/configdb"
-
-  mongo-express:
-    image: mongo-express:1.0.2
-    container_name: mongo-express
-    ports:
-      - 8081:8081
-    restart: always
-    depends_on:
-      - mongodb
+      - ./mongodb_data:/data/db:Z
+      - ./mongodb_config:/data/configdb:Z
     environment:
-      ME_CONFIG_MONGODB_SERVER: mongodb
-      ME_CONFIG_MONGODB_PORT: 27017
-      ME_CONFIG_BASICAUTH_USERNAME: admin
-      ME_CONFIG_BASICAUTH_PASSWORD: admin
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-
-  mongodb_init:
-    build:
-      context: initialization
-      dockerfile: Dockerfile
-    container_name: mongodb_init
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    depends_on:
-      - mongodb
-
-volumes:
-  mongodb_data:
-  mongodb_config:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}

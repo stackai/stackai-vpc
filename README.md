@@ -1,5 +1,30 @@
 
-# StackAI local deployment using docker compose ( as of 15/04/2024)
+# StackAI Docker Compose Deployment
+
+# Requirements
+
+- You will need docker and docker compose (compose version v2.26 or higher) installed in your machine.
+
+# Set Up process
+
+## MongoDB
+
+1. Go to the `mongodb` folder and create your mongodb credentials.
+
+    a) Copy the `.env.example` file and rename it as `.env`.
+    b) Fill in the `MONGO_INITDB_ROOT_USERNAME` and `MONGO_INITDB_ROOT_PASSWORD` variables with your desired credentials.
+
+2. Open a terminal in this folder and run:
+
+    ```bash
+    docker compose up mongodb
+    ```
+
+3. Once the database is running, run the initialization scripts.
+
+    a) Read more in the [MongoDB initialization README](mongodb/initialization/README.md)
+
+##
 
 # TODO
 
@@ -14,10 +39,6 @@
 ## KNOWN BUGS
 
 - [ ] The document chunking preview does not work, the chunks are seen but the document is not. This is because somehow the frontend gets the url to call from the backend.
-
-# Requirements
-
-- You will need docker and docker compose (compose version v2.26 or higher) installed in your machine.
 
 # Architecture description
 
