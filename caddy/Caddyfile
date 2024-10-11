@@ -1,0 +1,15 @@
+# stackaionpremtest.eastus.cloudapp.azure.com {
+#     reverse_proxy /rest/v1/* kong:8000
+#     reverse_proxy /graphql/v1/* kong:8000
+#     reverse_proxy /auth/v1/* kong:8000
+#     reverse_proxy /realtime/v1/* kong:8000
+#     reverse_proxy /storage/v1/* kong:8000
+#     reverse_proxy /functions/v1/* kong:8000
+#     reverse_proxy /analytics/v1/* kong:8000
+# 
+#     reverse_proxy /* stackweb:3000
+# 
+#     header {
+#         Content-Security-Policy "upgrade-insecure-requests"
+#     }
+# }
