@@ -5,4 +5,4 @@ include:
   - unstructured/docker-compose.yml
   - caddy/docker-compose.yml
   - stackweb.docker-compose.yml
-#  - stackend.docker-compose.yml
+  - stackend.docker-compose.yml
