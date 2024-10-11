@@ -7,20 +7,21 @@ services:
       - "9090"
       - --scheme
       - http
-    image: cr.weaviate.io/semitechnologies/weaviate:1.25.1
+    image: cr.weaviate.io/semitechnologies/weaviate:1.26.6
     volumes:
-      - weaviate_data:/var/lib/weaviate
+      - ./weaviate_data:/var/lib/weaviate
     restart: on-failure
+    # Uncomment the following lines if you want to expose outside of the docker network.
+    #ports:
+    #  - 9090:9090
+    #  - 50051:50051
     environment:
       QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: "false"
       AUTHENTICATION_APIKEY_ENABLED: "true"
-      AUTHENTICATION_APIKEY_USERS: "jhon@doe.com"
-      AUTHENTICATION_APIKEY_ALLOWED_KEYS: "1234567890"
+      AUTHENTICATION_APIKEY_USERS: ${WEAVIATE_API_KEY_USER}
+      AUTHENTICATION_APIKEY_ALLOWED_KEYS: ${WEAVIATE_API_KEY}
       PERSISTENCE_DATA_PATH: "/var/lib/weaviate"
       DEFAULT_VECTORIZER_MODULE: "none"
-      ENABLE_MODULES: "text2vec-cohere,text2vec-huggingface,text2vec-palm,text2vec-openai,generative-openai,generative-cohere,generative-palm,ref2vec-centroid,reranker-cohere,qna-openai"
+      ENABLE_MODULES: ""
       CLUSTER_HOSTNAME: "node1"
-
-volumes:
-  weaviate_data:

@@ -18,9 +18,9 @@ Run the script in the `scripts` folder named `ubuntu_server_pre_setup.sh` to ins
 1. Go to the `mongodb` folder and create your mongodb credentials.
 
     a) Copy the `.env.example` file and rename it as `.env`.
-    b) Fill in the `MONGO_INITDB_ROOT_USERNAME` and `MONGO_INITDB_ROOT_PASSWORD` variables with your desired credentials.
+    b) Fill in the variables with your own values. Do not use the default ones.
 
-2. Open a terminal in this folder and run:
+2. Open a terminal in **this folder** and run:
 
     ```bash
     docker compose up mongodb
@@ -35,23 +35,45 @@ Run the script in the `scripts` folder named `ubuntu_server_pre_setup.sh` to ins
 1. Go to the `unstructured` folder and create your unstructured credentials.
 
     a) Copy the `.env.example` file and rename it as `.env`.
-    b) Fill in the `UNSTRUCTURED_API_KEY` variable with the value that you want to use for the unstructured API key.
+    b) Fill in the variables with your own values. Do not use the default ones.
 
-2. Open a terminal in this folder and run:
+2. Open a terminal in **this folder** and run:
 
     ```bash
     docker compose up unstructured
     ```
 
-# TODO
+## Weaviate
 
-- [ ] Get supabase password and use the cli for the initial setup, otherwise, create a initialization script for the supabase database.
-- [ ] Trim down supabase docker compose.yml file to only include the necessary services for the local deployment, there are a lot of services that are not needed.
-- [ ] Remove supabase variables from NEXT_PUBLIC_* environment variables from the stackweb build process, as they make publishing the container images insecure. As a patch, add build arguments to the stackweb Dockerfile.
-- [ ] Publish container images for stackend and stackweb to a private container registry so that they can be used in the local deployment instead of building them locally.
-- [ ] Fix supabase signup in the local deployment.
-- [ ] Fix supabase auth jwt generation process (broken on their website)
-- [ ] Complete the mongodb initialization script ? (seems to be working, but check)
+1. Go to the `weaviate` folder and create your weaviate credentials. This will be used to authenticate your requests to your local weaviate instance.
+
+    a) Copy the `.env.example` file and rename it as `.env`.
+    b) Fill in the variables with your own values. Do not use the default ones.
+
+2. Open a terminal in **this folder** and run:
+
+    ```bash
+    docker compose up weaviate
+    ```
+
+## Supabase
+
+1. Go to the `supabase` folder and create your supabase credentials.
+
+    a) Copy the `.env.example` file and rename it as `.env`.
+    b) Fill in the variables with your own values. Do not use the default ones.
+
+2. Open a terminal in **this folder** and run:
+
+    ```bash
+    docker compose up supabase
+    ```
+
+    Once the supabase containers start running, they will start the internal process of setting up the database. This will take about 2-3 minutes.
+
+3. Initialize the supabase database.
+
+    Read the [Supabase initialization README](supabase/initialization/README.md) and follow the instructions detailed there to initialize the database.
 
 ## KNOWN BUGS
 
