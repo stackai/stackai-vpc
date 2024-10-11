@@ -36,3 +36,7 @@ With SSL/TLS:
 - Point the `API_EXTERNAL_URL` to the domain where you will be running the code in this repository folder (supabase). This will probably look like `https://stackdbs.your-domain.com`.
 
 - Point the `SUPABASE_PUBLIC_URL` to the domain where you will be hosting the Studio Dashboard. This will probably look like `https://stackdb.your-domain.com`. The supabase dashboard is a web UI for managing your databases, and it will be served from this domain.
+
+## Dev Notes
+
+The `volumes/db/init` directory contains the initialization scripts for the database. These scripts are executed in alphabetical order. They start with `zz` to ensure they are executed after the supabase internal migration scripts.

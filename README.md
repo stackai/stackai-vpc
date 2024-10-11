@@ -59,9 +59,8 @@ Run the script in the `scripts` folder named `ubuntu_server_pre_setup.sh` to ins
 ## Supabase
 
 1. Go to the `supabase` folder and create your supabase credentials.
-
     a) Copy the `.env.example` file and rename it as `.env`.
-    b) Fill in the variables with your own values. Do not use the default ones.
+    b) Read the [Supabase README](supabase/README.md) to learn how to fill the values.
 
 2. Open a terminal in **this folder** and run:
 
@@ -71,9 +70,7 @@ Run the script in the `scripts` folder named `ubuntu_server_pre_setup.sh` to ins
 
     Once the supabase containers start running, they will start the internal process of setting up the database. This will take about 2-3 minutes.
 
-3. Initialize the supabase database.
-
-    Read the [Supabase initialization README](supabase/initialization/README.md) and follow the instructions detailed there to initialize the database.
+3. Verify the installation by navigating to the url configured in `SUPABASE_PUBLIC_URL`. If you have not disabled the dashboard you should be able to log in and see that the tables have been created.
 
 ## KNOWN BUGS
 

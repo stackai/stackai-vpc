@@ -416,8 +416,8 @@ services:
 
       # Stack AI Init Scripts
       # Seed data should be inserted last (alphabetical order)
-      - ./volumes/db/init/zz2_stack_init_1_stack_schema.sql:/docker-entrypoint-initdb.d/zz2_stack_init_1_stack_schema.sql:Z
-      - ./volumes/db/init/zz2_stack_init_2_prepopulate.sql:/docker-entrypoint-initdb.d/zz2_stack_init_2_prepopulate.sql:Z
+      - ./volumes/db/init/zz2_stack_init_1_stack_schema.sql:/docker-entrypoint-initdb.d/zzz2_stack_init_1_stack_schema.sql:Z
+      - ./volumes/db/init/zz2_stack_init_2_prepopulate.sql:/docker-entrypoint-initdb.d/zzz2_stack_init_2_prepopulate.sql:Z
 
 
   vector:
