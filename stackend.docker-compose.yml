@@ -17,20 +17,6 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  flower:
-    container_name: flower
-    restart: always
-    build:
-      context: stackend/
-      dockerfile: infra/docker/Dockerfile.flower
-    env_file:
-      - stackend.env
-    ports:
-      - "5555:5555"
-    depends_on:
-      - celery_worker
-      - redis
-
   stackend:
     container_name: stackend
     restart: always
