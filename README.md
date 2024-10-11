@@ -5,7 +5,13 @@
 
 - You will need docker and docker compose (compose version v2.26 or higher) installed in your machine.
 
-# Set Up process
+# Set up process
+
+Follow the instructions in the order they are presented.
+
+## Set up the machine where you will run the deployment
+
+Run the script in the `scripts` folder named `ubuntu_server_pre_setup.sh` to install docker and docker compose.
 
 ## MongoDB
 
@@ -24,7 +30,18 @@
 
     a) Read more in the [MongoDB initialization README](mongodb/initialization/README.md)
 
-##
+## Unstructured
+
+1. Go to the `unstructured` folder and create your unstructured credentials.
+
+    a) Copy the `.env.example` file and rename it as `.env`.
+    b) Fill in the `UNSTRUCTURED_API_KEY` variable with the value that you want to use for the unstructured API key.
+
+2. Open a terminal in this folder and run:
+
+    ```bash
+    docker compose up unstructured
+    ```
 
 # TODO
 

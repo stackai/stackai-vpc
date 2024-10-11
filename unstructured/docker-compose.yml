@@ -1,7 +1,9 @@
 services:
   unstructured:
-    image: downloads.unstructured.io/unstructured-io/unstructured-api:latest
+    image: downloads.unstructured.io/unstructured-io/unstructured-api:0.0.80
     container_name: unstructured
     restart: always
     ports:
       - 9099:8000
+    environment:
+      - UNSTRUCTURED_API_KEY=${UNSTRUCTURED_API_KEY}
