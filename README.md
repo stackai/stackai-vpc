@@ -45,6 +45,8 @@ Run the following command to create all the .env from their templates in all fol
 
 3. Verify the installation by navigating to the url configured in `SUPABASE_PUBLIC_URL`. If you have not disabled the dashboard you should be able to log in and see that the tables have been created.
 
+4. You may run `docker compose down` after checking the setup.
+
 ## MongoDB
 
 1. Go to the `mongodb` folder and create your mongodb credentials.
@@ -61,6 +63,8 @@ Run the following command to create all the .env from their templates in all fol
 
     a) Read more in the [MongoDB initialization README](mongodb/initialization/README.md)
 
+4. After the initialization, you can run `docker compose down` to stop mongodb.
+
 ## Unstructured
 
 1. Go to the `unstructured` folder and create your unstructured credentials.
@@ -72,6 +76,8 @@ Run the following command to create all the .env from their templates in all fol
     ```bash
     docker compose up unstructured
     ```
+
+3. After the initialization, you can run `docker compose down` to stop unstructured.
 
 ## Weaviate
 
@@ -85,7 +91,7 @@ Run the following command to create all the .env from their templates in all fol
     docker compose up weaviate
     ```
 
-
+3. Wait for about 2 minutes for everything to start up. If the startup is successful, you can run `docker compose down` to stop weaviate.
 
 ## Stackweb
 
