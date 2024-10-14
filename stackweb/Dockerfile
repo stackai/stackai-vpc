@@ -43,4 +43,4 @@ RUN \
   fi
 
 
-ENTRYPOINT ["node", ".next/standalone/server.js"]
+ENTRYPOINT ["npm", "run", "start"]
