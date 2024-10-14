@@ -106,6 +106,7 @@ Run the following command to create all the .env from their templates in all fol
     Build the docker image for stackweb:
 
     ```bash
+    source stackweb/.env
     docker compose build stackweb
     ```
 
