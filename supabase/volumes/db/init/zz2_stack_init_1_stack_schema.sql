@@ -153,7 +153,7 @@ BEGIN
 
   -- Insert into organizations table
   INSERT INTO public.organizations (org_id, org_name, org_plan)
-  VALUES (new_org_id::text, '', 'free');
+  VALUES (new_org_id::text, '', 'enterprise');
 
   -- Insert into user_organizations table
   INSERT INTO public.user_organizations (user_id, org_id, is_current)
@@ -185,7 +185,7 @@ begin
 
     -- Insert into organizations
     INSERT INTO organizations (org_id, org_name, org_plan)
-    VALUES (new_org_id, '', 'free');
+    VALUES (new_org_id, '', 'enterprise');
 
     -- Insert into user_organizations
     INSERT INTO user_organizations (user_id, org_id)
@@ -444,7 +444,7 @@ CREATE TABLE IF NOT EXISTS "public"."profiles" (
     "runs_date" "text",
     "first_time" boolean DEFAULT false,
     "private_key" "uuid",
-    "plan" "text" DEFAULT 'free'::"text",
+    "plan" "text" DEFAULT 'enterprise'::"text",
     "organization_name" "text" DEFAULT ''::"text",
     "client_reference_id" "text",
     "basic_html" boolean DEFAULT false,
