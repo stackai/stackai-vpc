@@ -7,11 +7,9 @@ services:
   celery_worker:
     container_name: celery_worker
     restart: always
-    build:
-      context: stackend/
-      dockerfile: infra/docker/Dockerfile.celery
+    image: stackai.azurecr.io/stackai/stackend-celery-worker:latest
     env_file:
-      - stackend.env
+      - .env
     depends_on:
       - redis
     extra_hosts:
@@ -20,11 +18,9 @@ services:
   stackend:
     container_name: stackend
     restart: always
-    build:
-      context: stackend/
-      dockerfile: infra/docker/Dockerfile.stackend
+    image: stackai.azurecr.io/stackai/stackend-backend:latest
     env_file:
-      - stackend.env
+      - .env
     depends_on:
       - celery_worker
       - redis

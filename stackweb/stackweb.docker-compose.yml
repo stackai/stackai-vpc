@@ -3,7 +3,7 @@ services:
     container_name: stackweb
     restart: always
     build:
-      context: stackweb/
+      context: .
       dockerfile: Dockerfile
       args:
         - NEXT_PUBLIC_INDEX_URL=${NEXT_PUBLIC_INDEX_URL}

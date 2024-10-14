@@ -1,6 +1,3 @@
-stackweb/
-stackend/
-stackrepl/
 *.env
 .DS_Store
 .venv

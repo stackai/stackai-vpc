@@ -2,10 +2,6 @@ services:
   stackrepl:
     container_name: stackrepl
     restart: always
-    build:
-      context: stackrepl/
-      dockerfile: Dockerfile
-    ports:
-      - "7777:7777"
+    image: stackai.azurecr.io/stackai/stackrepl/stack-repl:latest
     extra_hosts:
       - "host.docker.internal:host-gateway"
