@@ -29,3 +29,19 @@ services:
       - "8888:8888"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
+  restarter:
+    image: docker:cli
+    restart: unless-stopped
+    volumes: ["/var/run/docker.sock:/var/run/docker.sock"]
+    entrypoint: ["/bin/sh","-c"]
+    command:
+      - |
+        while true; do
+          if [ "$$(date +'%H:%M')" = '07:00' ]; then
+            echo "Restarting services..."
+            docker restart -t 10 stackend celery_worker
+          fi
+          sleep 30
+          echo "Restarting stackend at $(date)"
+        done
