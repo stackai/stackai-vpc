@@ -95,6 +95,8 @@ Run the following command to create all the .env from their templates in all fol
 
 ## Stackweb
 
+The stackweb docker container requires some of the environment variables here defined to be built. This is why we need to source the .env file before building the image.
+
 1. Navigate to the `stackweb` folder.
 
 2. Fill in the values for the missing variables in the .env file.
@@ -110,6 +112,8 @@ Run the following command to create all the .env from their templates in all fol
     docker compose build stackweb
     ```
 
+    The build process may take about 5 minutes depending on your internet connection and har
+
 ## Stackend
 
 1. Navigate to the `stackend` folder.
@@ -119,7 +123,7 @@ Run the following command to create all the .env from their templates in all fol
 3. Open a terminal in **this folder** and run:
 
     ```bash
-    docker compose build stackend
+    docker compose pull stackend celery_worker redis
     ```
 
 ## Stackrepl
