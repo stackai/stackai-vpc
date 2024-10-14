@@ -2,7 +2,7 @@ services:
   # We use Caddy to handle SSL termination.
   caddy:
     image: caddy:2
-    restart: unless-stopped
+    restart: always
     cap_add:
       - NET_ADMIN
     ports:
