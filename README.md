@@ -24,7 +24,7 @@ docker login -u <the_username_we_provided_you_with> -p <the_password_we_provided
 
 ## Create all .env files
 
-Run the following command to create all the .env from their templates in all folders.
+Run the following command to create all the .env from their templates in all folders. The template values are meant to be replaced with your own credentials. :warning: DO NOT USE THE DEFAULT VALUES FOR YOUR SECRETS/API KEYS. :warning:
 
 ```bash
 ./create_env_files.sh
@@ -38,7 +38,7 @@ Run the following command to create all the .env from their templates in all fol
 2. Open a terminal in **this folder** and run:
 
     ```bash
-    docker compose up supabase
+    docker compose up db auth studio storage supavisor kong
     ```
 
     Once the supabase containers start running, they will start the internal process of setting up the database. This will take about 2-3 minutes.
