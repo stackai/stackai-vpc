@@ -38,7 +38,7 @@ Run the following command to create all the .env from their templates in all fol
 2. Open a terminal in **this folder** and run:
 
     ```bash
-    docker compose up db auth studio storage supavisor kong
+    docker compose up studio kong auth rest realtime storage imgproxy meta functions analytics db vector supavisor 
     ```
 
     Once the supabase containers start running, they will start the internal process of setting up the database. This will take about 2-3 minutes.
