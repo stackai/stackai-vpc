@@ -442,7 +442,7 @@ CREATE TABLE IF NOT EXISTS "public"."profiles" (
     "runs" bigint,
     "paying" boolean,
     "runs_date" "text",
-    "first_time" boolean DEFAULT true,
+    "first_time" boolean DEFAULT false,
     "private_key" "uuid",
     "plan" "text" DEFAULT 'free'::"text",
     "organization_name" "text" DEFAULT ''::"text",
@@ -452,7 +452,7 @@ CREATE TABLE IF NOT EXISTS "public"."profiles" (
     "runs_day" "text",
     "runs_per_day" bigint DEFAULT '0'::bigint,
     "role" "text" DEFAULT 'admin'::"text",
-    "has_completed_onboarding" boolean,
+    "has_completed_onboarding" boolean DEFAULT true,
     CONSTRAINT "username_length" CHECK (("char_length"("username") >= 3))
 );
 
