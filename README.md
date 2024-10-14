@@ -136,6 +136,40 @@ The stackweb docker container requires some of the environment variables here de
     docker compose build stackrepl
     ```
 
-## SSL Setup
+# SSL Setup
 
 1. If you need to use SSL, configure the [Caddyfile](./caddy/Caddyfile) to use your certificates and keys.
+
+# Updates
+
+In order to update the services, you will need to follow the instructions below:
+
+1) Stop all the services with `docker compose down`
+2) Update the `image` field of the docker-compose.yml file of the service you want to update.
+
+Example, to update the stackend service from `d3f54d3` to `f4c8aa0`
+
+This line
+```yaml
+  stackend:
+    image: stackai.azurecr.io/stackai/stackend-backend:d3f54d3
+```
+
+Should be updated to:
+
+```yaml
+  stackend:
+    image: stackai.azurecr.io/stackai/stackend-backend:f4c8aa0
+```
+
+3) Pull the new images with
+
+```bash
+docker compose pull <name_of_the_service>
+```
+
+In the case of the frontend (stackweb), you will need to rebuild the image with `docker compose build stackweb`
+
+4) Run database migrations if needed (they should be provided in the update package)
+
+5) Start the services again with `docker compose up <name_of_the_service>`
