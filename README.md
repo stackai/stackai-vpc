@@ -22,12 +22,34 @@ You will need to log in to StackAI's container registry on Azure to pull the ima
 docker login -u <the_username_we_provided_you_with> -p <the_password_we_provided_you_with> stackai.azurecr.io
 ```
 
+## Create all .env files
+
+Run the following command to create all the .env from their templates in all folders.
+
+```bash
+./create_env_files.sh
+```
+
+## Supabase
+
+1. Go to the `supabase` folder and create your supabase credentials.
+    a) Read the [Supabase README](supabase/README.md) to learn how to fill the values in the .env file.
+
+2. Open a terminal in **this folder** and run:
+
+    ```bash
+    docker compose up supabase
+    ```
+
+    Once the supabase containers start running, they will start the internal process of setting up the database. This will take about 2-3 minutes.
+
+3. Verify the installation by navigating to the url configured in `SUPABASE_PUBLIC_URL`. If you have not disabled the dashboard you should be able to log in and see that the tables have been created.
+
 ## MongoDB
 
 1. Go to the `mongodb` folder and create your mongodb credentials.
 
-    a) Copy the `.env.example` file and rename it as `.env`.
-    b) Fill in the variables with your own values. Do not use the default ones.
+    a) Fill in the variables in the .env file with your own values. Do not use the default ones.
 
 2. Open a terminal in **this folder** and run:
 
@@ -43,8 +65,7 @@ docker login -u <the_username_we_provided_you_with> -p <the_password_we_provided
 
 1. Go to the `unstructured` folder and create your unstructured credentials.
 
-    a) Copy the `.env.example` file and rename it as `.env`.
-    b) Fill in the variables with your own values. Do not use the default ones.
+    a) Fill in the variables in the .env file with your own values. Do not use the default ones (copied from the template.)
 
 2. Open a terminal in **this folder** and run:
 
@@ -56,8 +77,7 @@ docker login -u <the_username_we_provided_you_with> -p <the_password_we_provided
 
 1. Go to the `weaviate` folder and create your weaviate credentials. This will be used to authenticate your requests to your local weaviate instance.
 
-    a) Copy the `.env.example` file and rename it as `.env`.
-    b) Fill in the variables with your own values. Do not use the default ones.
+    a) Fill in the variables in the .env file with your own values. Do not use the default ones copied from the template.
 
 2. Open a terminal in **this folder** and run:
 
@@ -65,31 +85,15 @@ docker login -u <the_username_we_provided_you_with> -p <the_password_we_provided
     docker compose up weaviate
     ```
 
-## Supabase
 
-1. Go to the `supabase` folder and create your supabase credentials.
-    a) Copy the `.env.example` file and rename it as `.env`.
-    b) Read the [Supabase README](supabase/README.md) to learn how to fill the values.
-
-2. Open a terminal in **this folder** and run:
-
-    ```bash
-    docker compose up supabase
-    ```
-
-    Once the supabase containers start running, they will start the internal process of setting up the database. This will take about 2-3 minutes.
-
-3. Verify the installation by navigating to the url configured in `SUPABASE_PUBLIC_URL`. If you have not disabled the dashboard you should be able to log in and see that the tables have been created.
 
 ## Stackweb
 
 1. Navigate to the `stackweb` folder.
 
-2. Copy the `.env.template` file and rename it as `.env` in the root folder of this project. Fill in the values for the missing variables.
+2. Fill in the values for the missing variables in the .env file.
    - Make sure to replace the supabase anon and service role keys with the ones you created in the supabase section.
    - Replace the values for the api keys that you intend to use.
-
-3. Copy the .env file and paste it in the `stackweb` folder. Do not move the file, make a copy, we need both.
 
 4. Open a terminal in **this folder** and run:
 
@@ -103,7 +107,7 @@ docker login -u <the_username_we_provided_you_with> -p <the_password_we_provided
 
 1. Navigate to the `stackend` folder.
 
-2. Copy the `.env.template` file and rename it as `.env` in the root folder of this project. Fill in the values for the missing variables.
+2. Fill in the values for the missing variables in the .env file.
 
 3. Open a terminal in **this folder** and run:
 
