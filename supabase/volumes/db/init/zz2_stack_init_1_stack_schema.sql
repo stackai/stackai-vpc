@@ -402,7 +402,7 @@ CREATE TABLE IF NOT EXISTS "public"."organizations" (
     "org_id" "text" NOT NULL,
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
     "org_name" "text" DEFAULT ''::"text",
-    "org_plan" "text" DEFAULT 'free'::"text",
+    "org_plan" "text" DEFAULT 'enterprise'::"text",
     "stripe_client_reference_id" "text",
     "stripe_customer_id" "text",
     "public_key" "uuid" DEFAULT "gen_random_uuid"(),
