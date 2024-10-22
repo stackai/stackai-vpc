@@ -14,6 +14,9 @@ services:
       - redis
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    volumes:
+      - ./llm_config.toml:/app/src/apps/config/llm_config.toml:ro
+      - ./embeddings_config.toml:/app/src/apps/config/embeddings_config.toml:ro
 
   stackend:
     container_name: stackend
@@ -29,6 +32,9 @@ services:
       - "8888:8888"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    volumes:
+      - ./llm_config.toml:/app/src/apps/config/llm_config.toml:ro
+      - ./embeddings_config.toml:/app/src/apps/config/embeddings_config.toml:ro
 
   restarter:
     image: docker:cli
