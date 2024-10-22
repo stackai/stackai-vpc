@@ -135,7 +135,11 @@ The stackweb docker container requires some of the environment variables here de
 
 2. Fill in the values for the missing variables in the .env file.
 
-3. Open a terminal in **this folder** and run:
+3. Configure the embedding models you want to use in the `stackend/embeddings_config.toml` file.
+
+4. Configure the local LLM models you want to use in the `stackend/llm_config.toml` file.
+
+5. Open a terminal in **this folder** and run:
 
     ```bash
     docker compose pull stackend celery_worker redis
