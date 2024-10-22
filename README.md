@@ -5,6 +5,13 @@
 
 - You will need docker and docker compose (compose version v2.26 or higher) installed in your machine.
 - You will need access to stackai's container image registry on Azure.
+- Depending on how you configure the containers, different ports should be exposed, if you follow the default settings, the following ports need to be exposed:
+  - Port 3000: TCP port used for the StackAI frontend
+  - Port 8000: TCP port used for the StackAI backend
+  - Port 8800: TCP port used for the Kong API Gateway
+  - Port 8443: TCP port used for the Kong API Gateway
+
+If you set up the Caddy reverse proxy (See steps below), you may change the ports above for the ports 80 or/and 443.
 
 # Set up process
 
@@ -12,7 +19,13 @@ Follow the instructions in the order they are presented.
 
 ## Set up the machine where you will run the deployment
 
-Run the script in the `scripts` folder named `ubuntu_server_pre_setup.sh` to install docker and docker compose.
+You will need docker and docker compose installed in your machine. If you do not have them yet, there is a script in the `scripts` folder named `ubuntu_server_pre_setup.sh` that will install them for you.
+
+To run them, open a terminal in the `scripts` folder and run:
+
+```bash
+./ubuntu_server_pre_setup.sh
+```
 
 ## Log in to StackAI's Container Registry
 
@@ -25,6 +38,8 @@ docker login -u <the_username_we_provided_you_with> -p <the_password_we_provided
 ## Create all .env files
 
 Run the following command to create all the .env from their templates in all folders. The template values are meant to be replaced with your own credentials. :warning: DO NOT USE THE DEFAULT VALUES FOR YOUR SECRETS/API KEYS. :warning:
+
+Go to the `scripts` folder and run:
 
 ```bash
 ./create_env_files.sh
