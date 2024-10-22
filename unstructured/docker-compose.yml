@@ -1,7 +1,11 @@
 services:
   unstructured:
-    image: downloads.unstructured.io/unstructured-io/unstructured-api:latest
+    build:
+      context: .
     container_name: unstructured
     restart: always
     ports:
       - 9099:8000
+    environment:
+      - UNSTRUCTURED_API_KEY=${UNSTRUCTURED_API_KEY}
+      - MAX_LIFETIME_SECONDS=3600

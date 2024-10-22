@@ -1,325 +1,204 @@
 
-# StackAI local deployment using docker compose ( as of 15/04/2024)
-
-# TODO
-
-- [ ] Get supabase password and use the cli for the initial setup, otherwise, create a initialization script for the supabase database.
-- [ ] Trim down supabase docker compose.yml file to only include the necessary services for the local deployment, there are a lot of services that are not needed.
-- [ ] Remove supabase variables from NEXT_PUBLIC_* environment variables from the stackweb build process, as they make publishing the container images insecure. As a patch, add build arguments to the stackweb Dockerfile.
-- [ ] Publish container images for stackend and stackweb to a private container registry so that they can be used in the local deployment instead of building them locally.
-- [ ] Fix supabase signup in the local deployment.
-- [ ] Fix supabase auth jwt generation process (broken on their website)
-- [ ] Complete the mongodb initialization script ? (seems to be working, but check)
-
-## KNOWN BUGS
-
-- [ ] The document chunking preview does not work, the chunks are seen but the document is not. This is because somehow the frontend gets the url to call from the backend.
+# StackAI Docker Compose Deployment
 
 # Requirements
 
 - You will need docker and docker compose (compose version v2.26 or higher) installed in your machine.
+- You will need access to stackai's container image registry on Azure.
+- Depending on how you configure the containers, different ports should be exposed, if you follow the default settings, the following ports need to be exposed:
+  - Port 3000: TCP port used for the StackAI frontend
+  - Port 8000: TCP port used for the StackAI backend
+  - Port 8800: TCP port used for the Kong API Gateway
+  - Port 8443: TCP port used for the Kong API Gateway
 
-# Architecture description
+If you set up the Caddy reverse proxy (See steps below), you may change the ports above for the ports 80 or/and 443.
+
+# Set up process
+
+Follow the instructions in the order they are presented.
+
+## Set up the machine where you will run the deployment
+
+You will need docker and docker compose installed in your machine. If you do not have them yet, there is a script in the `scripts` folder named `ubuntu_server_pre_setup.sh` that will install them for you.
+
+To run them, open a terminal in the `scripts` folder and run:
+
+```bash
+./ubuntu_server_pre_setup.sh
+```
+
+## Log in to StackAI's Container Registry
+
+You will need to log in to StackAI's container registry on Azure to pull the images we provided you with.
+
+```bash
+docker login -u <the_username_we_provided_you_with> -p <the_password_we_provided_you_with> stackai.azurecr.io
+```
+
+## Create all .env files
+
+Run the following command to create all the .env from their templates in all folders. The template values are meant to be replaced with your own credentials. :warning: DO NOT USE THE DEFAULT VALUES FOR YOUR SECRETS/API KEYS. :warning:
+
+Go to the `scripts` folder and run:
+
+```bash
+./create_env_files.sh
+```
 
 ## Supabase
 
-Supabase is used as the application database, authentication and storage service. It is defined in the `supabase` folder.
+1. Go to the `supabase` folder and create your supabase credentials.
+    a) Read the [Supabase README](supabase/README.md) to learn how to fill the values in the .env file.
 
-### Services description
+2. Open a terminal in **this folder** and run:
 
-There following services are defined in the `docker-compose.yml` file of the `supabase` folder.
+    ```bash
+    docker compose up studio kong auth rest realtime storage imgproxy meta functions analytics db vector supavisor 
+    ```
 
-- `studio`: Supabase web interface.
-- `kong`: A cloud-native API gateway, built on top of NGINX.
-- `db`: The postgres database
-- `auth`: Uses GoTrue for JWT authentication.
-- `storage`: An S3-compatible object storage service that stores metadata in Postgres.
-- `rest`: Turns the postgreSQL db into a GraphQL API (candidate for removal)
-- `realtime`: A scalable websocket engine for managing user Presence, broadcasting messages, and streaming database changes (candidate for removal)
-- `imgproxy`: IMG transformation and OCR service (candidate for removal)
-- `meta`: A RESTful API for managing Postgres. Fetch tables, add roles, and run queries.
-- `functions`: For supabase functions (candidate for removal)
-- `analytics`: Analytics for the project (candidate for removal)
-- `vector`: A vector database for storing embeddings (candidate for removal as we use weaviate)
+    Once the supabase containers start running, they will start the internal process of setting up the database. This will take about 2-3 minutes.
 
-### Networking
+3. Verify the installation by navigating to the url configured in `SUPABASE_PUBLIC_URL`. If you have not disabled the dashboard you should be able to log in and see that the tables have been created.
 
-Kong is used as the API gateway for the supabase services. 
-The internal connection URI for the supabase services is `http://kong:8000`. To avoid port conflicts with `stackend`, I have remapped the port to `8800` on the host machine, this means that the external (outside the docker network) connection URI for the supabase services is `http://0.0.0.0:8800`.
-
-![Supabase architecture](docs/supabase-architecture.svg)
-
-### Development notes
-
-The supabase web interface that allows for `ANON_KEY` and `SERVICE_ROLE_KEY` generation, [see here](https://supabase.com/docs/guides/self-hosting/docker#generate-api-keys), was broken as of 15/04/2024 the generated keys were not valid.
-
-:warning: A tip to see the SQL commands needed to create the tables, functions and triggers is to go to the production supabase dashboard, navigate to the `stackweb` project, and then to the `Backup` tab. There you can download a dump of the production db. Extract it and open it with a text editor (i recommend something like `vim` or `neovim` as it quite large) to see the commands.
+4. You may run `docker compose down` after checking the setup.
 
 ## MongoDB
 
-The container for mongodb and its related configuration is defined on the `mongodb` folder.
+1. Go to the `mongodb` folder and create your mongodb credentials.
 
-### Services description
+    a) Fill in the variables in the .env file with your own values. Do not use the default ones.
 
-Two containers are setup in the `docker-compose.yml` file of the `mongodb` folder:
+2. Open a terminal in **this folder** and run:
 
-1. The `mongodb` container: This container is the main mongodb container. It is based on the `mongo` image and is setup to run as a single node replica set. It exposes the port `27017` to the host machine.
-2. The `mongo-express` container: This container is a web interface for the mongodb database. It is based on the `mongo-express` image and is setup to connect to the `mongodb` container. It exposes the port `8081` to the host machine. The web interface can be accessed by navigating to `http://0.0.0.0:8081` on the host machine and using the credentials defined in the `mongodb/docker-compose.yml` file
+    ```bash
+    docker compose up mongodb
+    ```
 
-### Networking
+3. Once the database is running, run the initialization scripts.
 
-The `mongodb` URI that needs to be used with the current config is `"mongodb://mongodb:27017/?replicaSet=rs0`.
+    a) Read more in the [MongoDB initialization README](mongodb/initialization/README.md)
 
-### MongoDB Initialization
-
-The mongodb container needs to be initialized with some data for the application to work:
-
-1. The `__models__` database that contains the templates for flow creation must be cloned from production to the local mongo database.
-
-### Development notes
-
-Setting up a mongodb single node replica set is a bit tricky, here are some notes on how to do it:
-
-#### About the `host.docker.internal` host
-To make the local deployment compatible with the use of websockets, a single node replica set is used. The main difficulty in doing this is seting up the network configuration in a way that allows the `motor` library to connect to the database.
-If we setup the internal address of the mongodb container using `localhost` as the host, we will be able to connect to the database from another container using `mongodb` as the host, but `motor` will not be able to discover the internal representation
-of the replica set, since we cannot jump to the `localhost` address of the mongodb container from another container.
-
-To fix this issue, we need to use the special host `host.docker.internal` as the host for the mongodb container. This host is a special DNS name that resolves to the internal ip address of the host machine. This way, we can connect to the mongodb container from another container using `mongodb` as the host, and `motor` will be able to discover the internal representation of the replica set.
-
-#### About the replica set initialization
-To initialize a replica set, the `rs.initiate({_id:'rs0',members:[{_id:0,host:'host.docker.internal:27017'}]})` command must be run. This command must be run after the mongodb container is up and running, so we need to run it after the container is up and running.
-
-To do this, we will take advantage of the healthcheck feature of the mongodb container. The healthcheck will run the `rs.initiate` command after the container is up and running, and will only stop the container if the command fails.
-
-#### About authentication when using a replica set
-In order to use authentication with the replica set configuration, we cannot just setup the `MONGO_INITDB_ROOT_USERNAME` and `MONGO_INITDB_ROOT_PASSWORD` environment variables as the replica set crashes when the container starts. An additional configuration is needed to setup the replica set with authentication enabled, namely, we would need to create a keyfile, set it up in the container and then use the `mongod.conf` file to tell mongodb to use the keyfile for authentication.
-
-## Stackweb
-
-The stackweb service is the frontend of the stackai application. It is defined in the `stackweb.docker-compose.yml` file. To build it, clone the stackweb repository (see instructions below). This will be fixed by publishing the stackweb container image to a private container registry in the future.
-
-### Services description
-
-A single container is setup in the `stackweb.docker-compose.yml` file of the `stackweb` folder.
-
-### Networking
-
-The stackweb service is exposed to the host machine on port `3000`. The default connection URI (from within the docker network) is `http://stackweb:3000`. To connect from the host machine, navigate to `http://0.0.0.0:3000`.
-
-## Stackend
-
-The stackend service is the backend of the stackai application. It is defined in the `stackend.docker-compose.yml` file. To build it, clone the stackend repository (see instructions below). This will be fixed by publishing the stackend container image to a private container registry in the future.
-
-### Services description
-
-The stackend service is composed of four containers:
-- `redis`: A redis instance that is used by celery to store the task queue.
-- `celery_worker`: A celery worker that processes the tasks in the task queue.
-- `flower`: A web interface for the celery worker.
-- `stackend`: The main stackend service.
-
-### Networking
-
-- The stackend service is exposed to the host machine on port `8000`. The default connection URI (from within the docker network) is `http://stackend:8000`. To connect from the host machine, navigate to `http://0.0.0.0:8000`.
-- Flower is indeed exposed to the host machine on port `5555`. The web interface can be accessed by navigating to `http://0.0.0.0:5555` on the host machine.
-- Redis is not exposed to the host machine, it is only used by the stackend service.
-- Celery worker is not exposed to the host machine, it is only used by the stackend service.
-
+4. After the initialization, you can run `docker compose down` to stop mongodb.
 
 ## Unstructured
 
-The unstructured service is used for document parsing. It is defined in the `unstructured` folder.
+1. Go to the `unstructured` folder and create your unstructured credentials.
 
-### Services description
+    a) Fill in the variables in the .env file with your own values. Do not use the default ones (copied from the template.)
 
-One container is setup in the `docker-compose.yml` file of the `unstructured` folder.
+2. Open a terminal in **this folder** and run:
 
-### Networking
+    ```bash
+    docker compose up unstructured
+    ```
 
-The unstructured service is not exposed to the host machine, it is only used by the stackend service.
-
-The internal connection URI (from within the docker network) is `http://unstructured:8000/general/v0/general`.
+3. After the initialization, you can run `docker compose down` to stop unstructured.
 
 ## Weaviate
 
-Weaivate is the vector database used by the stackend service. It is defined in the `weaviate` folder.
+1. Go to the `weaviate` folder and create your weaviate credentials. This will be used to authenticate your requests to your local weaviate instance.
 
-### Services description
+    a) Fill in the variables in the .env file with your own values. Do not use the default ones copied from the template.
 
-A single container is setup in the `docker-compose.yml` file of the `weaviate` folder. No authentication is setup for the weaviate service.
+2. Open a terminal in **this folder** and run:
 
-### Networking
+    ```bash
+    docker compose up weaviate
+    ```
 
-The weaviate service is not exposed to the host machine, it is only used by the stackend service.
+3. Wait for about 2 minutes for everything to start up. If the startup is successful, you can run `docker compose down` to stop weaviate.
 
-The default connection URI (from within the docker network) is `http://weaviate:9090`, (no authentication is setup).
+## Stackweb
 
-## 0. If you are trying to set up a EC2 instance to build a stack AMI, first execute the setup script
+The stackweb docker container requires some of the environment variables here defined to be built. This is why we need to source the .env file before building the image.
 
-Go to the `scripts` folder and first READ and then execute the `ubuntu_server_pre_setup.sh` script to install docker, setup github, and pull the repos
+1. Navigate to the `stackweb` folder.
 
-# :warning: Before publishing the AMI, do not forget to remove the ssh keys to your account both in the image and in the github webpage so no one can login to our github with them
+2. Fill in the values for the missing variables in the .env file.
+   - Make sure to replace the supabase anon and service role keys with the ones you created in the supabase section.
+   - Replace the values for the api keys that you intend to use.
 
-## 1. Create your .env files and initialize your secrets
+4. Open a terminal in **this folder** and run:
 
-### Supabase secrets
+    Build the docker image for stackweb:
 
-Go to the `supabase` folder and copy the `.env.example` file renaming it as `.env`.
+    ```bash
+    source stackweb/.env
+    docker compose build stackweb
+    ```
 
-After that, fill in the `secrets` section of the `.env` file, to do so, you will need to generate a new set of secrets following the process of the [supabase docker self hosting documentation](https://supabase.com/docs/guides/self-hosting/docker#generate-api-keys).
+    The build process may take about 5 minutes depending on your internet connection and har
 
-#### :warning: HACK WARNING :warning:
+## Stackend
 
-Last time I checked, the ANON_KEY and SERVICE_ROLE_KEY generation process was broken. Continue with the default ones in the `.env.example` file if you do not want to go into the rabbit hole of fixing it.
+1. Navigate to the `stackend` folder.
 
-You will need to fill the value of `ANON_KEY` and `SERVICE_ROLE_KEY` in other places as well (see below).
+2. Fill in the values for the missing variables in the .env file.
 
-### Stackweb .env file
+3. Configure the embedding models you want to use in the `stackend/embeddings_config.toml` file.
 
-Copy `.env.template` and rename it to `.env` in the root folder of this project. Fill in the values for the missing variables. Beware that you should not use the production `SUPABASE_ANON_KEY`, `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` here, they wont work!
+4. Configure the local LLM models you want to use in the `stackend/llm_config.toml` file.
 
-There is a reason why this file is named `.env` instead of `.env.stackweb` or something alike. By using `.env` the `docker-compose` command will automatically source the variables from this file when building the `stackweb` container and insert them into the build arguments.
+5. Open a terminal in **this folder** and run:
 
-### Stackend stackend.env file
+    ```bash
+    docker compose pull stackend celery_worker redis
+    ```
 
-Copy `stackend.env.template` and rename it to `stackend.env` in the root folder of this project. Fill in the values for the missing variables. Beware that you should not use the production `SUPABASE_ANON_KEY`, `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` here, they wont work!
+6. Start the stackend service and run migrations:
 
-## 2. Clone the stackend and stackweb repositories
+    ```bash
+    docker compose up stackend
+    docker compose exec stackend bash -c "cd migrations/postgres && alembic upgrade head"
+    ```
 
-They should be cloned in the same directory as this file.
+## Stackrepl
+
+1. Open a terminal in **this folder** and run:
+
+    ```bash
+    docker compose build stackrepl
+    ```
+
+# SSL Setup
+
+1. If you need to use SSL, configure the [Caddyfile](./caddy/Caddyfile) to use your certificates and keys.
+
+# Updates
+
+In order to update the services, you will need to follow the instructions below:
+
+1) Stop all the services with `docker compose down`
+2) Update the `image` field of the docker-compose.yml file of the service you want to update.
+
+Example, to update the stackend service from `d3f54d3` to `f4c8aa0`
+
+This line
+```yaml
+  stackend:
+    image: stackai.azurecr.io/stackai/stackend-backend:d3f54d3
+```
+
+Should be updated to:
+
+```yaml
+  stackend:
+    image: stackai.azurecr.io/stackai/stackend-backend:f4c8aa0
+```
+
+3) Pull the new images with
 
 ```bash
-git clone git@github.com:stackai/stackweb.git
-git clone git@github.com:stackai/stackend.git
+docker compose pull <name_of_the_service>
 ```
 
-### [:warning: ](http://stackend:8000/webhooks/new_user)HACK WARNING :warning:: Patch the stackweb Dockerfile and set the NEXT_PUBLIC_* environment variables
+In the case of the frontend (stackweb), you will need to rebuild the image with `docker compose build stackweb`
 
-You will need to patch the `stackweb` Dockerfile in order to set the `NEXT_PUBLIC_*` environment variables to work properly with the local deployment. This is a temporal hack and needs to be fixed in the future. Inside the Dockerfile, go to the `RUN npm run buil` line, and copy paste the following lines before it: 
-
-```text
-ARG NEXT_PUBLIC_HF_API_KEY
-ARG NEXT_PUBLIC_MONGODB_PWD
-ARG NEXT_PUBLIC_NOTION_OAUTH_CLIENT_ID
-ARG NEXT_PUBLIC_POSTHOG_KEY
-ARG NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
-ARG NEXT_PUBLIC_SUPABASE_URL
-```
-
-Those lines will allow us to set the proper build arguments when building the stackweb container (they will be sourced in the `stackweb.docker-compose.yml` from the `.env` file).
-
-## 3. Build all docker containers
+4) Run database migrations if needed (instructions should be provided in the update README of the update)
 
 ```bash
-docker-compose build
+docker compose up stackend
+docker compose exec stackend bash -c "cd migrations/postgres && alembic upgrade head"
 ```
 
-## 4. Initialize mongodb database
-
-First, start the mongodb container:
-
-```bash
-docker compose up mongodb
-```
-
-Run the initialization container in another terminal, it will prompt you for the production database URI (hint: use your `MONGODB_URI` secret)
-
-```bash
-docker compose up -d mongodb_init
-docker exec -it mongodb_init bash -c "python /app/init_db.py"
-```
-
-Then remove the initialization container:
-
-```bash
-docker compose down mongodb_init -t 1
-```
-
-Check the databases using mongo-express, to do so, start the mongo-express container:
-
-```bash
-docker compose up mongo-express
-```
-
-Wait for about 5 to 10 seconds. Then navigate to `http://0.0.0.0:8081` on your browser and login using the credentials defined in the `mongodb/docker-compose.yml` file.
-
-## 5. Initialize supabase database & storage buckets
-
-### :warning: HACK WARNING :warning:: This should be done with a script based on the supabase cli, but we do not have access to that cli atm
-
-First, start the supabase containers:
-
-```bash
-cd supabase && docker compose up
-```
-
-Then, navigate to the supabase dashboard on `http://0.0.0.0:8800` on your browser and login using the credentials defined in the `supabase/.env` file.
-
-To initialize the database, you will need to:
-1. Create the tables
-2. Create the functions
-3. Create the triggers
-4. Create row level security
-5. Prepopulate the tables (as of now, only the roles table needs to be prepopulated)
-
-To help you with that, you open the file `supabase/initialization/` folder and copy-paste the contents of each file into the supabase dashboard SQL editor (FOLLOW THE PREVIOUSLY DEFINED ORDER). This will create the tables, functions and triggers of the production db with the schema that was used as of April 15, 2024.
-
-: warining: If you use the SQL files, take a look at the triggers file and adjust the add_user_to_org_sso webhook url to point to stackend appropriately.
-
-Steps:
-
-1. Create the tables (skip if you have already have them) based on the production database schema.
- - Go to the dashboard for the production deployment of supabase, navigate to the `stackweb` project.
- - For each table, click on `Definition`, this will give you the SQL definition of the table.
- - Go to the local deployment dashboard, navigate to SQL editor and paste the SQL definition of the table.
- - Keep in mind that the tables need to be created in a certain order, otherwise an error will be thrown.
-2. Add functions (the most important are in the public and auth schemas, but check the rest)
- - On the supabase production deployment, navigate to `Database` and then to `Functions`.
- - Copy the function definition, open the advanced tap to see if the function is a `DEFINER` or an `INVOKER`, and the expected return type. Then, go to  `edit function` by clicking on the three dots on the right of the function name and copy its SQL definition.
- - For each function, go to the local deployment dashboard, navigate to `Database`, `Functions` and click on `Create a new function`, use the `show advanced settings` panel to set the propper security type and paste the SQL definition of the function. Dont forget about the return type.
-3. Add triggers.
-  - On the supabase production deployment, navigate to `Database` and then to `Triggers`.
-  - Go to `edit trigger` by clicking on the three dots on the right of the trigger name and take a look at its values.
-  - On the local deployment dashboard, navigate to `Database`, `Triggers` and click on `Create a new trigger` and fill in the values.
-4. Add webhooks.
- - On the supabase production deployment, navigate to `Database` and then to `Webhooks`.
- - Go to `edit webhook` by clicking on the three dots on the right of the webhook name and take a look at its values.
- - On the local deployment dashboard, navigate to `Database`, `Webhooks` and click on `Create a new webhook` and fill in the values. Important, set the webhook url to point to stackend, in the case of this specific configuration, that url is `http://stackend:8000/webhooks/new_user`, do not use the production url.
-5. Enable row level security:
-  - Go to the production deployment, table editor and take a look at the row level security settings.
-  - Replicate those settings in the local deployment.
-6. Pre-populate the tables:
-  - Go to the production deployment, table editor and download the data in the roles table as csv
-  - On the local deployment, navigate to the roles table and import the csv file.
-
-
-### For the storage buckets
-
-Go to the production dashboard and navigate to the storage section. Replicate the necessary buckets. Some of the most important ones are:
-
-```
-user_documents
-indexed_documents
-dataframes
-```
-
-Replicate them in docker's supabase.
-
-### :warning: TO-DO: Create a script that does this for you if we cannot do it from supabase cli in the near future.
-
-  
-## 6. Start all services
-    
-```bash
-docker-compose up
-```
-
-Go to `http://0.0.0.0:3000` to access the stackweb frontend.
-
-To stop all services, run:
-
-```bash
-docker-compose down
-```
+5) Start the services again with `docker compose up <name_of_the_service>`

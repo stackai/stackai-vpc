@@ -1,3 +1,4 @@
-stackweb/
-stackend/
 *.env
+.DS_Store
+.venv
+.vscode

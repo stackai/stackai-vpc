@@ -1,0 +1,7 @@
+services:
+  stackrepl:
+    container_name: stackrepl
+    restart: always
+    image: stackai.azurecr.io/stackai/stackrepl/stack-repl:latest
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
