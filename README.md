@@ -145,11 +145,16 @@ The stackweb docker container requires some of the environment variables here de
     docker compose pull stackend celery_worker redis
     ```
 
+6. Start the stackend service and run migrations:
+
+    ```bash
+    docker compose up stackend
+    docker compose exec stackend bash -c "cd migrations/postgres && alembic upgrade head"
+    ```
+
 ## Stackrepl
 
-1. Navigate to the `stackrepl` folder.
-
-2. Open a terminal in **this folder** and run:
+1. Open a terminal in **this folder** and run:
 
     ```bash
     docker compose build stackrepl
@@ -189,6 +194,11 @@ docker compose pull <name_of_the_service>
 
 In the case of the frontend (stackweb), you will need to rebuild the image with `docker compose build stackweb`
 
-4) Run database migrations if needed (they should be provided in the update package)
+4) Run database migrations if needed (instructions should be provided in the update README of the update)
+
+```bash
+docker compose up stackend
+docker compose exec stackend bash -c "cd migrations/postgres && alembic upgrade head"
+```
 
 5) Start the services again with `docker compose up <name_of_the_service>`
