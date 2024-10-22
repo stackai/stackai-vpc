@@ -16,7 +16,7 @@ Without SSL/TLS:
 >
 > An static IP is recommended for this setup.
 >
-> If you intend to run the whole stack on your local machine, you can use your local IP instead of a public static IP.
+> If you intend to run the whole stack on your personal computer for development purposes, you can use your local IP instead of a public static IP.
 > To get your local IP, you can run `ipconfig` (on Windows) or `ifconfig` (on macOS/Linux) and select your address in your wifi network.
 
 > Command to get your local ip address on mac (make sure to append the correct port at the end!):
