@@ -6,7 +6,7 @@ source .venv/bin/activate
 
 # Install dependencies and create credentials
 pip install -r requirements.txt
-python create_credentials.py
+python create_env_variables.py
 
 # Deactivate virtual environment
 deactivate
