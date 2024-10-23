@@ -121,7 +121,7 @@ c) Run the script that will initialize the environment variables:
 The script will prompt you to input the public ip/ url where the services will be exposed.
 
 ```bash
-./create_env_files.sh
+./initialize_variables.sh
 ```
 
 ## Supabase
