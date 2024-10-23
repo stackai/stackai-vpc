@@ -17,7 +17,7 @@
 # 
 # How to adjust the llms that are used by default:
 # 1. Locate the [default_llm] section
-# 2. Change the provider to the provider you want to use by default, if you want to use a local model, change it to `provider = "local"`
+# 2. Change the provider to the provider you want to use by default, if you want to use a local model, change it to `provider = "Local"` (yes, uppercase)
 # 3. Change the model_name to the name of the model you want to use by default
 #
 # How to adjust the llms that are used for each use case:
@@ -26,8 +26,8 @@
 # the model_name to the name of the model you want to use.
 
 
-#[llms.providers.local]
-#[llms.providers.local.llama_3_1_70b]
+#[llms.providers.Local]
+#[llms.providers.Local.llama_3_1_70b]
 #api_url = "https://api.together.xyz/v1"
 #api_key = "example_api_key"
 #model_name = "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo"
