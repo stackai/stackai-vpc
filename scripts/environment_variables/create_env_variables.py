@@ -180,7 +180,7 @@ to run the StackAI stackend service.
 Please, feel free to edit the generated files to better suit your needs.
     """
 
-    root_project_path = Path(__file__).parent.parent
+    root_project_path = Path(__file__).parent.parent.parent
 
     weaviate_template = environment.get_template("weaviate.env.template")
     mongodb_template = environment.get_template("mongodb.env.template")
