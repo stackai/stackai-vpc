@@ -140,7 +140,7 @@ if __name__ == "__main__":
             "Please, input 1 (or leave blank) if you wish to sync the flow templates from a local zip file (default), input 2 if you wish to sync the flow templates from a remote production database: "
         )
 
-        choice = input("Choice (local zip by default): ")
+        choice = input("Choice (leave blank for local zip, recommended): ")
         if choice == "":
             choice = "1"
 
