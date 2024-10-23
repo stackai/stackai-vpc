@@ -1,3 +1,6 @@
+# Command to get your local ip address on mac (make sure to append the correct port at the end!)
+
+# ifconfig | grep inet | grep -v 127.0.0.1 | grep -v '::' | awk '{print $2}'
 
 # StackAI Docker Compose Deployment
 
@@ -6,10 +9,10 @@
 - You will need docker and docker compose (compose version v2.26 or higher) installed in your machine.
 - You will need access to stackai's container image registry on Azure.
 - Depending on how you configure the containers, different ports should be exposed, if you follow the default settings, the following ports need to be exposed:
-  - Port 3000: TCP port used for the StackAI frontend
-  - Port 8000: TCP port used for the StackAI backend
-  - Port 8800: TCP port used for the Kong API Gateway
-  - Port 8443: TCP port used for the Kong API Gateway
+  - Port 3000: TCP port used for the StackAI frontend HTTP
+  - Port 8000: TCP port used for the StackAI backend HTTP
+  - Port 8800: TCP port used for the Kong API Gateway HTTP
+  - Port 8443: TCP port used for the Kong API Gateway HTTPS
 
 If you set up the Caddy reverse proxy (See steps below), you may change the ports above for the ports 80 or/and 443.
 
@@ -174,6 +177,7 @@ In order to update the services, you will need to follow the instructions below:
 Example, to update the stackend service from `d3f54d3` to `f4c8aa0`
 
 This line
+
 ```yaml
   stackend:
     image: stackai.azurecr.io/stackai/stackend-backend:d3f54d3
