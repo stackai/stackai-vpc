@@ -265,6 +265,16 @@ The stackweb docker container requires some of the environment variables here de
     docker compose build stackrepl
     ```
 
+# Launch all services
+
+1. Open a terminal **in the root of folder of the project, the same as where this README file is located** and launch all services.
+
+    ```bash
+    docker compose up
+    ```
+
+2. Wait for about 2 minutes for everything to start. Then navigate to the url configured in the file `stackweb/.env` named as `NEXT_PUBLIC_URL` variable. You should see the StackAI landing page.
+
 # SSL Setup
 
 1. If you need to use SSL, configure the [Caddyfile](./caddy/Caddyfile) to use your certificates and keys.
