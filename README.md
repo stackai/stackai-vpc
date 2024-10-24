@@ -283,7 +283,7 @@ The stackweb docker container requires some of the environment variables here de
 
 In order to update the services, you will need to follow the instructions below:
 
-1) Stop all the services with `docker compose down`
+1) Stop all the services with `docker compose stop`
 2) Update the `image` field of the docker-compose.yml file of the service you want to update.
 
 Example, to update the stackend service from `d3f54d3` to `f4c8aa0`
