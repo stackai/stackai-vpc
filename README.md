@@ -237,7 +237,7 @@ The stackweb docker container requires some of the environment variables here de
 
 2. Configure the embedding models you want to use in the `stackend/embeddings_config.toml` file.
 
-3. Configure the local LLM models you want to use in the `stackend/llm_config.toml` file.
+3. Configure the local LLM models you want to use in the `stackend/llm_local_config.toml` file and the `stackend/llm_config.toml` files.
 
 4. Open a terminal **in the root of folder of the project, the same as where this README file is located** and pull the backend containers.
 
@@ -246,6 +246,14 @@ The stackweb docker container requires some of the environment variables here de
     ```
 
 5. Start the stackend service and run migrations:
+
+    The database services need to be started first se we can run the migrations against them
+
+    ```bash
+    docker compose up studio kong auth rest realtime storage imgproxy meta functions analytics db vector supavisor 
+    ```
+
+    Then, start the stackend service:
 
     ```bash
     docker compose up stackend
@@ -283,7 +291,7 @@ The stackweb docker container requires some of the environment variables here de
 
 In order to update the services, you will need to follow the instructions below:
 
-1) Stop all the services with `docker compose down`
+1) Stop all the services with `docker compose stop`
 2) Update the `image` field of the docker-compose.yml file of the service you want to update.
 
 Example, to update the stackend service from `d3f54d3` to `f4c8aa0`

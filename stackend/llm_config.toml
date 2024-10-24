@@ -1,41 +1,25 @@
-#
 # LLM PROVIDER CONFIGURATION
 #
 # This document contains the configuration of the LLM providers that will be available when using StackAI
 # 
 # How to use this file:
-# You may add as many local LLM models as you need, the only requirement for the models to work is that they must
-# be compatible with the OpenAI API.
 #
-# To add a new local LLM model:
-# 1. Uncomment the [llms.providers.local] section
-# 2. Copy one of the sample local model configurations and paste it. Uncomment it after that.
-# 3. Set the api_url to the base URL of the OpenAI compatible API.
-# 4. Set the api_key
-# 5. Set the model_name to the name of the LLM model. IMPORTANT: The model names must be unique.
-# 6. Read the instructions below if you are not using external LLM providers.
-# 
-# How to adjust the llms that are used by default:
-# 1. Locate the [default_llm] section
-# 2. Change the provider to the provider you want to use by default, if you want to use a local model, change it to `provider = "Local"` (yes, uppercase)
-# 3. Change the model_name to the name of the model you want to use by default
+# 1. If you want to use local LLM models, set up the `stackend/llm_local_config.toml` file first.
 #
-# How to adjust the llms that are used for each use case:
+# 2. Adjust the llms that are used for each use case:
 # For each of the use cases, you may change the llm provider and model as you need.
-# If you only have local llms available, change the provider to `provider = "local"` and adjust
-# the model_name to the name of the model you want to use.
-
-
-#[llms.providers.Local]
-#[llms.providers.Local.llama_3_1_70b]
-#api_url = "https://api.together.xyz/v1"
-#api_key = "example_api_key"
-#model_name = "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo"
+# If you only have local llms available, change the provider to `provider = "Local"` (yes, capital L) and adjust
+# the model_name to one you have set up in the `stackend/llm_local_config.toml` file.
+# 
+# 3. Set the default llm in the [default_llm] section.
+# This llm will be used by some nodes when the user does not specify which llm to use.
+# If you are using external llm providers, change the provider to the name of the provider.
+# If you are using local llms, change the provider to `provider = "Local"` (yes, capital L) and adjust
+# the model_name to one you have set up in the `stackend/llm_local_config.toml` file.
 
 [default_llm]
 provider = "OpenAI"
 model_name = "gpt-4o-mini"
-
 
 [use_cases.routing_node]
 provider = "TogetherAI"

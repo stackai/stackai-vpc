@@ -100,18 +100,22 @@ def get_stackend_template_variables(
     postgres_password: str,
     unstructured_api_key: str,
     weaviate_api_key: str,
+    virtual_machine_ip_or_url: str,
+    stackai_licence: str,
 ) -> dict[str, str]:
     """Get the template variables for the stackend template."""
     connection_encryption_key = base64.b64encode(os.urandom(32)).decode()
 
     return {
         "ANON_KEY": supabase_anon_key,
+        "STACKAI_LICENCE": stackai_licence,
         "SERVICE_ROLE_KEY": supabase_service_role_key,
         "ENCRYPTION_KEY": connection_encryption_key,
         "MONGODB_URI": mongodb_uri,
         "POSTGRES_PASSWORD": postgres_password,
         "UNSTRUCTURED_API_KEY": unstructured_api_key,
         "WEAVIATE_API_KEY": weaviate_api_key,
+        "VIRTUAL_MACHINE_IP_OR_URL": virtual_machine_ip_or_url,
     }
 
 
@@ -164,6 +168,16 @@ Example values: 43.168.4.99 or stackai.your-domain.com
             print("Invalid input. Please, try again.")
 
 
+def get_licence_key() -> str:
+    """Get the licence key from the user."""
+    while True:
+        licence_key = input("Please, input your Stack AI licence key: ")
+        if licence_key:
+            return licence_key
+        else:
+            print("Invalid input. Please, try again.")
+
+
 def main() -> None:
     initial_message = """
 
@@ -199,12 +213,12 @@ FIRST STEP: PLEASE INPUT THE FOLLOWING VALUES MANUALLY
 """)
 
     virtual_machine_ip_or_domain = get_virtual_machine_ip_or_domain()
-
+    licence_key = get_licence_key()
     print(f"""
 The following variables will be used to fill in the templates:
 
 - VIRTUAL_MACHINE_IP_OR_URL: {virtual_machine_ip_or_domain}
-
+- STACKAI_LICENCE: {licence_key}
 """)
 
     input("Press enter to confirm, use Control+C to abort :")
@@ -269,7 +283,7 @@ The following variables will be used to fill in the templates:
 
     # Fill in supabase template and save it.
     supabase_template_variables = get_supabase_template_variables(
-        virtual_machine_ip_or_url=virtual_machine_ip_or_domain
+        virtual_machine_ip_or_url=virtual_machine_ip_or_domain,
     )
     supabase_folder = root_project_path / "supabase"
     print(f"\n~> Filling in supabase template and saving it to {supabase_folder}")
@@ -293,6 +307,8 @@ The following variables will be used to fill in the templates:
         postgres_password=supabase_template_variables["POSTGRES_PASSWORD"],
         unstructured_api_key=unstructured_template_variables["UNSTRUCTURED_API_KEY"],
         weaviate_api_key=weaviate_template_variables["WEAVIATE_API_KEY"],
+        virtual_machine_ip_or_url=virtual_machine_ip_or_domain,
+        stackai_licence=licence_key,
     )
     stackend_folder = root_project_path / "stackend"
     print(f"\n~> Filling in stackend template and saving it to {stackend_folder}")

@@ -16,6 +16,7 @@ services:
       - "host.docker.internal:host-gateway"
     volumes:
       - ./llm_config.toml:/app/src/apps/config/llm_config.toml:ro
+      - ./llm_local_config.toml:/app/src/apps/config/llm_models_by_providers/llm_local_config.toml
       - ./embeddings_config.toml:/app/src/apps/config/embeddings_config.toml:ro
 
   stackend:
@@ -34,6 +35,7 @@ services:
       - "host.docker.internal:host-gateway"
     volumes:
       - ./llm_config.toml:/app/src/apps/config/llm_config.toml:ro
+      - ./llm_local_config.toml:/app/src/apps/config/llm_models_by_providers/llm_local_config.toml
       - ./embeddings_config.toml:/app/src/apps/config/embeddings_config.toml:ro
 
   restarter:
