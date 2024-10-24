@@ -101,6 +101,7 @@ def get_stackend_template_variables(
     unstructured_api_key: str,
     weaviate_api_key: str,
     virtual_machine_ip_or_url: str,
+    stackai_licence: str,
 ) -> dict[str, str]:
     """Get the template variables for the stackend template."""
     connection_encryption_key = base64.b64encode(os.urandom(32)).decode()
@@ -306,6 +307,8 @@ The following variables will be used to fill in the templates:
         postgres_password=supabase_template_variables["POSTGRES_PASSWORD"],
         unstructured_api_key=unstructured_template_variables["UNSTRUCTURED_API_KEY"],
         weaviate_api_key=weaviate_template_variables["WEAVIATE_API_KEY"],
+        virtual_machine_ip_or_url=virtual_machine_ip_or_domain,
+        stackai_licence=licence_key,
     )
     stackend_folder = root_project_path / "stackend"
     print(f"\n~> Filling in stackend template and saving it to {stackend_folder}")
