@@ -16,6 +16,7 @@
 
 [llms.providers.Local]
 plan_required = "enterprise"
+hosted_by = "Stack AI"
 
 
 # REFERENCE LOCAL MODEL CONFIGURATION:
@@ -35,9 +36,9 @@ plan_required = "enterprise"
 # name = "Meta Llama 3.1 Turbo"
 # description = "This is a dummy configuration model that you can use as reference to create your own configuration."
 # context_window = 1024
-# reasoning = 1
-# speed = 1
-# context = 1
+# rating_reasoning = 1
+# rating_speed = 1
+# rating_context = 1
 # date = ""
 # has_json_format = false
 # has_json_schema = false
@@ -50,9 +51,9 @@ plan_required = "enterprise"
 name = "OpenAI API Compatible Model"
 description = "A local model for testing and development. Go into the node settings and set up the endpoint base url and api key of the node for it to work."
 context_window = 128000
-reasoning = 1
-speed = 1
-context = 1
+rating_reasoning = 1
+rating_speed = 1
+rating_context = 1
 date = ""
 has_json_format = false
 has_json_schema = false
@@ -62,5 +63,4 @@ supported_media_types = []
 
 # Remember to adjust this as well!
 [llms.providers.Local.default]
-provider = "Local"
-model_name = "generic_local"
+model_id = "local"
