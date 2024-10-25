@@ -17,6 +17,7 @@
 [llms.providers.Local]
 plan_required = "enterprise"
 hosted_by = "Stack AI"
+display_order = 13
 
 
 # REFERENCE LOCAL MODEL CONFIGURATION:
