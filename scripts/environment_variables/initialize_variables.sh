@@ -1,15 +1,13 @@
 #! /bin/bash
 
-# Create virtual environment
+# 0. Try to remove existing .venv (if it exists)
+rm -rf .venv
+
+# 1. Create virtual environment
 python3 -m venv .venv
 source .venv/bin/activate
 
-# Install dependencies and create credentials
-pip install -r requirements.txt
-python create_env_variables.py
-
-# Deactivate virtual environment
-deactivate
-
-# Remove virtual environment
-rm -rf .venv
+# 2. Install dependencies and create credentials
+python3 -m pip install --upgrade pip
+python3 -m pip install -r requirements.txt
+python3 create_env_variables.py

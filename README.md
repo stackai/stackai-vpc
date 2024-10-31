@@ -5,9 +5,16 @@ This repository contains the configuration needed to run StackAI locally using d
 
 # Requirements
 
-- The script assume that you are running them on an Ubuntu machine.
+## Hardware
+
+A system with at least 64GB of RAM and at least 16 CPU cores is recommended. In terms of storage, it is recommended that you have 1TB of available disk space.
+
+## Software
+
+- The scripts assume that you are running them on an Ubuntu machine.
 - You will need internet access during the setup process.
-- You need python 3.10 with pip and virtualenv installed.
+- You will need `make` installed in your machine.
+- You need python 3.8 or higher with pip and virtualenv installed. Check the steps below for instructions on how to check if you meet this requirement.
 - You will need docker and docker compose (compose version v2.26 or higher) installed in your machine. There is a script (see instructions below) that will install them for you if needed.
 - You will need access to stackai's container image registry on Azure.
 - Depending on how you configure the containers, different ports should be exposed, if you follow the default settings, the following ports need to be exposed:
@@ -40,30 +47,35 @@ After running the environment variables initialization script (see below), each 
 
 Follow the instructions in the order they are presented.
 
+## Install make
+
+```bash
+sudo apt install make
+```
+
+Make sure that make is installed correctly by running:
+
+```bash
+make --version
+```
+
 ## Set up the machine where you will run the deployment
 
 You will need docker and docker compose installed in your machine. If you do not have them yet, there is a script in the `scripts` folder named `ubuntu_server_pre_setup.sh` that will install them for you.
 
-To run them, open a terminal and navigate to the `scripts` folder:
+To run them, open a terminal in **the root folder of the project, the same as where this README file is located** and execute the following command, log in again after it finishes:
 
-```bash
-cd scripts/docker
-```
 >
 > :WARNING: As part of the setup process, your user will be added to the docker group, allowing you to run docker
 > commands without using sudo. To make that change effective, the script will log you out from your current session.
 > Log in right after and verify that you can run docker commands without using sudo.
 >
 
-Execute the script and log in again after it finishes:
-
 ```bash
-./ubuntu_server_pre_setup.sh
+make setup-docker-in-ubuntu
 ```
 
 ## Install python, pip and virtualenv
-
-Skip this section if you already have python, pip and virtualenv installed.
 
 The commands needed to install python, pip and virtualenv may change depending on your specific distribution.
 
@@ -79,6 +91,47 @@ Install python3, pip and virtualenv:
 
 ```bash
 sudo apt install python3-pip python3-venv
+```
+
+Ensure that python is installed and working correctly by opening a terminal **in the root folder of the project, the same as where this README file is located** and running the following commands on it:
+
+Start by making sure that the python version is >= 3.8:
+
+```bash
+python3 --version
+```
+
+Then, make sure that virtualenv is installed and working by running:
+
+```bash
+python3 -m venv .venv
+```
+
+As a result, you should see a new folder named `.venv` in your current directory.
+
+Then, make sure that you can source the virtual environment by running:
+
+```bash
+source .venv/bin/activate
+```
+
+Last, make sure that pip is working correctly in the virtual environment by running:
+
+```bash
+python3 -m pip install pymongo
+```
+
+And then:
+
+```bash
+python3 -c "import pymongo; print('pymongo imported successfully')"
+```
+
+You can remove the virtual environment by running:
+
+```bash
+deactivate
+rm -rf .venv
 ```
 
 ## Log in to StackAI's Container Registry
@@ -110,29 +163,25 @@ It is encouraged that you manually review the generated values after the script 
 
 a) Read the section above.
 
-b) Open a new terminal and navigate to the `scripts/environment_variables` folder.
-
-```bash
-cd scripts/environment_variables
-```
+b) Open a new terminal **in the root folder of the project, the same as where this README file is located**.
 
 c) Run the script that will initialize the environment variables:
 
 The script will prompt you to input the public ip/ url where the services will be exposed.
 
 ```bash
-./initialize_variables.sh
+make install-environment-variables
 ```
 
 ## Supabase
 
-1. Open a terminal **in the root of folder of the project, the same as where this README file is located** and run:
+1. Open a terminal **in the root folder of the project, the same as where this README file is located** and run:
 
     ```bash
-    docker compose up studio kong auth rest realtime storage imgproxy meta functions analytics db vector supavisor 
+    make start-supabase
     ```
 
-    Once the supabase containers start running, they will start the internal process of setting up the database. This will take about 2-3 minutes.
+    This will start the supabase containers and show you the running logs. Once the supabase containers start running, they will start the internal process of setting up the database. This will take about 2-3 minutes.
 
 2. Verify the installation by navigating to the url configured in the file `supabase/.env` named as `SUPABASE_PUBLIC_URL` variable. This will
 take you to the supabase dashboard, which is enabled by default (you may disable it manually in the `supabase/docker-compose.yml` file if you want). To log in, you will need to use the `DASHBOARD_USERNAME` and `DASHBOARD_PASSWORD` variables values that can be found in the `supabase/.env` file.
@@ -141,7 +190,7 @@ take you to the supabase dashboard, which is enabled by default (you may disable
 
 ## MongoDB
 
-1. Open a terminal **in the root of folder of the project, the same as where this README file is located** and initialize the mongodb container:
+1. Open a terminal **in the root folder of the project, the same as where this README file is located** and initialize the mongodb container:
 
     ```bash
     docker compose up mongodb
@@ -165,31 +214,17 @@ take you to the supabase dashboard, which is enabled by default (you may disable
 
 3. Initialize the database
 
-    Open a new terminal and navigate to the `scripts/mongodb` folder:
+    Open a terminal **in the root folder of the project, the same as where this README file is located** and run:
 
     ```bash
-        cd scripts/mongodb
+        make initialize_mongodb
     ```
-
-    Run the initialization script:
-
-    ```bash
-    ./initialize_mongodb.sh
-    ```
-
-    In case the script errors with `permission denied`, run the following command:
-
-    ```bash
-    chmod +x initialize_mongodb.sh
-    ```
-
-    Then, run the script again.
 
 4. After the initialization, you can run `docker compose down` to stop mongodb.
 
 ## Unstructured
 
-1. Open a terminal **in the root of folder of the project, the same as where this README file is located** and initialize the unstructured container:
+1. Open a terminal **in the root folder of the project, the same as where this README file is located** and initialize the unstructured container:
 
     ```bash
     docker compose up unstructured
@@ -201,7 +236,7 @@ take you to the supabase dashboard, which is enabled by default (you may disable
 
 ## Weaviate
 
-1. Open a terminal **in the root of folder of the project, the same as where this README file is located** and initialize the weaviate container:
+1. Open a terminal **in the root folder of the project, the same as where this README file is located** and initialize the weaviate container:
 
     ```bash
     docker compose up weaviate
@@ -215,7 +250,7 @@ take you to the supabase dashboard, which is enabled by default (you may disable
 
 The stackweb docker container requires some of the environment variables here defined to be built. This is why we need to source the .env file before building the image.
 
-1. Open a terminal **in the root of folder of the project, the same as where this README file is located** and initialize the weaviate container:
+1. Open a terminal **in the root folder of the project, the same as where this README file is located** and initialize the stackweb container:
 
     a) Source the stackweb environment variables:
 
@@ -239,7 +274,7 @@ The stackweb docker container requires some of the environment variables here de
 
 3. Configure the local LLM models you want to use in the `stackend/llm_local_config.toml` file and the `stackend/llm_config.toml` files.
 
-4. Open a terminal **in the root of folder of the project, the same as where this README file is located** and pull the backend containers.
+4. Open a terminal **in the root folder of the project, the same as where this README file is located** and pull the backend containers.
 
     ```bash
     docker compose pull stackend celery_worker redis
@@ -250,16 +285,16 @@ The stackweb docker container requires some of the environment variables here de
     The database services need to be started first se we can run the migrations against them
 
     ```bash
-    docker compose up studio kong auth rest realtime storage imgproxy meta functions analytics db vector supavisor 
+    make start-supabase
     ```
 
-    Then, start the stackend service:
+    Then, open another terminal and start the stackend service:
 
     ```bash
     docker compose up stackend
     ```
 
-    Wait for the stackend container to start. Then execute the following command to run the migrations:
+    Wait for the stackend container to start. Then, on a new terminal, execute the following command to run the migrations:
 
     ```bash
     docker compose exec stackend bash -c "cd migrations/postgres && alembic upgrade head"
@@ -267,7 +302,7 @@ The stackweb docker container requires some of the environment variables here de
 
 ## Stackrepl
 
-1. Open a terminal **in the root of folder of the project, the same as where this README file is located** and pull the backend containers.
+1. Open a terminal **in the root folder of the project, the same as where this README file is located** and pull the backend containers.
 
     ```bash
     docker compose build stackrepl
@@ -275,7 +310,7 @@ The stackweb docker container requires some of the environment variables here de
 
 # Launch all services
 
-1. Open a terminal **in the root of folder of the project, the same as where this README file is located** and launch all services.
+1. Open a terminal **in the root folder of the project, the same as where this README file is located** and launch all services.
 
     ```bash
     docker compose up
