@@ -14,7 +14,11 @@ A system with at least 64GB of RAM and at least 16 CPU cores is recommended. In 
 - The scripts assume that you are running them on an Ubuntu machine.
 - You will need internet access during the setup process.
 - You will need `make` installed in your machine.
-- You need python 3.8 or higher with pip and virtualenv installed. Check the steps below for instructions on how to check if you meet this requirement.
+- Python 3.8 or higher.
+- `pip` installed.
+-  `virtualenv` installed. 
+
+Check the steps below for instructions on how to check if you meet this requirement.
 - You will need docker and docker compose (compose version v2.26 or higher) installed in your machine. There is a script (see instructions below) that will install them for you if needed.
 - You will need access to stackai's container image registry on Azure.
 - Depending on how you configure the containers, different ports should be exposed, if you follow the default settings, the following ports need to be exposed:
