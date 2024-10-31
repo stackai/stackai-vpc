@@ -15,7 +15,7 @@ This repository contains the configuration needed to run StackAI locally using d
 
 - Ubuntu 24.04 LTS
 - You will need internet access during the setup process.
-- You will need `make` installed in your machine.
+- Make` installed.
 - Python 3.8 or higher.
 - `pip` installed.
 - `virtualenv` installed.
