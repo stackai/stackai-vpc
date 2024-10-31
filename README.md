@@ -7,7 +7,9 @@ This repository contains the configuration needed to run StackAI locally using d
 
 ## Hardware
 
-A system with at least 64GB of RAM and at least 16 CPU cores is recommended. In terms of storage, it is recommended that you have 1TB of available disk space.
+1. At least 64GB of RAM
+2. At least 16 CPU cores
+3. 1TB of disk space
 
 ## Software
 
