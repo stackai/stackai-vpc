@@ -18,9 +18,10 @@ This repository contains the configuration needed to run StackAI locally using d
 - You will need `make` installed in your machine.
 - Python 3.8 or higher.
 - `pip` installed.
--  `virtualenv` installed. 
+- `virtualenv` installed.
 
 Check the steps below for instructions on how to check if you meet this requirement.
+
 - You will need docker and docker compose (compose version v2.26 or higher) installed in your machine. There is a script (see instructions below) that will install them for you if needed.
 - You will need access to stackai's container image registry on Azure.
 - Depending on how you configure the containers, different ports should be exposed, if you follow the default settings, the following ports need to be exposed:
@@ -67,9 +68,9 @@ make --version
 
 ## Set up the machine where you will run the deployment
 
-You will need docker and docker compose installed in your machine. If you do not have them yet, there is a script in the `scripts` folder named `ubuntu_server_pre_setup.sh` that will install them for you.
+You will need docker and docker compose installed in your machine.
 
-To run them, open a terminal in **the root folder of the project, the same as where this README file is located** and execute the following command, log in again after it finishes:
+To install them, open a terminal in **the root folder of the project, the same as where this README file is located** and execute the following command, log in again after it finishes:
 
 >
 > :WARNING: The script will log you out from your current session.
