@@ -66,9 +66,9 @@ You will need docker and docker compose installed in your machine. If you do not
 To run them, open a terminal in **the root folder of the project, the same as where this README file is located** and execute the following command, log in again after it finishes:
 
 >
-> :WARNING: As part of the setup process, your user will be added to the docker group, allowing you to run docker
-> commands without using sudo. To make that change effective, the script will log you out from your current session.
-> Log in right after and verify that you can run docker commands without using sudo.
+> :WARNING: The script will log you out from your current session.
+> Log in again and verify successful setup running the following command:
+<YOU PROVIDE A COMMAND HERE WITH THE EXPECTED RESULT IF SUCCESSFUL>
 >
 
 ```bash
