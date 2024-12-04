@@ -1,0 +1,50 @@
+[embeddings.providers.openai]
+[embeddings.providers.openai.text-embedding-3-large]
+model_name="text-embedding-3-large"
+context_window=8192
+plan = 'free'
+
+[embeddings.providers.openai.text-embedding-3-small]
+model_name="text-embedding-3-small"
+context_window=8192
+plan = 'free'
+
+[embeddings.providers.openai.text-embedding-ada-002]
+model_name="text-embedding-ada-002"
+context_window=8192
+plan = 'free'
+
+
+[embeddings.providers.azure]
+[embeddings.providers.azure.azure-text-embedding-ada-002]
+model_name="azure-text-embedding-ada-002"
+context_window=8192
+plan = 'enterprise'
+
+
+[embeddings.providers.bedrock]
+[embeddings.providers.bedrock.titan-embed-text-v1]
+model_name="amazon.titan-embed-text-v1"
+context_window=8000
+plan = 'enterprise'
+
+[embeddings.providers.bedrock.embed-english-v3]
+model_name="cohere.embed-english-v3"
+context_window=512
+plan = 'enterprise'
+
+[embeddings.providers.bedrock.embed-multilingual-v3]
+model_name="cohere.embed-multilingual-v3"
+context_window=512
+plan = 'enterprise'
+
+[embeddings.default_model]
+model_name = "text-embedding-3-large"
+provider = "openai"
+
+#[embeddings.providers.local]
+#[embeddings.providers.local.m2_bert_80m]
+#api_url = "https://api.together.xyz/v1"
+#api_key = "example_api_key"
+#model_name = "togethercomputer/m2-bert-80M-8k-retrieval"
+#context_window = 8192
