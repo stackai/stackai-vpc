@@ -63,4 +63,4 @@ has_function_calling = false
 # Remember to adjust this as well!
 [llms.providers.Local.default]
 provider = "Local"
-model_name = "generic_local"
+model_id = "generic_local"

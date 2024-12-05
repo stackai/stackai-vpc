@@ -5,6 +5,7 @@ import pathlib
 import os
 import tempfile
 import pickle
+import toml
 
 ########################################################
 # MONGODB TEMPLATES
@@ -73,6 +74,37 @@ def update_templates(project_root_path: pathlib.Path, templates_zip_path: pathli
     # upload templates
     upload_templates_from_list(mongodb_client, templates)
 
+
+########################################################
+# UPDATE LLM CONFIG
+########################################################
+
+def load_llm_local_config(root_path: pathlib.Path):
+    llm_local_config_path = root_path / "stackend" / "llm_local_config.toml"
+    with open(llm_local_config_path, "r") as f:
+        return toml.load(f)
+
+def update_llm_local_config(root_path: pathlib.Path):
+    llm_local_config_path = root_path / "stackend" / "llm_local_config.toml"
+
+    toml_file = toml.load(llm_local_config_path)
+
+    # rename the model_name to name and add has_function_calling if not present
+    for x, v in toml_file["llms"]["providers"]["Local"].items():
+        if "name" in v:
+            v["model_name"] = v["name"]
+            del v["name"]
+            if "has_function_calling" not in v:
+                v["has_function_calling"] = False
+
+    # in [llms.providers.Local.default] change model_name to model_id
+    toml_file["llms"]["providers"]["Local"]["default"]["model_id"] = toml_file["llms"]["providers"]["Local"]["default"]["model_name"]
+    del toml_file["llms"]["providers"]["Local"]["default"]["model_name"]
+
+    with open(llm_local_config_path, "w") as f:
+        toml.dump(toml_file, f)
+
+
 ########################################################
 # MISC.
 ########################################################
@@ -109,7 +141,8 @@ if __name__ == "__main__":
 
     print(f"The update script will be executed against: {stackai_root_path}\n")
 
-    print()
+    print("STEP 1: Updating llm_local_config.toml...")
+    update_llm_local_config(stackai_root_path)
 
     print("FINAL STEP: Updating mongodb templates...")
     templates_zip_path = pathlib.Path(__file__).parent / 'scripts' / 'mongodb' / 'templates.zip'
