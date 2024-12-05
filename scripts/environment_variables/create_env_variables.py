@@ -4,6 +4,7 @@ import secrets
 import string
 import time
 from pathlib import Path
+from typing import Dict
 
 import jwt
 from jinja2 import Environment, FileSystemLoader, Template
@@ -25,7 +26,7 @@ def generate_jwt(role: str, secret: str) -> str:
     return jwt.encode(payload, secret, algorithm="HS256")
 
 
-def get_supabase_template_variables(virtual_machine_ip_or_url: str) -> dict[str, str]:
+def get_supabase_template_variables(virtual_machine_ip_or_url: str) -> Dict[str, str]:
     """Get the template variables for the supabase template.
 
     Args:
@@ -62,7 +63,7 @@ def get_supabase_template_variables(virtual_machine_ip_or_url: str) -> dict[str,
     }
 
 
-def get_weaviate_template_variables() -> dict[str, str]:
+def get_weaviate_template_variables() -> Dict[str, str]:
     """Get the template variables for the weaviate template."""
     api_key = generate_password(length=12)
     return {
@@ -71,7 +72,7 @@ def get_weaviate_template_variables() -> dict[str, str]:
     }
 
 
-def get_mongodb_template_variables() -> dict[str, str]:
+def get_mongodb_template_variables() -> Dict[str, str]:
     """Get the template variables for the mongodb template."""
     root_password = generate_password(length=12)
     return {
@@ -80,7 +81,7 @@ def get_mongodb_template_variables() -> dict[str, str]:
     }
 
 
-def get_unstructured_template_variables() -> dict[str, str]:
+def get_unstructured_template_variables() -> Dict[str, str]:
     """Get the template variables for the unstructured template."""
     api_key = generate_password(length=12)
     return {
@@ -88,7 +89,7 @@ def get_unstructured_template_variables() -> dict[str, str]:
     }
 
 
-def get_stackrepl_template_variables() -> dict[str, str]:
+def get_stackrepl_template_variables() -> Dict[str, str]:
     """Get the template variables for the stackrepl template."""
     return {}
 
@@ -102,7 +103,7 @@ def get_stackend_template_variables(
     weaviate_api_key: str,
     virtual_machine_ip_or_url: str,
     stackai_licence: str,
-) -> dict[str, str]:
+) -> Dict[str, str]:
     """Get the template variables for the stackend template."""
     connection_encryption_key = base64.b64encode(os.urandom(32)).decode()
 
@@ -123,7 +124,7 @@ def get_stackweb_template_variables(
     virtual_machine_ip_or_url: str,
     supabase_anon_key: str,
     supabase_service_role_key: str,
-) -> dict[str, str]:
+) -> Dict[str, str]:
     """Get the template variables for the stackweb template."""
     return {
         "VIRTUAL_MACHINE_IP_OR_URL": virtual_machine_ip_or_url,
@@ -134,7 +135,7 @@ def get_stackweb_template_variables(
 
 def render_and_save_template(
     template: Template,
-    variables: dict[str, str],
+    variables: Dict[str, str],
     template_folder_path: Path,
     template_file_name: str,
 ) -> None:
@@ -194,7 +195,7 @@ to run the StackAI stackend service.
 Please, feel free to edit the generated files to better suit your needs.
     """
 
-    root_project_path = Path(__file__).parent.parent.parent
+    root_project_path = Path(__file__).absolute().parent.parent.parent
 
     weaviate_template = environment.get_template("weaviate.env.template")
     mongodb_template = environment.get_template("mongodb.env.template")

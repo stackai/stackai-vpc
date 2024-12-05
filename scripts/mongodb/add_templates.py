@@ -2,18 +2,19 @@ import os
 import pickle
 import tempfile
 import zipfile
+from typing import List
 
 from pymongo import MongoClient
 
 
-def download_templates(mongo_production_client: MongoClient) -> list:
+def download_templates(mongo_production_client: MongoClient) -> List:
     """Download all templates from the production database
 
     Args:
         mongo_production_client (MongoClient): A MongoClient object connected to the production database.
 
     Returns:
-        list: A list of all templates in the production database.
+        List: A list of all templates in the production database.
     """
 
     # Get all templates from the database and store them in a variable
@@ -47,7 +48,7 @@ def generate_templates_zip_from_template_list(
                     zip_ref.write(os.path.join(root, file), file)
 
 
-def load_templates_from_zip_file(file_path: str) -> list:
+def load_templates_from_zip_file(file_path: str) -> List:
     """Load templates from a zip file
 
     Args:
@@ -72,12 +73,12 @@ def load_templates_from_zip_file(file_path: str) -> list:
     return templates
 
 
-def upload_templates_from_list(mongo_local_client: MongoClient, templates: list):
+def upload_templates_from_list(mongo_local_client: MongoClient, templates: List):
     """Upload all templates to the new database
 
     Args:
         mongo_local_client (MongoClient): A MongoClient object connected to the new database.
-        templates (list): A list of all templates to upload to the new database.
+        templates (List): A list of all templates to upload to the new database.
     """
     print("Uploading templates...")
     mongo_local_client["__models__"]["__templates__"].insert_many(templates)
