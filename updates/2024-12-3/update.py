@@ -89,17 +89,21 @@ def update_llm_local_config(root_path: pathlib.Path):
 
     toml_file = toml.load(llm_local_config_path)
 
-    # rename the model_name to name and add has_function_calling if not present
+    
     for x, v in toml_file["llms"]["providers"]["Local"].items():
-        if "name" in v:
+        # rename the model_name to name and add has_function_calling if not present
+        if "name" in v and x != "default":
             v["model_name"] = v["name"]
             del v["name"]
             if "has_function_calling" not in v:
                 v["has_function_calling"] = False
+        
+        # in [llms.providers.Local.default] change model_name to model_id
+        if x == "default" and "model_name" in v:        
+            v["model_id"] = v["model_name"]
+            del v["model_name"]
 
-    # in [llms.providers.Local.default] change model_name to model_id
-    toml_file["llms"]["providers"]["Local"]["default"]["model_id"] = toml_file["llms"]["providers"]["Local"]["default"]["model_name"]
-    del toml_file["llms"]["providers"]["Local"]["default"]["model_name"]
+
 
     with open(llm_local_config_path, "w") as f:
         toml.dump(toml_file, f)
