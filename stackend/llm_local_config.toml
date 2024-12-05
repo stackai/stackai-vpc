@@ -6,8 +6,8 @@
 # The set up process has two steps:
 # 1. Add as many local LLM models as you intend to use (see commented example below)
 # 2. Set up the default model in the [llms.providers.Local.default] section.
-#    IMPORTANT: The model_name variable should be the name of the model in the api. For instance, if you were
-#    to set up the sample llm below as your default, you should set `model_name` to "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo"
+#    IMPORTANT: The model_id variable should be the name of the model in the api. For instance, if you were
+#    to set up the sample llm below as your default, you should set `model_id` to "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo"
 #    rather than "Meta Llama 3.1 Turbo"
 #
 # Common issues solved:
