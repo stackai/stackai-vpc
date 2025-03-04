@@ -112,6 +112,24 @@ def update_llm_local_config(root_path: pathlib.Path):
         toml.dump(toml_file, f)
 
 
+def update_llm_config(root_path: pathlib.Path):
+    llm_config_path = root_path / "stackend" / "llm_config.toml"
+
+    toml_file = toml.load(llm_config_path)
+
+    default_llm = toml_file["default_llm"]
+    if "model_name" in default_llm:
+        default_llm["model_id"] = default_llm.pop("model_name")
+
+    # iterate over the use_cases
+    for use_case in toml_file["use_cases"].values():
+        if "model_name" in use_case:
+            use_case["model_id"] = use_case.pop("model_name")
+
+    with open(llm_config_path, "w") as f:
+        toml.dump(toml_file, f)
+
+
 def copy_new_stackweb_files(stackai_root_path: pathlib.Path):
     new_files_path = pathlib.Path(__file__).parent / "stackweb"
     os.chdir(stackai_root_path)
@@ -121,11 +139,58 @@ def copy_new_stackweb_files(stackai_root_path: pathlib.Path):
 def add_new_env_vars(stackai_root_path: pathlib.Path):
     env_file_path = stackai_root_path / "stackweb" / ".env"
 
-    env_var = '\nNEXT_PUBLIC_SHAREPOINT_CLIENT_ID="<your-sharepoint-client-id>"\n'
+    # Define the new env vars to add if missing
+    new_env_vars = {
+        "NEXT_PUBLIC_STACKEND_INFERENCE_URL": None,  # Will be set dynamically
+        "NEXT_PUBLIC_SHAREPOINT_CLIENT_ID": "<your-sharepoint-client-id>",
+        "NEXT_PUBLIC_CONFLUENCE_CLIENT_ID": "<your-confluence-client-id>",
+        "NEXT_PUBLIC_GOOGLE_WORKSPACE_CLIENT_ID": "<your-google-workspace-client-id>",
+        "NEXT_PUBLIC_STRIPE_CLIENT_ID": "<your-stripe-client-id>",
+        "NEXT_PUBLIC_ZENDESK_CLIENT_ID": "<your-zendesk-client-id>",
+        "REACT_APP_ENV": "production",
+    }
 
-    # Append to file using with statement (safer file handling)
-    with open(env_file_path, "a") as f:
-        f.write(env_var)
+    # Read existing env vars
+    existing_env_vars = {}
+    inference_url = None
+
+    with open(env_file_path, "r") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+
+            if "=" in line:
+                key, value = line.split("=", 1)
+                existing_env_vars[key] = value
+
+                if key == "NEXT_PUBLIC_STACKEND_URL":
+                    inference_url = value
+
+    if inference_url is None:
+        print(
+            "The NEXT_PUBLIC_STACKEND_URL environment variable was not found in the stackweb/.env file. Please add it and try again..."
+        )
+        exit(1)
+
+    # Set the inference URL value
+    new_env_vars["NEXT_PUBLIC_STACKEND_INFERENCE_URL"] = inference_url
+
+    # Determine which env vars need to be added
+    vars_to_add = {}
+    for key, value in new_env_vars.items():
+        if key not in existing_env_vars:
+            vars_to_add[key] = value
+
+    # If we have vars to add, append them to the file
+    if vars_to_add:
+        print(f"\tAdding {len(vars_to_add)} missing environment variables...")
+        with open(env_file_path, "a") as f:
+            f.write("\n# Added by update script\n")
+            for key, value in vars_to_add.items():
+                f.write(f"{key}={value}\n")
+    else:
+        print("\tAll required environment variables already exist.")
 
 
 ############################################################
@@ -230,7 +295,10 @@ if __name__ == "__main__":
     print("STEP 3: Updating llm_local_config.toml...")
     update_llm_local_config(stackai_root_path)
 
-    print("STEP 4: Running database migrations...")
+    print("STEP 4: Updating llm_config.toml...")
+    update_llm_config(stackai_root_path)
+
+    print("STEP 5: Running database migrations...")
     run_database_migrations(stackai_root_path)
 
     print("FINAL STEP: Updating mongodb templates...")
