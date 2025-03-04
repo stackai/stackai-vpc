@@ -282,8 +282,7 @@ def get_stackai_root_path_from_user() -> pathlib.Path:
 if __name__ == "__main__":
     print("\n\n\n")
     print(" === STACK AI ON PREMISE UPDATE SCRIPT === ")
-    run_mongodb_project_migration(pathlib.Path(__file__).parent.parent)
-    raise Exception("Stop here")
+
     stackai_root_path = get_stackai_root_path_from_user()
 
     print(f"The update script will be executed against: {stackai_root_path}\n")
