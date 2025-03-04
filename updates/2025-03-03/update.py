@@ -193,6 +193,20 @@ def add_new_env_vars(stackai_root_path: pathlib.Path):
         print("\tAll required environment variables already exist.")
 
 
+def run_mongodb_folder_migration(stackai_root_path: pathlib.Path):
+    os.chdir(stackai_root_path)
+    os.system(
+        'docker compose exec stackend bash -c "python3 infra/migrations/mongodb/2024_12_17_move_folders_to_postgres.py"'
+    )
+
+
+def run_mongodb_project_migration(stackai_root_path: pathlib.Path):
+    os.chdir(stackai_root_path)
+    os.system(
+        'docker compose exec stackend bash -c "python3 infra/migrations/mongodb/2024_12_22_move_flows_to_postgres.py"'
+    )
+
+
 ############################################################
 # DOCKER
 ############################################################
@@ -268,6 +282,8 @@ def get_stackai_root_path_from_user() -> pathlib.Path:
 if __name__ == "__main__":
     print("\n\n\n")
     print(" === STACK AI ON PREMISE UPDATE SCRIPT === ")
+    run_mongodb_project_migration(pathlib.Path(__file__).parent.parent)
+    raise Exception("Stop here")
     stackai_root_path = get_stackai_root_path_from_user()
 
     print(f"The update script will be executed against: {stackai_root_path}\n")
@@ -300,6 +316,8 @@ if __name__ == "__main__":
 
     print("STEP 5: Running database migrations...")
     run_database_migrations(stackai_root_path)
+    run_mongodb_folder_migration(stackai_root_path)
+    run_mongodb_project_migration(stackai_root_path)
 
     print("FINAL STEP: Updating mongodb templates...")
     templates_zip_path = (
