@@ -47,6 +47,8 @@ plan_required = "enterprise"
 
 [llms.providers.Local.generic_local]
 model_name = "OpenAI API Compatible Model"
+endpoint_base_url = "https://api.together.xyz/v1"
+api_key = "sk-1234-5678-abcd"
 description = "A local model for testing and development. Go into the node settings and set up the endpoint base url and api key of the node for it to work."
 context_window = 128000
 reasoning = 1
