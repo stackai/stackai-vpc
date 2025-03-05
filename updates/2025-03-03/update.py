@@ -241,9 +241,9 @@ def start_all_services(stackai_root_path: pathlib.Path):
     os.system("docker compose up -d")
 
 
-def stop_stack_services(stackai_root_path: pathlib.Path):
+def stop_services(stackai_root_path: pathlib.Path):
     os.chdir(stackai_root_path)
-    os.system("docker compose down stackweb stackend celery_worker stackrepl")
+    os.system("docker compose down stackweb stackend celery_worker stackrepl storage")
 
 
 ########################################################
@@ -294,7 +294,7 @@ if __name__ == "__main__":
     print(f"The update script will be executed against: {stackai_root_path}\n")
 
     print("Stopping stack services...")
-    stop_stack_services(stackai_root_path)
+    stop_services(stackai_root_path)
 
     print(
         "STEP 1a: Copy the new dockerfile and docker-compose yml files in the frontend folder..."
