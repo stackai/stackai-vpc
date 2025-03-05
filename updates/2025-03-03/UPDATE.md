@@ -19,7 +19,7 @@ Create a random passowrd that will be used for your private MinIO (s3 compatible
 Go to the `supabase/.env` file and add the following variable:
 
 ```
-MINIO_ROOT_PASSWORD="super-secret-password"
+MINIO_PASSWORD="super-secret-password"
 ```
 
 
