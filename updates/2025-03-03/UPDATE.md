@@ -9,6 +9,7 @@
 - Personal folders for each user.
 - New chat interface.
 - New agent builder mode.
+- Output templates.
 
 # Update Procedure
 
@@ -23,10 +24,9 @@ MINIO_PASSWORD="super-secret-password"
 ```
 
 
-
 Get the public IP or the public url of the virtual machine running the stack server.
 
-Go to the `stackweb/.env` file, locate the section where the S3 variables are defined.
+Go to the `stackend/.env` file, locate the section where the S3 variables are defined.
 
 Copy the following variables, replacing the values of `{{VIRTUAL_MACHINE_IP_OR_URL}}` and `{{MINIO_PASSWORD}}` with their actual values:
 
