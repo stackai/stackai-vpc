@@ -13,6 +13,11 @@
 
 # Update Procedure
 
+## Expose the port 9000 of the virtual machine running the stack server
+
+We have added a new service to the supabase containers called `minio`. This service is used to expose the content of the `stack-ai-usercontent` bucket to the frontend so that features like Chart generation work on-premise. The service is configured to
+run on port 9000 of the virtual machine, you will need to expose this port for it to work properly.
+
 ## Create new environment variables
 
 Create a random passowrd that will be used for your private MinIO (s3 compatible object storage service) service:
