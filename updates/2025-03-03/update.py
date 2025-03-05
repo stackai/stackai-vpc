@@ -136,6 +136,12 @@ def copy_new_stackweb_files(stackai_root_path: pathlib.Path):
     os.system(f"cp -rf {new_files_path}/* stackweb/")
 
 
+def copy_new_supabase_files(stackai_root_path: pathlib.Path):
+    new_files_path = pathlib.Path(__file__).parent / "supabase"
+    os.chdir(stackai_root_path)
+    os.system(f"cp -rf {new_files_path}/* supabase/")
+
+
 def add_new_env_vars(stackai_root_path: pathlib.Path):
     env_file_path = stackai_root_path / "stackweb" / ".env"
 
@@ -291,9 +297,14 @@ if __name__ == "__main__":
     stop_stack_services(stackai_root_path)
 
     print(
-        "STEP 1: Copy the new dockerfile and docker-compose yml files in the frontend folder..."
+        "STEP 1a: Copy the new dockerfile and docker-compose yml files in the frontend folder..."
     )
     copy_new_stackweb_files(stackai_root_path)
+
+    print(
+        "STEP 1b: Copy the new dockerfile and docker-compose yml files in the supabase folder..."
+    )
+    copy_new_supabase_files(stackai_root_path)
 
     print(
         "STEP 2: Adding the NEXT_PUBLIC_SHAREPOINT_CLIENT_ID environment variable to the stackweb/.env file..."
