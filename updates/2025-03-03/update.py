@@ -237,7 +237,7 @@ def start_all_services(stackai_root_path: pathlib.Path):
 
 def stop_stack_services(stackai_root_path: pathlib.Path):
     os.chdir(stackai_root_path)
-    os.system("docker compose stop stackweb stackend celery_worker")
+    os.system("docker compose down stackweb stackend celery_worker stackrepl")
 
 
 ########################################################
@@ -305,7 +305,7 @@ if __name__ == "__main__":
 
     print("STEP 3: Pulling the latest backend docker images...")
     os.chdir(stackai_root_path)
-    os.system("docker compose pull stackend celery_worker")
+    os.system("docker compose pull stackend celery_worker stackrepl")
 
     print("STEP 3: Updating llm_local_config.toml...")
     update_llm_local_config(stackai_root_path)
