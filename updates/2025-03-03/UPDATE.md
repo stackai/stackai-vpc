@@ -28,19 +28,19 @@ Get the public IP or the public url of the virtual machine running the stack ser
 
 Go to the `stackweb/.env` file, locate the section where the S3 variables are defined.
 
-Copy the following variables, replacing the values of `{{VIRTUAL_MACHINE_IP_OR_URL}}` and `{{MINIO_ROOT_PASSWORD}}` with their actual values:
+Copy the following variables, replacing the values of `{{VIRTUAL_MACHINE_IP_OR_URL}}` and `{{MINIO_PASSWORD}}` with their actual values:
 
 ```jinja
 S3_ENDPOINT_URL="http://{{VIRTUAL_MACHINE_IP_OR_URL}}:9000"
 S3_USERCONTENT_PUBLIC_BUCKET=stack-ai-usercontent
 S3_AWS_ACCESS_KEY="supa-storage"
 S3_AWS_REGION="us-east-1"
-S3_AWS_SECRET_ACCESS_KEY="{{MINIO_ROOT_PASSWORD}}"
+S3_AWS_SECRET_ACCESS_KEY="{{MINIO_PASSWORD}}"
 ```
 
 Where:
 - `{{VIRTUAL_MACHINE_IP_OR_URL}}` is the public IP or the public url of the virtual machine running the stack server.
-- `{{MINIO_ROOT_PASSWORD}}` is the password you created in the first step for the MinIO service.
+- `{{MINIO_PASSWORD}}` is the password you created in the first step for the MinIO service.
 
 
 ## Execute the update script
