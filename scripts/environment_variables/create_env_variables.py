@@ -50,6 +50,9 @@ def get_supabase_template_variables(virtual_machine_ip_or_url: str) -> Dict[str,
     logflare_logger_backend_api_key = generate_password()
     logflare_api_key = generate_password()
 
+    # Generate a password for the minio service
+    minio_root_password = generate_password()
+
     return {
         "POSTGRES_PASSWORD": psql_password,
         "JWT_SECRET": jwt_secret,
@@ -60,6 +63,7 @@ def get_supabase_template_variables(virtual_machine_ip_or_url: str) -> Dict[str,
         "LOGFLARE_LOGGER_BACKEND_API_KEY": logflare_logger_backend_api_key,
         "LOGFLARE_API_KEY": logflare_api_key,
         "VIRTUAL_MACHINE_IP_OR_URL": virtual_machine_ip_or_url,
+        "MINIO_ROOT_PASSWORD": minio_root_password,
     }
 
 
