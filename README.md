@@ -29,6 +29,7 @@ Check the steps below for instructions on how to check if you meet this requirem
   - Port 8000: TCP port used for the StackAI backend HTTP
   - Port 8800: TCP port used for the Kong API Gateway HTTP
   - Port 8443: TCP port used for the Kong API Gateway HTTPS
+  - Port 9000: TCP port used for the MinIO service.
 
 If you set up the Caddy reverse proxy (See steps below), you may change the ports above for the ports 80 or/and 443.
 
