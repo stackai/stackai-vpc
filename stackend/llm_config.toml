@@ -18,73 +18,73 @@
 # the model_name to one you have set up in the `stackend/llm_local_config.toml` file.
 
 [default_llm]
-provider = "OpenAI"
-model_name = "gpt-4o-mini"
+provider = "Local"
+model_id = "generic_local"
 
 [use_cases.routing_node]
-provider = "TogetherAI"
-model_name="meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo"
+provider = "Local"
+model_id = "generic_local"
 
 [use_cases.rag_node]
-provider = "TogetherAI"
-model_name="meta-llama/Llama-3-8b-chat-hf"
+provider = "Local"
+model_id = "generic_local"
 
 [use_cases.csv_search]
-provider = "Azure"
-model_name = "gpt-40"
+provider = "Local"
+model_id = "generic_local"
 
 [use_cases.airtable_search]
-provider = "Azure"
-model_name = "gpt-4o-mini"
+provider = "Local"
+model_id = "generic_local"
 
 [use_cases.airtable_writer]
-provider = "Azure"
-model_name = "gpt-4o-mini"
+provider = "Local"
+model_id = "generic_local"
 
 [use_cases.guardrails]
-provider = "Azure"
-model_name = "gpt-4o-mini"
+provider = "Local"
+model_id = "generic_local"
 
 [use_cases.retrieval_util]
-provider = "Azure"
-model_name = "gpt-40"
+provider = "Local"
+model_id = "generic_local"
 
 [use_cases.break_to_subquestions]
-provider = "Azure"
-model_name = "gpt-4o-mini"
+provider = "Local"
+model_id = "generic_local"
 
 [use_cases.text_2_sql_node]
-provider = "Azure"
-model_name = "gpt-4o"
+provider = "Local"
+model_id = "generic_local"
 
 [use_cases.hyde_transformer]
-provider = "Azure"
-model_name = "gpt-4o-mini"
+provider = "Local"
+model_id = "generic_local"
 
 [use_cases.keyword_transformer]
-provider = "Azure"
-model_name = "gpt-4o-mini"
+provider = "Local"
+model_id = "generic_local"
 
 [use_cases.llm_document_processor]
-provider = "OpenAI"
-model_name = "gpt-4o-mini"
+provider = "Local"
+model_id = "generic_local"
 
 [use_cases.url_tool]
-provider = "OpenAI"
-model_name = "gpt-4o-mini"
+provider = "Local"
+model_id = "generic_local"
 
 [use_cases.beautiful_soup_tool]
-provider = "OpenAI"
-model_name = "gpt-4o-mini"
+provider = "Local"
+model_id = "generic_local"
 
 [use_cases.dataframe_tool]
-provider = "OpenAI"
-model_name = "gpt-4o"
+provider = "Local"
+model_id = "generic_local"
 
 [use_cases.llm_tool]
-provider = "OpenAI"
-model_name = "gpt-4o"
+provider = "Local"
+model_id = "generic_local"
 
 [use_cases.serp_api_tool]
-provider = "OpenAI"
-model_name = "gpt-4o-mini"
+provider = "Local"
+model_id = "generic_local"

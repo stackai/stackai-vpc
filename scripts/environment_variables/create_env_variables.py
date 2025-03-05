@@ -50,6 +50,9 @@ def get_supabase_template_variables(virtual_machine_ip_or_url: str) -> Dict[str,
     logflare_logger_backend_api_key = generate_password()
     logflare_api_key = generate_password()
 
+    # Generate a password for the minio service
+    minio_password = generate_password()
+
     return {
         "POSTGRES_PASSWORD": psql_password,
         "JWT_SECRET": jwt_secret,
@@ -60,6 +63,7 @@ def get_supabase_template_variables(virtual_machine_ip_or_url: str) -> Dict[str,
         "LOGFLARE_LOGGER_BACKEND_API_KEY": logflare_logger_backend_api_key,
         "LOGFLARE_API_KEY": logflare_api_key,
         "VIRTUAL_MACHINE_IP_OR_URL": virtual_machine_ip_or_url,
+        "MINIO_PASSWORD": minio_password,
     }
 
 
@@ -103,6 +107,7 @@ def get_stackend_template_variables(
     weaviate_api_key: str,
     virtual_machine_ip_or_url: str,
     stackai_licence: str,
+    minio_password: str,
 ) -> Dict[str, str]:
     """Get the template variables for the stackend template."""
     connection_encryption_key = base64.b64encode(os.urandom(32)).decode()
@@ -117,6 +122,7 @@ def get_stackend_template_variables(
         "UNSTRUCTURED_API_KEY": unstructured_api_key,
         "WEAVIATE_API_KEY": weaviate_api_key,
         "VIRTUAL_MACHINE_IP_OR_URL": virtual_machine_ip_or_url,
+        "MINIO_PASSWORD": minio_password,
     }
 
 
@@ -310,6 +316,7 @@ The following variables will be used to fill in the templates:
         weaviate_api_key=weaviate_template_variables["WEAVIATE_API_KEY"],
         virtual_machine_ip_or_url=virtual_machine_ip_or_domain,
         stackai_licence=licence_key,
+        minio_password=supabase_template_variables["MINIO_PASSWORD"],
     )
     stackend_folder = root_project_path / "stackend"
     print(f"\n~> Filling in stackend template and saving it to {stackend_folder}")
