@@ -208,19 +208,8 @@ take you to the supabase dashboard, which is enabled by default (you may disable
 
     This will start the mongodb container. Wait a minute to make sure it has been properly initialized. After that, continue with the next step without stopping the container.
 
-2. Get the connection string for your mongodb database
 
-    The first thing you will need is to get the connection string for your mongodb database. To do so, open your `mongodb/.env` file and take the values for the `MONGO_INITDB_ROOT_USERNAME` and `MONGO_INITDB_ROOT_PASSWORD` variables. Here is a template of what the connection string should look like (if using the default configuration):
-
-    Replace `<username>` and `<password>` with the values got from your `mongodb/.env` file.
-
-    ```bash
-    mongodb://<username>:<password>@localhost:27017
-    ```
-
-    With the connection string in hand, you can initialize the database.
-
-3. Initialize the database
+2. Initialize the database
 
     Open a terminal **in the root folder of the project, the same as where this README file is located** and run:
 
@@ -305,7 +294,7 @@ The stackweb docker container requires some of the environment variables here de
     Wait for the stackend container to start. Then, on a new terminal, execute the following command to run the migrations:
 
     ```bash
-    docker compose exec stackend bash -c "cd migrations/postgres && alembic upgrade head"
+    docker compose exec stackend bash -c "cd infra/migrations/postgres && alembic upgrade head"
     ```
 
 ## Stackrepl

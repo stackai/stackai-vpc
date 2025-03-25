@@ -2,8 +2,10 @@ import os
 import pickle
 import tempfile
 import zipfile
+from pathlib import Path
 from typing import List
 
+from dotenv import dotenv_values
 from pymongo import MongoClient
 
 
@@ -136,6 +138,25 @@ if __name__ == "__main__":
     print("StackAI MongoDB Initialization Script")
     print("=" * 80)
 
+    # Get the path to the current script
+    mongodb_env_file_path = (
+        Path(os.path.abspath(__file__)).parent.parent.parent / "mongodb" / ".env"
+    )
+
+    # Make sure that the .env file exists
+    if not mongodb_env_file_path.exists():
+        print(f"Error: The .env file does not exist at {mongodb_env_file_path}")
+        exit(1)
+
+    # Read the variables needed to create the connection strings
+    config = dotenv_values(mongodb_env_file_path)
+    root_username = config["MONGO_INITDB_ROOT_USERNAME"]
+    root_password = config["MONGO_INITDB_ROOT_PASSWORD"]
+
+    on_premise_mongodb_connection_string = (
+        f"mongodb://{root_username}:{root_password}@localhost:27017"
+    )
+
     while True:
         print(
             "Please, input 1 (or leave blank) if you wish to sync the flow templates from a local zip file (default), input 2 if you wish to sync the flow templates from a remote production database: "
@@ -162,10 +183,7 @@ if __name__ == "__main__":
         else:
             print("Invalid choice, please try again.")
 
-    target_mongodb_client = get_mongodb_client_from_user(
-        "Please provide the connection string to the target MongoDB database: "
-    )
-
+    target_mongodb_client = MongoClient(on_premise_mongodb_connection_string)
     print(
         f"\n\nA total of {len(templates)} templates will be uploaded to the target database..."
     )
