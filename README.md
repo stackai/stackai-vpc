@@ -345,16 +345,21 @@ Should be updated to:
 3) Pull the new images with
 
 ```bash
-docker compose pull <name_of_the_service>
+docker compose pull
 ```
 
-In the case of the frontend (stackweb), you will need to rebuild the image with `docker compose build stackweb`
+
+In the case of the frontend (stackweb), you will need to rebuild the image with
+
+```bash
+docker compose build stackweb
+```
 
 4) Run database migrations if needed (instructions should be provided in the update README of the update)
 
 ```bash
 docker compose up stackend
-docker compose exec stackend bash -c "cd migrations/postgres && alembic upgrade head"
+make run-postgres-migrations
 ```
 
 5) Start all containers again with `docker compose up`
