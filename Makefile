@@ -44,3 +44,10 @@ setup-docker-in-ubuntu:
 		chmod +x ubuntu_server_pre_setup.sh && \
 		./ubuntu_server_pre_setup.sh
 	@echo "Docker setup in Ubuntu completed successfully"
+
+
+.PHONY: run-postgres-migrations
+run-postgres-migrations:
+	@echo "Running Postgres migrations..."
+	docker compose exec stackend bash -c "cd infra/migrations/postgres && alembic upgrade head"
+	@echo "Postgres migrations completed successfully"
