@@ -1,4 +1,3 @@
-
 # StackAI Docker Compose Deployment
 
 This repository contains the configuration needed to run StackAI locally using docker compose.
@@ -73,11 +72,9 @@ You will need docker and docker compose installed in your machine.
 
 To install them, open a terminal in **the root folder of the project, the same as where this README file is located** and execute the following command, log in again after it finishes:
 
->
 > :WARNING: The script will log you out from your current session.
 > Log in again and verify successful setup running the following command:
-<YOU PROVIDE A COMMAND HERE WITH THE EXPECTED RESULT IF SUCCESSFUL>
->
+> <YOU PROVIDE A COMMAND HERE WITH THE EXPECTED RESULT IF SUCCESSFUL>
 
 ```bash
 make setup-docker-in-ubuntu
@@ -183,7 +180,7 @@ make install-environment-variables
 
 ## Supabase
 
-1. Open a terminal **in the root folder of the project, the same as where this README file is located** and run:
+1.  Open a terminal **in the root folder of the project, the same as where this README file is located** and run:
 
     ```bash
     make start-supabase
@@ -191,43 +188,47 @@ make install-environment-variables
 
     This will start the supabase containers and show you the running logs. Once the supabase containers start running, they will start the internal process of setting up the database. This will take about 2-3 minutes.
 
-2. Verify the installation by navigating to the url configured in the file `supabase/.env` named as `SUPABASE_PUBLIC_URL` variable. This will
-take you to the supabase dashboard, which is enabled by default (you may disable it manually in the `supabase/docker-compose.yml` file if you want). To log in, you will need to use the `DASHBOARD_USERNAME` and `DASHBOARD_PASSWORD` variables values that can be found in the `supabase/.env` file.
+2.  Verify the installation by navigating to the url configured in the file `supabase/.env` named as `SUPABASE_PUBLIC_URL` variable. This will
+    take you to the supabase dashboard, which is enabled by default (you may disable it manually in the `supabase/docker-compose.yml` file if you want). To log in, you will need to use the `DASHBOARD_USERNAME` and `DASHBOARD_PASSWORD` variables values that can be found in the `supabase/.env` file.
 
-3. You may stop the containers by doing a `Control+C` in the terminal where you ran the `docker compose up ...` command or by running `docker compose down` after checking the setup.
+        You can check the `SERVICE_ROLE_KEY` created runing the following script:
+        ```sh
+        scripts/environment_variables/retrieve_anon_supabase.sh
+        ```
+
+3.  You may stop the containers by doing a `Control+C` in the terminal where you ran the `docker compose up ...` command or by running `docker compose down` after checking the setup.
 
 ## MongoDB
 
 1. Open a terminal **in the root folder of the project, the same as where this README file is located** and initialize the mongodb container:
 
-    ```bash
-    docker compose up mongodb
-    ```
+   ```bash
+   docker compose up mongodb
+   ```
 
-    Have a look at the logs and make sure everything is running smoothly.
+   Have a look at the logs and make sure everything is running smoothly.
 
-    This will start the mongodb container. Wait a minute to make sure it has been properly initialized. After that, continue with the next step without stopping the container.
-
+   This will start the mongodb container. Wait a minute to make sure it has been properly initialized. After that, continue with the next step without stopping the container.
 
 2. Initialize the database
 
-    Open a terminal **in the root folder of the project, the same as where this README file is located** and run:
+   Open a terminal **in the root folder of the project, the same as where this README file is located** and run:
 
-    ```bash
-        make initialize_mongodb
-    ```
+   ```bash
+       make initialize_mongodb
+   ```
 
-4. After the initialization, you can run `docker compose down` to stop mongodb.
+3. After the initialization, you can run `docker compose down` to stop mongodb.
 
 ## Unstructured
 
 1. Open a terminal **in the root folder of the project, the same as where this README file is located** and initialize the unstructured container:
 
-    ```bash
-    docker compose up unstructured
-    ```
+   ```bash
+   docker compose up unstructured
+   ```
 
-    Have a look at the logs and make sure everything is running smoothly.
+   Have a look at the logs and make sure everything is running smoothly.
 
 2. After the initialization, you can run `docker compose down` to stop unstructured.
 
@@ -235,11 +236,11 @@ take you to the supabase dashboard, which is enabled by default (you may disable
 
 1. Open a terminal **in the root folder of the project, the same as where this README file is located** and initialize the weaviate container:
 
-    ```bash
-    docker compose up weaviate
-    ```
+   ```bash
+   docker compose up weaviate
+   ```
 
-    Have a look at the logs and make sure everything is running smoothly.
+   Have a look at the logs and make sure everything is running smoothly.
 
 2. Wait for about two minutes. After the initialization, you can run `docker compose down` to stop weaviate.
 
@@ -249,19 +250,19 @@ The stackweb docker container requires some of the environment variables here de
 
 1. Open a terminal **in the root folder of the project, the same as where this README file is located** and initialize the stackweb container:
 
-    a) Source the stackweb environment variables:
+   a) Source the stackweb environment variables:
 
-    ```bash
-    source stackweb/.env
-    ```
+   ```bash
+   source stackweb/.env
+   ```
 
-    b) Build the docker image for stackweb:
+   b) Build the docker image for stackweb:
 
-    ```bash
-    docker compose build stackweb
-    ```
+   ```bash
+   docker compose build stackweb
+   ```
 
-    The build process may take about 5 minutes depending on your internet connection and hardware.
+   The build process may take about 5 minutes depending on your internet connection and hardware.
 
 ## Stackend
 
@@ -273,45 +274,45 @@ The stackweb docker container requires some of the environment variables here de
 
 4. Open a terminal **in the root folder of the project, the same as where this README file is located** and pull the backend containers.
 
-    ```bash
-    docker compose pull stackend celery_worker redis
-    ```
+   ```bash
+   docker compose pull stackend celery_worker redis
+   ```
 
 5. Start the stackend service and run migrations:
 
-    The database services need to be started first se we can run the migrations against them
+   The database services need to be started first se we can run the migrations against them
 
-    ```bash
-    make start-supabase
-    ```
+   ```bash
+   make start-supabase
+   ```
 
-    Then, open another terminal and start the stackend service:
+   Then, open another terminal and start the stackend service:
 
-    ```bash
-    docker compose up stackend
-    ```
+   ```bash
+   docker compose up stackend
+   ```
 
-    Wait for the stackend container to start. Then, on a new terminal, execute the following command to run the migrations:
+   Wait for the stackend container to start. Then, on a new terminal, execute the following command to run the migrations:
 
-    ```bash
-    docker compose exec stackend bash -c "cd infra/migrations/postgres && alembic upgrade head"
-    ```
+   ```bash
+   docker compose exec stackend bash -c "cd infra/migrations/postgres && alembic upgrade head"
+   ```
 
 ## Stackrepl
 
 1. Open a terminal **in the root folder of the project, the same as where this README file is located** and pull the backend containers.
 
-    ```bash
-    docker compose build stackrepl
-    ```
+   ```bash
+   docker compose build stackrepl
+   ```
 
 # Launch all services
 
 1. Open a terminal **in the root folder of the project, the same as where this README file is located** and launch all services.
 
-    ```bash
-    docker compose up
-    ```
+   ```bash
+   docker compose up
+   ```
 
 2. Wait for about 2 minutes for everything to start. Then navigate to the url configured in the file `stackweb/.env` named as `NEXT_PUBLIC_URL` variable. You should see the StackAI landing page.
 
@@ -323,31 +324,30 @@ The stackweb docker container requires some of the environment variables here de
 
 In order to update the services, you will need to follow the instructions below:
 
-1) Stop all the services with `docker compose stop`
-2) Update the `image` field of the docker-compose.yml file of the service you want to update.
+1. Stop all the services with `docker compose stop`
+2. Update the `image` field of the docker-compose.yml file of the service you want to update.
 
 Example, to update the stackend service from `d3f54d3` to `f4c8aa0`
 
 This line
 
 ```yaml
-  stackend:
-    image: stackai.azurecr.io/stackai/stackend-backend:d3f54d3
+stackend:
+  image: stackai.azurecr.io/stackai/stackend-backend:d3f54d3
 ```
 
 Should be updated to:
 
 ```yaml
-  stackend:
-    image: stackai.azurecr.io/stackai/stackend-backend:f4c8aa0
+stackend:
+  image: stackai.azurecr.io/stackai/stackend-backend:f4c8aa0
 ```
 
-3) Pull the new images with
+3. Pull the new images with
 
 ```bash
 docker compose pull
 ```
-
 
 In the case of the frontend (stackweb), you will need to rebuild the image with
 
@@ -355,11 +355,11 @@ In the case of the frontend (stackweb), you will need to rebuild the image with
 docker compose build stackweb
 ```
 
-4) Run database migrations if needed (instructions should be provided in the update README of the update)
+4. Run database migrations if needed (instructions should be provided in the update README of the update)
 
 ```bash
 docker compose up stackend
 make run-postgres-migrations
 ```
 
-5) Start all containers again with `docker compose up`
+5. Start all containers again with `docker compose up`
