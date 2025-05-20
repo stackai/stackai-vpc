@@ -11,6 +11,13 @@ from jinja2 import Environment, FileSystemLoader, Template
 
 environment = Environment(loader=FileSystemLoader("templates/"))
 
+def get_env_var_by_env_file(var_name: str, env_file: str) -> str | None:
+    """Get the value of an environment variable from a given .env file."""
+    with open(env_file, "r") as f:
+        for line in f:
+            if line.startswith(f"{var_name}="):
+                return line.split("=")[1].strip()
+    return None
 
 def generate_password(length: int = 32) -> str:
     """Generate a random password of the given length."""
@@ -34,24 +41,24 @@ def get_supabase_template_variables(virtual_machine_ip_or_url: str) -> Dict[str,
     """
 
     # Generate PostgreSQL password
-    psql_password = generate_password()
+    psql_password = get_env_var_by_env_file("POSTGRES_PASSWORD", "stackend/.env") or generate_password()
 
     # Generate JWT secret
-    jwt_secret = generate_password(40)
+    jwt_secret = get_env_var_by_env_file("JWT_SECRET", "supabase/.env") or generate_password(40)
 
     # Generate anon and service role keys
-    anon_key = generate_jwt("anon", jwt_secret)
-    service_role_key = generate_jwt("service_role", jwt_secret)
+    anon_key = get_env_var_by_env_file("ANON_KEY", "supabase/.env") or generate_jwt("anon", jwt_secret)
+    service_role_key = get_env_var_by_env_file("SERVICE_ROLE_KEY", "supabase/.env") or generate_jwt("service_role", jwt_secret)
 
     # Generate a password for the supabase dashboard
-    dashboard_password = generate_password(length=16)
+    dashboard_password = get_env_var_by_env_file("DASHBOARD_PASSWORD", "supabase/.env") or generate_password(length=16)
 
     # Generate Logflare keys
-    logflare_logger_backend_api_key = generate_password()
-    logflare_api_key = generate_password()
+    logflare_logger_backend_api_key = get_env_var_by_env_file("LOGFLARE_LOGGER_BACKEND_API_KEY", "supabase/.env") or generate_password()
+    logflare_api_key = get_env_var_by_env_file("LOGFLARE_API_KEY", "supabase/.env") or generate_password()
 
     # Generate a password for the minio service
-    minio_password = generate_password()
+    minio_password = get_env_var_by_env_file("MINIO_PASSWORD", "stackend/.env") or generate_password()
 
     return {
         "POSTGRES_PASSWORD": psql_password,
@@ -69,25 +76,27 @@ def get_supabase_template_variables(virtual_machine_ip_or_url: str) -> Dict[str,
 
 def get_weaviate_template_variables() -> Dict[str, str]:
     """Get the template variables for the weaviate template."""
-    api_key = generate_password(length=12)
+    api_key = get_env_var_by_env_file("WEAVIATE_API_KEY", "stackend/.env") or generate_password(length=12)
+    api_key_user = get_env_var_by_env_file("WEAVIATE_API_KEY_USER", "stackend/.env") or "jhondoe@example.com"
     return {
         "WEAVIATE_API_KEY": api_key,
-        "WEAVIATE_API_KEY_USER": "jhondoe@example.com",
+        "WEAVIATE_API_KEY_USER": api_key_user,
     }
 
 
 def get_mongodb_template_variables() -> Dict[str, str]:
     """Get the template variables for the mongodb template."""
-    root_password = generate_password(length=12)
+    root_password = get_env_var_by_env_file("MONGODB_ROOT_PASSWORD", "mongodb/.env") or generate_password(length=12)
+    root_username = get_env_var_by_env_file("MONGODB_ROOT_USERNAME", "mongodb/.env") or "stack_user"
     return {
-        "MONGODB_ROOT_USERNAME": "stack_user",
+        "MONGODB_ROOT_USERNAME": root_username,
         "MONGODB_ROOT_PASSWORD": root_password,
     }
 
 
 def get_unstructured_template_variables() -> Dict[str, str]:
     """Get the template variables for the unstructured template."""
-    api_key = generate_password(length=12)
+    api_key = get_env_var_by_env_file("UNSTRUCTURED_API_KEY", "unstructured/.env") or generate_password(length=12)
     return {
         "UNSTRUCTURED_API_KEY": api_key,
     }
