@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+    kompose.version: 1.36.0 (HEAD)
+  labels:
+    io.kompose.service: studio
+  name: studio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: studio
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+        kompose.version: 1.36.0 (HEAD)
+      labels:
+        io.kompose.service: studio
+    spec:
+      containers:
+        - env:
+            - name: AUTH_JWT_SECRET
+              value: H63DAhMRE9aLYdtYnZAsqTFy5OzJ_BjsETt_rEhL
+            - name: DEFAULT_ORGANIZATION_NAME
+              value: Enterprise
+            - name: DEFAULT_PROJECT_NAME
+              value: Enterprise Stack AI
+            - name: LOGFLARE_API_KEY
+              value: P8Mxt7AT492WgyicKwzdrNVGjrCkPPVp
+            - name: LOGFLARE_URL
+              value: http://analytics:4000
+            - name: NEXT_ANALYTICS_BACKEND_PROVIDER
+              value: postgres
+            - name: NEXT_PUBLIC_ENABLE_LOGS
+              value: "true"
+            - name: POSTGRES_PASSWORD
+              value: fzSTYWXaDNX--cJ05xrikDcmHEsnPFhd
+            - name: STUDIO_PG_META_URL
+              value: http://meta:8080
+            - name: SUPABASE_ANON_KEY
+              value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzQ3OTIyOTU1LCJleHAiOjE5MDU2MDI5NTV9.nc_AhXtY05wyIWCO6Pfn13zp4yERxLN0jT9rNDjCSR4
+            - name: SUPABASE_PUBLIC_URL
+              value: http://d:8800
+            - name: SUPABASE_SERVICE_KEY
+              value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIiwiaXNzIjoic3VwYWJhc2UiLCJpYXQiOjE3NDc5MjI5NTUsImV4cCI6MTkwNTYwMjk1NX0.sNVS9zwrVlkKGhrhMlZVrsCECsO4Ughb_e6FfNq6nlc
+            - name: SUPABASE_URL
+              value: http://kong:8000
+          image: supabase/studio:20240923-2e3e90c
+          livenessProbe:
+            exec:
+              command:
+                - node
+                - -e
+                - require('http').get('http://localhost:3000/api/profile', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})
+            failureThreshold: 3
+            periodSeconds: 5
+            timeoutSeconds: 5
+          name: supabase-studio
+      restartPolicy: Always

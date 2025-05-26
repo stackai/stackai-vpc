@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  Caddyfile: "# EXAMPLE CONFIGURATION. UNCOMMENT AND ADJUST AS NEEDED.\n\n# <your-supabase-subdomain> {\n#     reverse_proxy /rest/v1/* kong:8000\n#     reverse_proxy /graphql/v1/* kong:8000\n#     reverse_proxy /auth/v1/* kong:8000\n#     reverse_proxy /realtime/v1/* kong:8000\n#     reverse_proxy /storage/v1/* kong:8000\n#     reverse_proxy /functions/v1/* kong:8000\n#     reverse_proxy /analytics/v1/* kong:8000\n# \n# \n#     header {\n#         Content-Security-Policy \"upgrade-insecure-requests\"\n#     }\n# }\n\n# <your-stackweb-subdomain> {\n#     reverse_proxy /* stackweb:3000\n# }\n\n# <your-stackend-subdomain> {\n#     reverse_proxy /* stackend:8000\n# }\n"
+kind: ConfigMap
+metadata:
+  annotations:
+    use-subpath: "true"
+  labels:
+    io.kompose.service: caddy
+  name: caddy-cm0

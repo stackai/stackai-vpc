@@ -1,0 +1,15 @@
+apiVersion: v1
+data:
+  pooler.sql: |
+    \set pguser `echo "$POSTGRES_USER"`
+
+    \c _supabase
+    create schema if not exists _supavisor;
+    alter schema _supavisor owner to :pguser;
+kind: ConfigMap
+metadata:
+  annotations:
+    use-subpath: "true"
+  labels:
+    io.kompose.service: db
+  name: db-cm6

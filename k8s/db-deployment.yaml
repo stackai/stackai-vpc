@@ -1,0 +1,135 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+    kompose.version: 1.36.0 (HEAD)
+  labels:
+    io.kompose.service: db
+  name: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+        kompose.version: 1.36.0 (HEAD)
+      labels:
+        io.kompose.service: db
+    spec:
+      containers:
+        - args:
+            - postgres
+            - -c
+            - config_file=/etc/postgresql/postgresql.conf
+            - -c
+            - log_min_messages=fatal
+          env:
+            - name: JWT_EXP
+              value: "3600"
+            - name: JWT_SECRET
+              value: H63DAhMRE9aLYdtYnZAsqTFy5OzJ_BjsETt_rEhL
+            - name: PGDATABASE
+              value: postgres
+            - name: PGPASSWORD
+              value: fzSTYWXaDNX--cJ05xrikDcmHEsnPFhd
+            - name: PGPORT
+              value: "5432"
+            - name: POSTGRES_DB
+              value: postgres
+            - name: POSTGRES_HOST
+              value: /var/run/postgresql
+            - name: POSTGRES_PASSWORD
+              value: fzSTYWXaDNX--cJ05xrikDcmHEsnPFhd
+            - name: POSTGRES_PORT
+              value: "5432"
+          image: supabase/postgres:15.1.1.78
+          livenessProbe:
+            exec:
+              command:
+                - pg_isready -U postgres -h localhost
+            failureThreshold: 10
+            periodSeconds: 5
+            timeoutSeconds: 5
+          name: supabase-db
+          volumeMounts:
+            - mountPath: /docker-entrypoint-initdb.d/migrations/99-realtime.sql
+              name: db-cm0
+              subPath: 99-realtime.sql
+            - mountPath: /docker-entrypoint-initdb.d/init-scripts/98-webhooks.sql
+              name: db-cm1
+              subPath: 98-webhooks.sql
+            - mountPath: /docker-entrypoint-initdb.d/init-scripts/99-roles.sql
+              name: db-cm2
+              subPath: 99-roles.sql
+            - mountPath: /docker-entrypoint-initdb.d/init-scripts/99-jwt.sql
+              name: db-cm3
+              subPath: 99-jwt.sql
+            - mountPath: /docker-entrypoint-initdb.d/migrations/97-_supabase.sql
+              name: db-cm4
+              subPath: 97-_supabase.sql
+            - mountPath: /docker-entrypoint-initdb.d/migrations/99-logs.sql
+              name: db-cm5
+              subPath: 99-logs.sql
+            - mountPath: /docker-entrypoint-initdb.d/migrations/99-pooler.sql
+              name: db-cm6
+              subPath: 99-pooler.sql
+            - mountPath: /etc/postgresql-custom
+              name: db-config
+            - mountPath: /var/lib/postgresql/data
+              name: db-claim8
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: realtime.sql
+                path: 99-realtime.sql
+            name: db-cm0
+          name: db-cm0
+        - configMap:
+            items:
+              - key: webhooks.sql
+                path: 98-webhooks.sql
+            name: db-cm1
+          name: db-cm1
+        - configMap:
+            items:
+              - key: roles.sql
+                path: 99-roles.sql
+            name: db-cm2
+          name: db-cm2
+        - configMap:
+            items:
+              - key: jwt.sql
+                path: 99-jwt.sql
+            name: db-cm3
+          name: db-cm3
+        - configMap:
+            items:
+              - key: _supabase.sql
+                path: 97-_supabase.sql
+            name: db-cm4
+          name: db-cm4
+        - configMap:
+            items:
+              - key: logs.sql
+                path: 99-logs.sql
+            name: db-cm5
+          name: db-cm5
+        - configMap:
+            items:
+              - key: pooler.sql
+                path: 99-pooler.sql
+            name: db-cm6
+          name: db-cm6
+        - name: db-config
+          persistentVolumeClaim:
+            claimName: db-config
+        - name: db-claim8
+          persistentVolumeClaim:
+            claimName: db-claim8

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+    kompose.version: 1.36.0 (HEAD)
+  labels:
+    io.kompose.service: rest
+  name: rest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: rest
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+        kompose.version: 1.36.0 (HEAD)
+      labels:
+        io.kompose.service: rest
+    spec:
+      containers:
+        - args:
+            - postgrest
+          env:
+            - name: PGRST_APP_SETTINGS_JWT_EXP
+              value: "3600"
+            - name: PGRST_APP_SETTINGS_JWT_SECRET
+              value: H63DAhMRE9aLYdtYnZAsqTFy5OzJ_BjsETt_rEhL
+            - name: PGRST_DB_ANON_ROLE
+              value: anon
+            - name: PGRST_DB_SCHEMAS
+              value: public,storage,graphql_public
+            - name: PGRST_DB_URI
+              value: postgres://authenticator:fzSTYWXaDNX--cJ05xrikDcmHEsnPFhd@db:5432/postgres
+            - name: PGRST_DB_USE_LEGACY_GUCS
+              value: "false"
+            - name: PGRST_JWT_SECRET
+              value: H63DAhMRE9aLYdtYnZAsqTFy5OzJ_BjsETt_rEhL
+          image: postgrest/postgrest:v12.2.0
+          name: supabase-rest
+      restartPolicy: Always

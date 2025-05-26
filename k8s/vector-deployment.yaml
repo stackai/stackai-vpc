@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+    kompose.version: 1.36.0 (HEAD)
+  labels:
+    io.kompose.service: vector
+  name: vector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: vector
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+        kompose.version: 1.36.0 (HEAD)
+      labels:
+        io.kompose.service: vector
+    spec:
+      containers:
+        - args:
+            - --config
+            - etc/vector/vector.yml
+          env:
+            - name: LOGFLARE_API_KEY
+              value: P8Mxt7AT492WgyicKwzdrNVGjrCkPPVp
+          image: timberio/vector:0.28.1-alpine
+          livenessProbe:
+            exec:
+              command:
+                - wget
+                - --no-verbose
+                - --tries=1
+                - --spider
+                - http://vector:9001/health
+            failureThreshold: 3
+            periodSeconds: 5
+            timeoutSeconds: 5
+          name: supabase-vector
+          volumeMounts:
+            - mountPath: /etc/vector/vector.yml
+              name: vector-cm0
+              readOnly: true
+              subPath: vector.yml
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: vector.yml
+                path: vector.yml
+            name: vector-cm0
+          name: vector-cm0

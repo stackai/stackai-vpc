@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+    kompose.version: 1.36.0 (HEAD)
+  labels:
+    io.kompose.service: auth
+  name: auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: auth
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+        kompose.version: 1.36.0 (HEAD)
+      labels:
+        io.kompose.service: auth
+    spec:
+      containers:
+        - env:
+            - name: API_EXTERNAL_URL
+              value: http://d:8800
+            - name: GOTRUE_API_HOST
+              value: 0.0.0.0
+            - name: GOTRUE_API_PORT
+              value: "9999"
+            - name: GOTRUE_DB_DATABASE_URL
+              value: postgres://supabase_auth_admin:fzSTYWXaDNX--cJ05xrikDcmHEsnPFhd@db:5432/postgres
+            - name: GOTRUE_DB_DRIVER
+              value: postgres
+            - name: GOTRUE_DISABLE_SIGNUP
+              value: "false"
+            - name: GOTRUE_EXTERNAL_ANONYMOUS_USERS_ENABLED
+              value: "false"
+            - name: GOTRUE_EXTERNAL_EMAIL_ENABLED
+              value: "true"
+            - name: GOTRUE_EXTERNAL_PHONE_ENABLED
+              value: "true"
+            - name: GOTRUE_JWT_ADMIN_ROLES
+              value: service_role
+            - name: GOTRUE_JWT_AUD
+              value: authenticated
+            - name: GOTRUE_JWT_DEFAULT_GROUP_NAME
+              value: authenticated
+            - name: GOTRUE_JWT_EXP
+              value: "3600"
+            - name: GOTRUE_JWT_SECRET
+              value: H63DAhMRE9aLYdtYnZAsqTFy5OzJ_BjsETt_rEhL
+            - name: GOTRUE_MAILER_AUTOCONFIRM
+              value: "true"
+            - name: GOTRUE_MAILER_URLPATHS_CONFIRMATION
+              value: /auth/v1/verify
+            - name: GOTRUE_MAILER_URLPATHS_EMAIL_CHANGE
+              value: /auth/v1/verify
+            - name: GOTRUE_MAILER_URLPATHS_INVITE
+              value: /auth/v1/verify
+            - name: GOTRUE_MAILER_URLPATHS_RECOVERY
+              value: /auth/v1/verify
+            - name: GOTRUE_SITE_URL
+              value: http://d:3000
+            - name: GOTRUE_SMS_AUTOCONFIRM
+              value: "true"
+            - name: GOTRUE_SMTP_ADMIN_EMAIL
+              value: admin@example.com
+            - name: GOTRUE_SMTP_HOST
+              value: supabase-mail
+            - name: GOTRUE_SMTP_PASS
+              value: fake_mail_password
+            - name: GOTRUE_SMTP_PORT
+              value: "2500"
+            - name: GOTRUE_SMTP_SENDER_NAME
+              value: fake_sender
+            - name: GOTRUE_SMTP_USER
+              value: fake_mail_user
+            - name: GOTRUE_URI_ALLOW_LIST
+          image: supabase/gotrue:v2.158.1
+          livenessProbe:
+            exec:
+              command:
+                - wget
+                - --no-verbose
+                - --tries=1
+                - --spider
+                - http://localhost:9999/health
+            failureThreshold: 3
+            periodSeconds: 5
+            timeoutSeconds: 5
+          name: supabase-auth
+      restartPolicy: Always
