@@ -13,10 +13,13 @@ environment = Environment(loader=FileSystemLoader("templates/"))
 
 def get_env_var_by_env_file(var_name: str, env_file: str) -> str | None:
     """Get the value of an environment variable from a given .env file."""
-    with open(env_file, "r") as f:
-        for line in f:
-            if line.startswith(f"{var_name}="):
-                return line.split("=")[1].strip()
+    path = Path(env_file)
+    if not path.is_file():
+        return None # return None if the file does not exist
+
+    for line in path.read_text().splitlines():
+        if line.startswith(f"{var_name}="):
+            return line.partition("=")[2].strip()
     return None
 
 def generate_password(length: int = 32) -> str:
