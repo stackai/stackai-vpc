@@ -68,6 +68,7 @@ pull: ## Pull and update the local repository using the Python-based ZIP downloa
 	@echo "Starting repository update process..."
 	@chmod +x scripts/pull/run_puller.sh
 	@./scripts/pull/run_puller.sh
+	@echo chmod +x scripts/**/*.sh
 	@echo "Update process finished. See script output for details."
 
 .PHONY: update
@@ -77,5 +78,5 @@ update:
 	@make stop-stackai
 	@make install-environment-variables
 	docker compose pull stackweb stackend celery_worker stackrepl storage
-	docker compose build stackeb
+	docker compose build stacwkeb
 	@make start-stackai
