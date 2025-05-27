@@ -73,7 +73,7 @@ pull: ## Pull and update the local repository using the Python-based ZIP downloa
 .PHONY: update
 update:
 	@echo "Updating repository..."
-	@make update-repo
+	@make pull
 	@make stop-stackai
 	@make install-environment-variables
 	docker compose pull stackweb stackend celery_worker stackrepl storage
