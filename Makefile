@@ -78,5 +78,5 @@ update:
 	@make stop-stackai
 	@make install-environment-variables
 	docker compose pull stackweb stackend celery_worker stackrepl storage
-	docker compose build stacwkeb
+	docker compose build stackweb
 	@make start-stackai
