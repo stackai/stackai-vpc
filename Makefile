@@ -63,11 +63,11 @@ stop-stackai:
 # ==================================================================================================
 #                                        UPDATE REPOSITORY
 # ==================================================================================================
-.PHONY: update-repo
-update-repo: ## Update the local repository using the Python-based ZIP download method.
+.PHONY: pull
+pull: ## Pull and update the local repository using the Python-based ZIP download method.
 	@echo "Starting repository update process..."
-	@chmod +x scripts/update/run_updater.sh
-	@./scripts/update/run_updater.sh
+	@chmod +x scripts/pull/run_puller.sh
+	@./scripts/pull/run_puller.sh
 	@echo "Update process finished. See script output for details."
 
 .PHONY: update

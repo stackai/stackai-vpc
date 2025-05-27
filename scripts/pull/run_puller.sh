@@ -3,15 +3,15 @@
 # Exit immediately if a command exits with a non-zero status.
 set -e
 
-echo "--- StackAI Onprem Updater (Python ZIP Method) ---"
+echo "--- StackAI Onprem Puller (Python ZIP Method) ---"
 
-# Determine the script's own directory to locate updater.py and requirements.txt
+# Determine the script's own directory to locate puller.py and requirements.txt
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
-UPDATER_SCRIPT="$SCRIPT_DIR/updater.py"
+PULLER_SCRIPT="$SCRIPT_DIR/puller.py"
 REQUIREMENTS_FILE="$SCRIPT_DIR/requirements.txt"
 
 # Define a temporary virtual environment directory within scripts/update
-VENV_DIR="$SCRIPT_DIR/.updater_venv"
+VENV_DIR="$SCRIPT_DIR/.puller_venv"
 
 # Check for python3
 if ! command -v python3 &> /dev/null; then
@@ -47,9 +47,9 @@ if ! python3 -m pip install --quiet -r "$REQUIREMENTS_FILE"; then
 fi
 echo "Dependencies installed."
 
-echo "Running Python updater script: $UPDATER_SCRIPT..."
-if ! python3 "$UPDATER_SCRIPT"; then
-    echo "Error: Python updater script failed."
+echo "Running Python puller script: $PULLER_SCRIPT..."
+if ! python3 "$PULLER_SCRIPT"; then
+    echo "Error: Python puller script failed."
     deactivate
     rm -rf "$VENV_DIR"
     exit 1
@@ -60,4 +60,4 @@ echo "Update script finished. Cleaning up virtual environment..."
 deactivate
 rm -rf "$VENV_DIR"
 
-echo "--- Python ZIP Updater Finished Successfully ---" 
+echo "--- Python ZIP Puller Finished Successfully ---" 

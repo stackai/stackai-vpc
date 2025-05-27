@@ -53,9 +53,9 @@ def is_project_root(path: Path) -> bool:
 
 def find_project_root_auto() -> Path | None:
     """Try to automatically find the project root directory."""
-    # The script itself is in scripts/update/updater.py
-    # So, current_script_path is .../scripts/update/updater.py
-    # Parent of updater.py is .../scripts/update/
+    # The script itself is in scripts/pull/puller.py
+    # So, current_script_path is .../scripts/pull/puller.py
+    # Parent of puller.py is .../scripts/update/
     # Parent of that is .../scripts/
     # Parent of that should be the project root.
     current_script_path = Path(__file__).resolve()
