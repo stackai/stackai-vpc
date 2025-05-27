@@ -51,3 +51,31 @@ run-postgres-migrations:
 	@echo "Running Postgres migrations..."
 	docker compose exec stackend bash -c "cd infra/migrations/postgres && alembic upgrade head"
 	@echo "Postgres migrations completed successfully"
+
+.PHONY: start-stackai
+start-stackai:
+	docker compose up -d stackweb stackend celery_worker stackrepl storage
+
+.PHONY: stop-stackai
+stop-stackai:
+	docker compose down stackweb stackend celery_worker stackrepl storage
+
+# ==================================================================================================
+#                                        UPDATE REPOSITORY
+# ==================================================================================================
+.PHONY: update-repo
+update-repo: ## Update the local repository using the Python-based ZIP download method.
+	@echo "Starting repository update process..."
+	@chmod +x scripts/update/run_updater.sh
+	@./scripts/update/run_updater.sh
+	@echo "Update process finished. See script output for details."
+
+.PHONY: update
+update:
+	@echo "Updating repository..."
+	@make update-repo
+	@make stop-stackai
+	@make install-environment-variables
+	docker compose pull stackweb stackend celery_worker stackrepl storage
+	docker compose build stackeb
+	@make start-stackai
