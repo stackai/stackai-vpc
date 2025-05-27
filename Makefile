@@ -78,5 +78,6 @@ update:
 	@make stop-stackai
 	@make install-environment-variables
 	docker compose pull stackweb stackend celery_worker stackrepl storage
-	docker compose build stackweb
+	docker compose build stackweb stackrepl
 	@make start-stackai
+	docker compose exec stackend bash -c "cd infra/migrations/postgres && alembic upgrade head"
