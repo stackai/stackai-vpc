@@ -151,6 +151,39 @@ def get_stackweb_template_variables(
     }
 
 
+def _get_key_value_from_env_line(line: str) -> tuple[str, str] | None:
+    """Helper to extract a key-value pair from a .env file line."""
+    stripped_line = line.strip()
+    if not stripped_line or stripped_line.startswith("#") or "=" not in stripped_line:
+        return None
+    key_part, value_part = stripped_line.split("=", 1)
+    key = key_part.strip()
+    value = value_part.strip()
+    if not key:  # Handle cases like "=value" or " =value"
+        return None
+    return key, value
+
+def _get_env_file_variables(env_file_path: Path) -> Dict[str, str]:
+    """Helper to get the variables from a .env file."""
+    variables: Dict[str, str] = {}
+    if not env_file_path.is_file():
+        return variables # Return empty dict if file does not exist
+
+    for line in env_file_path.read_text().splitlines():
+        key_value_pair = _get_key_value_from_env_line(line)
+        if key_value_pair:
+            key, value = key_value_pair
+            variables[key] = value
+    return variables
+
+
+def _merge_variables(
+    script_provided_variables: Dict[str, str],
+    env_file_variables: Dict[str, str],
+) -> Dict[str, str]:
+    """Helper to merge the variables from the script and the .env file."""
+    return {**env_file_variables, **script_provided_variables}
+
 def render_and_save_template(
     template: Template,
     variables: Dict[str, str],
@@ -158,8 +191,22 @@ def render_and_save_template(
     template_file_name: str,
 ) -> None:
     """Renders the template and saves it to the given file overwriting it if it exists."""
+    env_file_path = template_folder_path / template_file_name
+
+    # Load pre-existing .env values if any
+    if env_file_path.exists():
+        env_file_variables = _get_env_file_variables(env_file_path)
+        variables = _merge_variables(variables, env_file_variables)
+
+    # TODO: Check if there are more variables in the variables dict that are not in the template
+    # template_source = template.environment.loader.get_source(template.environment, template.name)[0]
+    # template_variables = meta.find_undeclared_variables(template.environment.parse(template_source))    
+    # for key in variables.keys():
+    #     if key not in template_variables:
+    #         print(f"⚠️  Warning: Variable {key} is not used in the template {template.name}")
+        
     filled_in_template = template.render(**variables)
-    with open(template_folder_path / template_file_name, "w") as f:
+    with open(env_file_path, "w") as f:
         f.write(filled_in_template)
 
 
