@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+    kompose.version: 1.36.0 (HEAD)
+  labels:
+    io.kompose.service: minio-createbucket
+  name: minio-createbucket
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: minio-createbucket
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+        kompose.version: 1.36.0 (HEAD)
+      labels:
+        io.kompose.service: minio-createbucket
+    spec:
+      containers:
+        - command:
+            - /bin/sh
+            - -c
+            - ' /usr/bin/mc alias set supa-minio http://minio:9000 supa-storage 4PKqpr8bnIsVSHqnpSaMKPnCy0uC9N8O; /usr/bin/mc mb supa-minio/stack-ai-usercontent; /usr/bin/mc mb supa-minio/stub; exit 0; '
+          image: minio/mc
+          name: minio-createbucket
+      restartPolicy: Always

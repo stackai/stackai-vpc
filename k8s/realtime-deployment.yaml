@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+    kompose.version: 1.36.0 (HEAD)
+  labels:
+    io.kompose.service: realtime
+  name: realtime
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: realtime
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+        kompose.version: 1.36.0 (HEAD)
+      labels:
+        io.kompose.service: realtime
+    spec:
+      containers:
+        - env:
+            - name: API_JWT_SECRET
+              value: H63DAhMRE9aLYdtYnZAsqTFy5OzJ_BjsETt_rEhL
+            - name: APP_NAME
+              value: realtime
+            - name: DB_AFTER_CONNECT_QUERY
+              value: SET search_path TO _realtime
+            - name: DB_ENC_KEY
+              value: supabaserealtime
+            - name: DB_HOST
+              value: db
+            - name: DB_NAME
+              value: postgres
+            - name: DB_PASSWORD
+              value: fzSTYWXaDNX--cJ05xrikDcmHEsnPFhd
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_USER
+              value: supabase_admin
+            - name: DNS_NODES
+              value: "''"
+            - name: ERL_AFLAGS
+              value: -proto_dist inet_tcp
+            - name: PORT
+              value: "4000"
+            - name: RLIMIT_NOFILE
+              value: "10000"
+            - name: SECRET_KEY_BASE
+              value: UpNVntn3cDxHJpq99YMc1T1AQgQpc8kfYTuRgBiYa15BLrx8etQoXz3gZv1/u2oq
+            - name: SEED_SELF_HOST
+              value: "true"
+          image: supabase/realtime:v2.30.34
+          livenessProbe:
+            exec:
+              command:
+                - curl
+                - -sSfL
+                - --head
+                - -o
+                - /dev/null
+                - -H
+                - "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzQ3OTIyOTU1LCJleHAiOjE5MDU2MDI5NTV9.nc_AhXtY05wyIWCO6Pfn13zp4yERxLN0jT9rNDjCSR4"
+                - http://localhost:4000/api/tenants/realtime-dev/health
+            failureThreshold: 3
+            periodSeconds: 5
+            timeoutSeconds: 5
+          name: realtime-dev-supabase-realtime
+          ports:
+            - containerPort: 4000
+          resources: {}
+      restartPolicy: Always

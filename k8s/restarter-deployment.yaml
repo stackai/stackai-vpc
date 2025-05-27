@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+    kompose.version: 1.36.0 (HEAD)
+  labels:
+    io.kompose.service: restarter
+  name: restarter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: restarter
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+        kompose.version: 1.36.0 (HEAD)
+      labels:
+        io.kompose.service: restarter
+    spec:
+      containers:
+        - args:
+            - |-
+              while true; do
+                if [ "$()(date +'%H:%M')" = '07:00' ]; then
+                  echo "Restarting services..."
+                  docker restart -t 10 stackend celery_worker
+                fi
+                sleep 30
+                echo "Restarting stackend at $()(date)"
+              done
+          command:
+            - /bin/sh
+            - -c
+          image: docker:cli
+          name: restarter
+      restartPolicy: Always

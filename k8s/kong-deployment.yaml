@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+    kompose.version: 1.36.0 (HEAD)
+  labels:
+    io.kompose.service: kong
+  name: kong
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: kong
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+        kompose.version: 1.36.0 (HEAD)
+      labels:
+        io.kompose.service: kong
+    spec:
+      containers:
+        - command:
+            - bash
+            - -c
+            - eval "echo \"$(cat ~/temp.yml)\"" > ~/kong.yml && /docker-entrypoint.sh kong docker-start
+          env:
+            - name: DASHBOARD_PASSWORD
+              value: RPip-WTsJwWsvpNy
+            - name: DASHBOARD_USERNAME
+              value: admin
+            - name: KONG_DATABASE
+              value: "off"
+            - name: KONG_DECLARATIVE_CONFIG
+              value: /home/kong/kong.yml
+            - name: KONG_DNS_ORDER
+              value: LAST,A,CNAME
+            - name: KONG_NGINX_PROXY_PROXY_BUFFERS
+              value: 64 160k
+            - name: KONG_NGINX_PROXY_PROXY_BUFFER_SIZE
+              value: 160k
+            - name: KONG_PLUGINS
+              value: request-transformer,cors,key-auth,acl,basic-auth
+            - name: SUPABASE_ANON_KEY
+              value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzQ3OTIyOTU1LCJleHAiOjE5MDU2MDI5NTV9.nc_AhXtY05wyIWCO6Pfn13zp4yERxLN0jT9rNDjCSR4
+            - name: SUPABASE_SERVICE_KEY
+              value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIiwiaXNzIjoic3VwYWJhc2UiLCJpYXQiOjE3NDc5MjI5NTUsImV4cCI6MTkwNTYwMjk1NX0.sNVS9zwrVlkKGhrhMlZVrsCECsO4Ughb_e6FfNq6nlc
+          image: kong:2.8.1
+          name: supabase-kong
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+            - containerPort: 8443
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /home/kong/temp.yml
+              name: kong-cm0
+              readOnly: true
+              subPath: temp.yml
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: kong.yml
+                path: temp.yml
+            name: kong-cm0
+          name: kong-cm0

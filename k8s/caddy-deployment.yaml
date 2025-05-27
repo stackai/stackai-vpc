@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+    kompose.version: 1.36.0 (HEAD)
+  labels:
+    io.kompose.service: caddy
+  name: caddy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: caddy
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+        kompose.version: 1.36.0 (HEAD)
+      labels:
+        io.kompose.service: caddy
+    spec:
+      containers:
+        - image: caddy:2
+          name: caddy
+          ports:
+            - containerPort: 80
+              protocol: TCP
+            - containerPort: 443
+              protocol: TCP
+            - containerPort: 443
+              protocol: UDP
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          volumeMounts:
+            - mountPath: /etc/caddy/Caddyfile
+              name: caddy-cm0
+              subPath: Caddyfile
+            - mountPath: /data
+              name: caddy-data
+            - mountPath: /config
+              name: caddy-config
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: Caddyfile
+                path: Caddyfile
+            name: caddy-cm0
+          name: caddy-cm0
+        - name: caddy-data
+          persistentVolumeClaim:
+            claimName: caddy-data
+        - name: caddy-config
+          persistentVolumeClaim:
+            claimName: caddy-config

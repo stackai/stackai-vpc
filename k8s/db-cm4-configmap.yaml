@@ -1,0 +1,13 @@
+apiVersion: v1
+data:
+  _supabase.sql: |
+    \set pguser `echo "$POSTGRES_USER"`
+
+    CREATE DATABASE _supabase WITH OWNER :pguser;
+kind: ConfigMap
+metadata:
+  annotations:
+    use-subpath: "true"
+  labels:
+    io.kompose.service: db
+  name: db-cm4

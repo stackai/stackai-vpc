@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+    kompose.version: 1.36.0 (HEAD)
+  labels:
+    io.kompose.service: storage
+  name: storage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: storage
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+        kompose.version: 1.36.0 (HEAD)
+      labels:
+        io.kompose.service: storage
+    spec:
+      containers:
+        - env:
+            - name: ANON_KEY
+              value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzQ3OTIyOTU1LCJleHAiOjE5MDU2MDI5NTV9.nc_AhXtY05wyIWCO6Pfn13zp4yERxLN0jT9rNDjCSR4
+            - name: AWS_ACCESS_KEY_ID
+              value: supa-storage
+            - name: AWS_DEFAULT_REGION
+              value: stub
+            - name: AWS_SECRET_ACCESS_KEY
+              value: 4PKqpr8bnIsVSHqnpSaMKPnCy0uC9N8O
+            - name: DATABASE_URL
+              value: postgres://supabase_storage_admin:fzSTYWXaDNX--cJ05xrikDcmHEsnPFhd@db:5432/postgres
+            - name: ENABLE_IMAGE_TRANSFORMATION
+              value: "true"
+            - name: FILE_SIZE_LIMIT
+              value: "52428800"
+            - name: FILE_STORAGE_BACKEND_PATH
+              value: /var/lib/storage
+            - name: GLOBAL_S3_BUCKET
+              value: stub
+            - name: GLOBAL_S3_ENDPOINT
+              value: http://minio:9000
+            - name: GLOBAL_S3_FORCE_PATH_STYLE
+              value: "true"
+            - name: GLOBAL_S3_PROTOCOL
+              value: http
+            - name: IMGPROXY_URL
+              value: http://imgproxy:5001
+            - name: PGRST_JWT_SECRET
+              value: H63DAhMRE9aLYdtYnZAsqTFy5OzJ_BjsETt_rEhL
+            - name: POSTGREST_URL
+              value: http://rest:3000
+            - name: REGION
+              value: stub
+            - name: SERVICE_KEY
+              value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIiwiaXNzIjoic3VwYWJhc2UiLCJpYXQiOjE3NDc5MjI5NTUsImV4cCI6MTkwNTYwMjk1NX0.sNVS9zwrVlkKGhrhMlZVrsCECsO4Ughb_e6FfNq6nlc
+            - name: STORAGE_BACKEND
+              value: s3
+            - name: TENANT_ID
+              value: stub
+          image: supabase/storage-api:v1.11.13
+          livenessProbe:
+            exec:
+              command:
+                - wget
+                - --no-verbose
+                - --tries=1
+                - --spider
+                - http://localhost:5000/status
+            failureThreshold: 3
+            periodSeconds: 5
+            timeoutSeconds: 5
+          name: supabase-storage
+          volumeMounts:
+            - mountPath: /var/lib/storage
+              name: storage-claim0
+      restartPolicy: Always
+      volumes:
+        - name: storage-claim0
+          persistentVolumeClaim:
+            claimName: storage-claim0
