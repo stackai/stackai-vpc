@@ -24,7 +24,7 @@ spec:
         - envFrom:
             - configMapRef:
                 name: stackweb--env
-          image: stackweb
+          image: stackai.azurecr.io/stackai/stackweb:latest
           name: stackweb
           ports:
             - containerPort: 3000

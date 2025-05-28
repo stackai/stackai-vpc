@@ -26,7 +26,7 @@ spec:
               value: "3600"
             - name: UNSTRUCTURED_API_KEY
               value: DrJTnB74EbyT
-          image: unstructured
+          image: downloads.unstructured.io/unstructured-io/unstructured-api:0.0.80
           name: unstructured
           ports:
             - containerPort: 8000

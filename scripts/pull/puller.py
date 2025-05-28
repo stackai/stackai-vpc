@@ -5,6 +5,7 @@ import zipfile
 import tempfile
 import requests # type: ignore
 from pathlib import Path
+from typing import Optional
 
 # Define the repository and branch
 REPO_OWNER = "stackai"
@@ -51,7 +52,7 @@ def is_project_root(path: Path) -> bool:
         (path / "stackweb").is_dir() # Add another characteristic check
     )
 
-def find_project_root_auto() -> Path | None:
+def find_project_root_auto() -> Optional[Path]:
     """Try to automatically find the project root directory."""
     # The script itself is in scripts/pull/puller.py
     # So, current_script_path is .../scripts/pull/puller.py
@@ -76,7 +77,7 @@ def find_project_root_auto() -> Path | None:
             return current_path
     return None
 
-def get_project_root_interactively() -> Path | None:
+def get_project_root_interactively() -> Optional[Path]:
     """Prompt the user for the project root path, max 3 attempts."""
     attempts = 3
     while attempts > 0:
