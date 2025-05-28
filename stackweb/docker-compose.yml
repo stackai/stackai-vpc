@@ -50,6 +50,7 @@ services:
         - NPM_RC=${NPM_RC}
         - TIPTAP_PRO_TOKEN=${TIPTAP_PRO_TOKEN}
         - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+        - ON_PREMISE=${ON_PREMISE}
         - VERCEL_ENV=${VERCEL_ENV}
 
     env_file:
