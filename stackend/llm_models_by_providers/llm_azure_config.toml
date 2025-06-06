@@ -1,0 +1,113 @@
+[llms.providers.Azure]
+plan_required = "enterprise"
+docs_url_slug = "azure-openai"
+hosted_by = "Stack AI"
+display_order = 11
+
+[llms.providers.Azure."gpt-4.1"]
+model_name = "GPT 4.1"
+description = "The latest version of GPT-4.1, with improved reasoning and function calling capabilities."
+context_window = 200000
+rating_reasoning = 3
+rating_speed = 2
+rating_context = 3
+warning = "Smartest"
+date = "April 23, 2025"
+has_json_format = true
+has_json_schema = true
+has_vision = true
+supported_media_types = ["image/jpeg", "image/png", "image/webp", "image/gif"]
+has_function_calling = true
+
+[llms.providers.Azure.o4-mini]
+model_name = "o4 Mini"
+description = "o4-mini is a small reasoning model, providing high intelligence at the same cost and latency targets of o1-mini."
+context_window = 200000
+rating_reasoning = 3
+rating_speed = 2
+rating_context = 3
+warning = "Smartest"
+date = "April 23, 2025"
+has_json_format = true
+has_json_schema = true
+has_vision = true
+supported_media_types = ["image/jpeg", "image/png", "image/webp", "image/gif"]
+has_function_calling = true
+
+[llms.providers.Azure.o3-mini]
+model_name = "o3 Mini"
+description = "o3-mini is a small reasoning model, providing high intelligence at the same cost and latency targets of o1-mini."
+context_window = 200000
+rating_reasoning = 3
+rating_speed = 2
+rating_context = 3
+date = "January 31, 2025"
+has_json_format = true
+has_json_schema = true
+has_vision = false
+supported_media_types = []
+has_function_calling = true
+
+[llms.providers.Azure.o1-mini]
+model_name = "o1 Mini"
+description = "Optimized for STEM reasoning, especially math and coding. Performs comparably to the larger o1 model on AIME and Codeforces, but runs 80% faster. Ideal for STEM applications, less effective for non-STEM tasks."
+context_window = 128000
+rating_reasoning = 3
+rating_speed = 2
+rating_context = 2
+date = "September 12, 2024"
+has_json_format = true
+has_json_schema = true
+has_vision = false
+supported_media_types = []
+has_function_calling = true
+
+[llms.providers.Azure.gpt-4o-mini]
+model_name = "GPT-4o Mini"
+description = "Light-weight version of GPT 4o. Enables a broad range of tasks with its low cost and latency (perfect for everyday tasks). Supports vision and surpasses GPT-3.5 Turbo performance."
+context_window = 128000
+training_data = "Up to October 2023"
+rating_reasoning = 3
+rating_speed = 3
+rating_context = 2
+warning = "Fastest"
+date = "July 18, 2024"
+has_json_format = true
+has_json_schema = true
+has_vision = true
+supported_media_types = ["image/jpeg", "image/png", "image/webp", "image/gif"]
+has_function_calling = true
+
+[llms.providers.Azure.gpt-40]
+model_name = "GPT-4o"
+description = "Flagship model from OpenAI's GPT-4 series, best for complex tasks. Supports vision & structured outputs."
+context_window = 128000
+training_data = "Up to October 2023"
+rating_reasoning = 3
+rating_speed = 3
+rating_context = 2
+warning = "Smartest"
+date = "May 13, 2024"
+has_json_format = true
+has_json_schema = false
+has_vision = true
+supported_media_types = ["image/jpeg", "image/png", "image/webp", "image/gif"]
+has_function_calling = true
+
+[llms.providers.Azure.gpt-4-turbo]
+model_name = "GPT-4 Turbo"
+description = "GPT-4 model with improved instruction following, JSON mode, reproducible outputs, parallel function calling, and more. Returns a maximum of 4,096 output tokens."
+context_window = 128000
+training_data = "Up to Dec 2023"
+rating_reasoning = 3
+rating_speed = 2
+rating_context = 3
+date = "November 6, 2023"
+has_json_format = true
+has_json_schema = false
+has_vision = true
+supported_media_types = ["image/jpeg", "image/png", "image/webp", "image/gif"]
+has_function_calling = true
+
+[llms.providers.Azure.default] 
+model_id = "gpt-4o-mini"

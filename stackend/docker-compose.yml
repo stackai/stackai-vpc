@@ -18,6 +18,7 @@ services:
       - ./llm_config.toml:/app/src/apps/config/llm_config.toml:ro
       - ./llm_local_config.toml:/app/src/apps/config/llm_models_by_providers/llm_local_config.toml
       - ./embeddings_config.toml:/app/src/apps/config/embeddings_config.toml:ro
+      - ./llm_models_by_providers/*.toml:/app/src/apps/config/llm_models_by_providers/
 
   stackend:
     container_name: stackend
@@ -37,12 +38,13 @@ services:
       - ./llm_config.toml:/app/src/apps/config/llm_config.toml:ro
       - ./llm_local_config.toml:/app/src/apps/config/llm_models_by_providers/llm_local_config.toml
       - ./embeddings_config.toml:/app/src/apps/config/embeddings_config.toml:ro
+      - ./llm_models_by_providers/*.toml:/app/src/apps/config/llm_models_by_providers/
 
   restarter:
     image: docker:cli
     restart: unless-stopped
     volumes: ["/var/run/docker.sock:/var/run/docker.sock"]
-    entrypoint: ["/bin/sh","-c"]
+    entrypoint: ["/bin/sh", "-c"]
     command:
       - |
         while true; do
