@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+*.egg
+.venv/
+.env
+
+# CDK / AWS
+cdk.out*/
+cdk.context.json
+
+# Logs / test artifacts
+npm-debug.log*
+pip-log.txt
+pytest_cache/
+coverage/
+htmlcov/
+deployment-outputs*.json
+
+
+# Mac / Linux
+.DS_Store
+*.swp
