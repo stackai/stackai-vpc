@@ -18,7 +18,8 @@ services:
       - ./llm_config.toml:/app/src/apps/config/llm_config.toml:ro
       - ./llm_local_config.toml:/app/src/apps/config/llm_models_by_providers/llm_local_config.toml
       - ./embeddings_config.toml:/app/src/apps/config/embeddings_config.toml:ro
-      - ./llm_models_by_providers/*.toml:/app/src/apps/config/llm_models_by_providers/
+      - ./llm_models_by_providers/llm_bedrock_config.toml:/app/src/apps/config/llm_models_by_providers/llm_bedrock_config.toml:ro
+      - ./llm_models_by_providers/llm_azure_config.toml:/app/src/apps/config/llm_models_by_providers/llm_azure_config.toml:ro
 
   stackend:
     container_name: stackend
@@ -38,7 +39,8 @@ services:
       - ./llm_config.toml:/app/src/apps/config/llm_config.toml:ro
       - ./llm_local_config.toml:/app/src/apps/config/llm_models_by_providers/llm_local_config.toml
       - ./embeddings_config.toml:/app/src/apps/config/embeddings_config.toml:ro
-      - ./llm_models_by_providers/*.toml:/app/src/apps/config/llm_models_by_providers/
+      - ./llm_models_by_providers/llm_bedrock_config.toml:/app/src/apps/config/llm_models_by_providers/llm_bedrock_config.toml:ro
+      - ./llm_models_by_providers/llm_azure_config.toml:/app/src/apps/config/llm_models_by_providers/llm_azure_config.toml:ro
 
   restarter:
     image: docker:cli
