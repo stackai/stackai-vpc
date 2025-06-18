@@ -7,6 +7,7 @@
 #     reverse_proxy /realtime/v1/* kong:8000
 #     reverse_proxy /storage/v1/* kong:8000
 #     reverse_proxy /functions/v1/* kong:8000
+#     reverse_proxy /sso/* kong:8000
 #     reverse_proxy /analytics/v1/* kong:8000
 # 
 # 
