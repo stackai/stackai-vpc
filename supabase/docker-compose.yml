@@ -17,7 +17,7 @@ services:
           "CMD",
           "node",
           "-e",
-          "require('http').get('http://localhost:3000/api/profile', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"
+          "require('http').get('http://localhost:3000/api/profile', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})",
         ]
       timeout: 5s
       interval: 5s
@@ -91,7 +91,7 @@ services:
           "--no-verbose",
           "--tries=1",
           "--spider",
-          "http://localhost:9999/health"
+          "http://localhost:9999/health",
         ]
       timeout: 5s
       interval: 5s
@@ -133,6 +133,8 @@ services:
 
       GOTRUE_EXTERNAL_PHONE_ENABLED: ${ENABLE_PHONE_SIGNUP}
       GOTRUE_SMS_AUTOCONFIRM: ${ENABLE_PHONE_AUTOCONFIRM}
+      GOTRUE_SAML_ENABLED: ${SAML_ENABLED}
+      GOTRUE_SAML_PRIVATE_KEY: ${SAML_PRIVATE_KEY}
       # Uncomment to enable custom access token hook. Please see: https://supabase.com/docs/guides/auth/auth-hooks for full list of hooks and additional details about custom_access_token_hook
 
       # GOTRUE_HOOK_CUSTOM_ACCESS_TOKEN_ENABLED: "true"
@@ -152,10 +154,6 @@ services:
       # GOTRUE_HOOK_SEND_EMAIL_ENABLED: "false"
       # GOTRUE_HOOK_SEND_EMAIL_URI: "http://host.docker.internal:54321/functions/v1/email_sender"
       # GOTRUE_HOOK_SEND_EMAIL_SECRETS: "v1,whsec_VGhpcyBpcyBhbiBleGFtcGxlIG9mIGEgc2hvcnRlciBCYXNlNjQgc3RyaW5n"
-
-
-
-
 
   rest:
     container_name: supabase-rest
@@ -198,7 +196,7 @@ services:
           "/dev/null",
           "-H",
           "Authorization: Bearer ${ANON_KEY}",
-          "http://localhost:4000/api/tenants/realtime-dev/health"
+          "http://localhost:4000/api/tenants/realtime-dev/health",
         ]
       timeout: 5s
       interval: 5s
@@ -211,7 +209,7 @@ services:
       DB_USER: supabase_admin
       DB_PASSWORD: ${POSTGRES_PASSWORD}
       DB_NAME: ${POSTGRES_DB}
-      DB_AFTER_CONNECT_QUERY: 'SET search_path TO _realtime'
+      DB_AFTER_CONNECT_QUERY: "SET search_path TO _realtime"
       DB_ENC_KEY: supabaserealtime
       API_JWT_SECRET: ${JWT_SECRET}
       SECRET_KEY_BASE: UpNVntn3cDxHJpq99YMc1T1AQgQpc8kfYTuRgBiYa15BLrx8etQoXz3gZv1/u2oq
@@ -242,7 +240,7 @@ services:
           "--no-verbose",
           "--tries=1",
           "--spider",
-          "http://localhost:5000/status"
+          "http://localhost:5000/status",
         ]
       timeout: 5s
       interval: 5s
@@ -276,7 +274,7 @@ services:
     container_name: supabase-imgproxy
     image: darthsim/imgproxy:v3.8.0
     healthcheck:
-      test: [ "CMD", "imgproxy", "health" ]
+      test: ["CMD", "imgproxy", "health"]
       timeout: 5s
       interval: 5s
       retries: 3
@@ -332,7 +330,7 @@ services:
     container_name: supabase-analytics
     image: supabase/logflare:1.4.0
     healthcheck:
-      test: [ "CMD", "curl", "http://localhost:4000/health" ]
+      test: ["CMD", "curl", "http://localhost:4000/health"]
       timeout: 5s
       interval: 5s
       retries: 10
@@ -420,20 +418,18 @@ services:
       # Persist the database data between restarts
       - ./volumes/db/data/supabase/postgresql/:/var/lib/postgresql/data:Z
 
-
   vector:
     container_name: supabase-vector
     image: timberio/vector:0.28.1-alpine
     healthcheck:
       test:
         [
-
           "CMD",
           "wget",
           "--no-verbose",
           "--tries=1",
           "--spider",
-          "http://vector:9001/health"
+          "http://vector:9001/health",
         ]
       timeout: 5s
       interval: 5s
@@ -443,7 +439,7 @@ services:
       - ${DOCKER_SOCKET_LOCATION}:/var/run/docker.sock:ro
     environment:
       LOGFLARE_API_KEY: ${LOGFLARE_API_KEY}
-    command: [ "--config", "etc/vector/vector.yml" ]
+    command: ["--config", "etc/vector/vector.yml"]
 
   # Update the DATABASE_URL if you are using an external Postgres database
   supavisor:
@@ -487,18 +483,17 @@ services:
     volumes:
       - ./volumes/pooler/pooler.exs:/etc/pooler/pooler.exs:ro
 
-
   minio:
     image: minio/minio
     ports:
-      - '9000:9000'
-      - '9001:9001'
+      - "9000:9000"
+      - "9001:9001"
     environment:
       MINIO_ROOT_USER: supa-storage
       MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
     command: server --console-address ":9001" /data
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://minio:9000/minio/health/live" ]
+      test: ["CMD", "curl", "-f", "http://minio:9000/minio/health/live"]
       interval: 2s
       timeout: 10s
       retries: 5
