@@ -7,6 +7,8 @@ from pathlib import Path
 from typing import Dict
 
 import jwt
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import rsa
 from jinja2 import Environment, FileSystemLoader, Template
 
 environment = Environment(loader=FileSystemLoader("templates/"))
@@ -26,6 +28,20 @@ def generate_password(length: int = 32) -> str:
     """Generate a random password of the given length."""
     alphabet = string.ascii_letters + string.digits + "-_"
     return "".join(secrets.choice(alphabet) for _ in range(length))
+
+
+def generate_saml_private_key() -> str:
+    """Generate a new RSA private key for SAML, returning it as a base64 encoded DER string."""
+    private_key = rsa.generate_private_key(
+        public_exponent=65537,
+        key_size=2048,
+    )
+    der_key = private_key.private_bytes(
+        encoding=serialization.Encoding.DER,
+        format=serialization.PrivateFormat.PKCS8,
+        encryption_algorithm=serialization.NoEncryption(),
+    )
+    return base64.b64encode(der_key).decode("utf-8")
 
 
 def generate_jwt(role: str, secret: str) -> str:
@@ -63,6 +79,10 @@ def get_supabase_template_variables(virtual_machine_ip_or_url: str) -> Dict[str,
     # Generate a password for the minio service
     minio_password = get_env_var_by_env_file("MINIO_PASSWORD", "stackend/.env") or generate_password()
 
+    # Generate a private key for SAML authentication
+    saml_enabled = get_env_var_by_env_file("SAML_ENABLED", "supabase/.env") or "false"
+    saml_private_key = get_env_var_by_env_file("SAML_PRIVATE_KEY", "supabase/.env") or generate_saml_private_key()
+
     return {
         "POSTGRES_PASSWORD": psql_password,
         "JWT_SECRET": jwt_secret,
@@ -74,6 +94,8 @@ def get_supabase_template_variables(virtual_machine_ip_or_url: str) -> Dict[str,
         "LOGFLARE_API_KEY": logflare_api_key,
         "VIRTUAL_MACHINE_IP_OR_URL": virtual_machine_ip_or_url,
         "MINIO_PASSWORD": minio_password,
+        "SAML_ENABLED": saml_enabled,
+        "SAML_PRIVATE_KEY": saml_private_key,
     }
 
 
