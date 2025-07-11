@@ -320,6 +320,30 @@ The stackweb docker container requires some of the environment variables here de
 
 1. If you need to use SSL, configure the [Caddyfile](./caddy/Caddyfile) to use your certificates and keys.
 
+# Domain Setup
+
+You can configure custom domains for the three main services: the frontend application, the API, and the Supabase backend. We recommend using a primary domain and two subdomains.
+
+For example:
+
+- **APP URL**: `https://stackai.onprem.com`
+- **API URL**: `https://api.stackai.onprem.com`
+- **SUPABASE URL**: `https://db.stackai.onprem.com`
+
+There are two steps to configure your domains:
+
+### 1. Update Environment Variables
+
+Run the following command and enter your domains when prompted. This command will update all the necessary `.env` files across the services.
+
+```bash
+make configure-domains
+```
+
+### 2. Configure the Reverse Proxy
+
+You also need to update the [Caddyfile](./caddy/Caddyfile) to reflect your new domains. Replace the placeholder domains in the file with the ones you have configured.
+
 # Updates
 
 In order to update the services, you will need to follow the instructions below:
@@ -328,6 +352,7 @@ In order to update the services, you will need to follow the instructions below:
 2. Update the `image` field of the docker-compose.yml file of the service you want to update.
 
 Example, to update the stackend service from `d3f54d3` to `f4c8aa0`
+Usually you don't need to do this cause you use the latest version.
 
 This line
 

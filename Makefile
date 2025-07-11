@@ -24,13 +24,13 @@ install-environment-variables:
 		./initialize_variables.sh
 	@echo "Environment variables installed successfully"
 
-.PHONY: update-env-urls
-update-env-urls:
-	@echo "Updating service URLs in .env files..."
+.PHONY: configure-domains
+configure-domains:
+	@echo "Configuring service domains in .env files..."
 	@cd scripts/environment_variables && \
 		chmod +x update_urls.sh && \
 		./update_urls.sh
-	@echo "Service URLs updated successfully."
+	@echo "Service domains configured successfully."
 
 .PHONY: start-supabase
 start-supabase:
