@@ -337,7 +337,7 @@ There are two steps to configure your domains:
 Run the following command and enter your domains when prompted. This command will update all the necessary `.env` files across the services.
 
 ```bash
-make update-env-urls
+make configure-domains
 ```
 
 ### 2. Configure the Reverse Proxy
