@@ -62,13 +62,21 @@ def update_env_file_variables(env_file_path: Path, variables_to_update: Dict[str
         f.write("\n".join(updated_lines) + "\n")
 
 def get_url_input(prompt: str, current_value: Optional[str] = None) -> str:
-    """Get URL input from user with optional default value."""
-    if current_value:
-        user_input = input(f"{prompt} (current: {current_value}, press Enter to keep): ").strip()
-        return user_input if user_input else current_value
-    else:
-        user_input = input(f"{prompt}: ").strip()
-        return user_input if user_input else ""
+    """Get URL input from user with optional default value and basic validation."""
+    while True:
+        if current_value:
+            user_input = input(f"{prompt} (current: {current_value}, press Enter to keep): ").strip()
+            if not user_input:
+                return current_value
+        else:
+            user_input = input(f"{prompt}: ").strip()
+            if not user_input:
+                return ""
+        
+        if user_input.startswith("http://") or user_input.startswith("https://"):
+            return user_input
+        else:
+            print("Invalid URL. Please provide a full URL including http:// or https://.")
 
 def main() -> None:
     initial_message = """
@@ -173,10 +181,11 @@ If you don't provide a value, the existing value will be kept.
             stackweb_updates["NEXT_PUBLIC_URL"] = app_url
             stackweb_updates["NEXT_PUBLIC_SITE_URL"] = app_url
         if api_url:
-            stackweb_updates["NEXT_PUBLIC_INDEX_URL"] = api_url
-            stackweb_updates["NEXT_PUBLIC_CHAT_BACKEND_URL"] = api_url
-            stackweb_updates["NEXT_PUBLIC_STACKEND_URL"] = api_url
-            stackweb_updates["NEXT_PUBLIC_STACKEND_INFERENCE_URL"] = api_url
+            api_url_with_slash = api_url if api_url.endswith('/') else api_url + '/'
+            stackweb_updates["NEXT_PUBLIC_INDEX_URL"] = api_url_with_slash
+            stackweb_updates["NEXT_PUBLIC_CHAT_BACKEND_URL"] = api_url_with_slash
+            stackweb_updates["NEXT_PUBLIC_STACKEND_URL"] = api_url_with_slash
+            stackweb_updates["NEXT_PUBLIC_STACKEND_INFERENCE_URL"] = api_url_with_slash
         if supabase_url:
             stackweb_updates["NEXT_PUBLIC_SUPABASE_URL"] = supabase_url
         
