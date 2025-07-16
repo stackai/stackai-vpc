@@ -6,6 +6,10 @@
       "defaultValue": "stackai",
       "type": "String"
     },
+    "adminUsername": {
+      "type": "String",
+      "defaultValue": "azureuser"
+    },
     "publicIPAddresses_stackai_ip_name": {
       "defaultValue": "stackai-ip",
       "type": "String"
@@ -223,7 +227,7 @@
         "publicIPAllocationMethod": "Static",
         "idleTimeoutInMinutes": 4,
         "dnsSettings": {
-          "domainNameLabel": "api-stackai",
+          "domainNameLabel": "[concat('api-', parameters('virtualMachines_stackai_name'), '-', uniqueString(resourceGroup().id))]",
           "fqdn": "api-stackai.eastus.cloudapp.azure.com"
         },
         "ipTags": [],
@@ -251,7 +255,7 @@
         "publicIPAllocationMethod": "Static",
         "idleTimeoutInMinutes": 4,
         "dnsSettings": {
-          "domainNameLabel": "stackai",
+          "domainNameLabel": "[concat(parameters('virtualMachines_stackai_name'), '-', uniqueString(resourceGroup().id))]",
           "fqdn": "stackai.eastus.cloudapp.azure.com"
         },
         "ipTags": [],
@@ -279,7 +283,7 @@
         "publicIPAllocationMethod": "Static",
         "idleTimeoutInMinutes": 4,
         "dnsSettings": {
-          "domainNameLabel": "supabase-stackai",
+          "domainNameLabel": "[concat('db-', parameters('virtualMachines_stackai_name'), '-', uniqueString(resourceGroup().id))]",
           "fqdn": "supabase-stackai.eastus.cloudapp.azure.com"
         },
         "ipTags": [],
@@ -363,7 +367,7 @@
         },
         "osProfile": {
           "computerName": "[parameters('virtualMachines_stackai_name')]",
-          "adminUsername": "azureuser",
+          "adminUsername": "[parameters('adminUsername')]",
           "linuxConfiguration": {
             "disablePasswordAuthentication": true,
             "ssh": {
