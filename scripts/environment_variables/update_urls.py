@@ -74,7 +74,7 @@ def get_url_input(prompt: str, current_value: Optional[str] = None) -> str:
                 return ""
         
         if user_input.startswith("http://") or user_input.startswith("https://"):
-            return user_input
+            return user_input.rstrip('/')
         else:
             print("Invalid URL. Please provide a full URL including http:// or https://.")
 
