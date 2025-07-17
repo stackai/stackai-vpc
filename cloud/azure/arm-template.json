@@ -688,5 +688,23 @@
         "auxiliarySku": "None"
       }
     }
-  ]
+  ],
+  "outputs": {
+    "virtualMachinePrimaryPublicIp": {
+      "type": "string",
+      "value": "[reference(parameters('publicIPAddresses_stackai_ip_name')).ipAddress]"
+    },
+    "virtualMachinePrimaryDnsName": {
+      "type": "string",
+      "value": "[reference(parameters('publicIPAddresses_stackai_ip_name')).dnsSettings.fqdn]"
+    },
+    "apiDnsName": {
+      "type": "string",
+      "value": "[reference(parameters('publicIPAddresses_api_stackai_ip_name')).dnsSettings.fqdn]"
+    },
+    "databaseDnsName": {
+      "type": "string",
+      "value": "[reference(parameters('publicIPAddresses_supabase_stackai_ip_name')).dnsSettings.fqdn]"
+    }
+  }
 }
