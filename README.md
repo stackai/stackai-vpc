@@ -13,15 +13,13 @@ This repository contains the configuration needed to run StackAI locally using d
 ## Software
 
 - Ubuntu 24.04 LTS
-- You will need internet access during the setup process.
-- Make` installed.
 - Python 3.10 or higher.
-- `pip` installed.
-- `virtualenv` installed.
+- You will need internet access during the setup process.
+- Docker and Docker Compose (compose version v2.26 or higher). Follow instructions below to install them if needed.
+
 
 Check the steps below for instructions on how to check if you meet this requirement.
 
-- You will need docker and docker compose (compose version v2.26 or higher) installed in your machine. There is a script (see instructions below) that will install them for you if needed.
 - You will need access to stackai's container image registry on Azure.
 - Depending on how you configure the containers, different ports should be exposed, if you follow the default settings, the following ports need to be exposed:
   - Port 3000: TCP port used for the StackAI frontend HTTP
@@ -54,6 +52,8 @@ After running the environment variables initialization script (see below), each 
 
 Follow the instructions in the order they are presented.
 
+**Note:** Throughout this setup guide, when you see `cd /path/to/stackai-onprem`, replace `/path/to/stackai-onprem` with the actual path to where you have cloned or downloaded this repository on your system.
+
 ## Install make
 
 ```bash
@@ -70,7 +70,13 @@ make --version
 
 You will need docker and docker compose installed in your machine.
 
-To install them, open a terminal in **the root folder of the project, the same as where this README file is located** and execute the following command, log in again after it finishes:
+To install them, open a terminal and navigate to the root folder of the project by running:
+
+```bash
+cd /path/to/stackai-onprem
+```
+
+Then execute the following command, log in again after it finishes:
 
 > :WARNING: The script will log you out from your current session.
 > Log in again and verify successful setup running the following command:
@@ -98,9 +104,7 @@ Install python3, pip and virtualenv:
 sudo apt install python3-pip python3-venv
 ```
 
-Ensure that python is installed and working correctly by opening a terminal **in the root folder of the project, the same as where this README file is located** and running the following commands on it:
-
-Start by making sure that the python version is >= 3.8:
+Ensure that python is installed and working correctly. Start by making sure that the python version is >= 3.10:
 
 ```bash
 python3 --version
@@ -164,11 +168,15 @@ stackweb/.env
 The script will initialize the environment variables with random secrets and a valid default configuration.
 It is encouraged that you manually review the generated values after the script finishes and make any adjustments needed, specially to the networking related configuration.
 
-### Istructions
+### Instructions
 
 a) Read the section above.
 
-b) Open a new terminal **in the root folder of the project, the same as where this README file is located**.
+b) Open a new terminal and navigate to the root folder of the project:
+
+```bash
+cd /path/to/stackai-onprem
+```
 
 c) Run the script that will initialize the environment variables:
 
@@ -180,7 +188,13 @@ make install-environment-variables
 
 ## Supabase
 
-1.  Open a terminal **in the root folder of the project, the same as where this README file is located** and run:
+1.  Open a terminal and navigate to the root folder of the project:
+
+    ```bash
+    cd /path/to/stackai-onprem
+    ```
+
+    Then run:
 
     ```bash
     make start-supabase
@@ -191,16 +205,27 @@ make install-environment-variables
 2.  Verify the installation by navigating to the url configured in the file `supabase/.env` named as `SUPABASE_PUBLIC_URL` variable. This will
     take you to the supabase dashboard, which is enabled by default (you may disable it manually in the `supabase/docker-compose.yml` file if you want). To log in, you will need to use the `DASHBOARD_USERNAME` and `DASHBOARD_PASSWORD` variables values that can be found in the `supabase/.env` file.
 
-        You can check the `SERVICE_ROLE_KEY` created runing the following script:
-        ```sh
-        scripts/environment_variables/retrieve_anon_supabase.sh
-        ```
+      You can check the `SERVICE_ROLE_KEY` created by running the following script:
+      ```bash
+      scripts/environment_variables/retrieve_anon_supabase.sh
+      ```
 
-3.  You may stop the containers by doing a `Control+C` in the terminal where you ran the `docker compose up ...` command or by running `docker compose down` after checking the setup.
+3.  You may stop the containers by doing a `Ctrl+C` in the terminal where you ran the `make start-supabase` command, or by opening a new terminal, navigating to the project root, and running:
+
+    ```bash
+    cd /path/to/stackai-onprem
+    docker compose down
+    ```
 
 ## MongoDB
 
-1. Open a terminal **in the root folder of the project, the same as where this README file is located** and initialize the mongodb container:
+1. Open a terminal and navigate to the root folder of the project:
+
+   ```bash
+   cd /path/to/stackai-onprem
+   ```
+
+   Then initialize the mongodb container:
 
    ```bash
    docker compose up mongodb
@@ -212,17 +237,29 @@ make install-environment-variables
 
 2. Initialize the database
 
-   Open a terminal **in the root folder of the project, the same as where this README file is located** and run:
+   Open a terminal and navigate to the root folder of the project:
 
    ```bash
-       make initialize_mongodb
+   cd /path/to/stackai-onprem
+   ```
+
+   Then run:
+
+   ```bash
+   make initialize_mongodb
    ```
 
 3. After the initialization, you can run `docker compose down` to stop mongodb.
 
 ## Unstructured
 
-1. Open a terminal **in the root folder of the project, the same as where this README file is located** and initialize the unstructured container:
+1. Open a terminal and navigate to the root folder of the project:
+
+   ```bash
+   cd /path/to/stackai-onprem
+   ```
+
+   Then initialize the unstructured container:
 
    ```bash
    docker compose up unstructured
@@ -234,7 +271,13 @@ make install-environment-variables
 
 ## Weaviate
 
-1. Open a terminal **in the root folder of the project, the same as where this README file is located** and initialize the weaviate container:
+1. Open a terminal and navigate to the root folder of the project:
+
+   ```bash
+   cd /path/to/stackai-onprem
+   ```
+
+   Then initialize the weaviate container:
 
    ```bash
    docker compose up weaviate
@@ -248,7 +291,13 @@ make install-environment-variables
 
 The stackweb docker container requires some of the environment variables here defined to be built. This is why we need to source the .env file before building the image.
 
-1. Open a terminal **in the root folder of the project, the same as where this README file is located** and initialize the stackweb container:
+1. Open a terminal and navigate to the root folder of the project:
+
+   ```bash
+   cd /path/to/stackai-onprem
+   ```
+
+   Then initialize the stackweb container:
 
    a) Source the stackweb environment variables:
 
@@ -272,7 +321,13 @@ The stackweb docker container requires some of the environment variables here de
 
 3. Configure the local LLM models you want to use in the `stackend/llm_local_config.toml` file and the `stackend/llm_config.toml` files.
 
-4. Open a terminal **in the root folder of the project, the same as where this README file is located** and pull the backend containers.
+4. Open a terminal and navigate to the root folder of the project:
+
+   ```bash
+   cd /path/to/stackai-onprem
+   ```
+
+   Then pull the backend containers:
 
    ```bash
    docker compose pull stackend celery_worker redis
@@ -300,7 +355,13 @@ The stackweb docker container requires some of the environment variables here de
 
 ## Stackrepl
 
-1. Open a terminal **in the root folder of the project, the same as where this README file is located** and pull the backend containers.
+1. Open a terminal and navigate to the root folder of the project:
+
+   ```bash
+   cd /path/to/stackai-onprem
+   ```
+
+   Then build the stackrepl container:
 
    ```bash
    docker compose build stackrepl
@@ -308,7 +369,13 @@ The stackweb docker container requires some of the environment variables here de
 
 # Launch all services
 
-1. Open a terminal **in the root folder of the project, the same as where this README file is located** and launch all services.
+1. Open a terminal and navigate to the root folder of the project:
+
+   ```bash
+   cd /path/to/stackai-onprem
+   ```
+
+   Then launch all services:
 
    ```bash
    docker compose up
