@@ -4,8 +4,7 @@ namespace: supabase
 resources:
   - ../base
   - namespace.yaml
-  - externalsecrets.yaml
-  - secretstore.yaml
+  - secrets.yaml
   - storageclass.yaml
 patchesStrategicMerge:
   - helmrelease-patch.yaml
