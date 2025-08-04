@@ -1,0 +1,12 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: mongodb-premium-ssd
+  namespace: mongodb
+provisioner: disk.csi.azure.com
+parameters:
+  skuName: Premium_LRS
+  cachingmode: ReadOnly
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true

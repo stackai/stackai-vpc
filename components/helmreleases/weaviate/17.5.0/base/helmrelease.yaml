@@ -1,0 +1,65 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: weaviate
+  namespace: weaviate
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: weaviate
+      version: "17.5.0"
+      sourceRef:
+        kind: HelmRepository
+        name: weaviate
+        namespace: weaviate
+  values:
+    # Default values for weaviate.
+    # You can configure authentication, authorization, replication, resource limits and others.
+    replicas: 1
+    image:
+      registry: cr.weaviate.io/
+      repo: semitechnologies/weaviate
+      tag: ""
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "300Mi"
+      limits:
+        cpu: "1000m"
+        memory: "1Gi"
+    storage:
+      size: 32Gi
+    env:
+      QUERY_DEFAULTS_LIMIT: 100
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: true
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'none'
+      CLUSTER_GOSSIP_BIND_PORT: "7100"
+      CLUSTER_DATA_BIND_PORT: "7101"
+    service:
+      type: LoadBalancer
+      port: 80
+    modules:
+      generative-openai:
+        enabled: false
+      generative-cohere:
+        enabled: false
+      generative-palm:
+        enabled: false
+      generative-anthropic:
+        enabled: false
+      generative-huggingface:
+        enabled: false
+      generative-ollama:
+        enabled: false
+      generative-aws:
+        enabled: false
+      generative-anyscale:
+        enabled: false
+      generative-mistral:
+        enabled: false
+      generative-jina:
+        enabled: false
+      generative-google:
+        enabled: false
