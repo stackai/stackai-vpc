@@ -9,17 +9,18 @@ spec:
   chart:
     spec:
       chart: flux2
-      version: 2.3.0
+      version: 2.13.0
       sourceRef:
         kind: HelmRepository
         name: fluxcd-community
         namespace: flux-system
   values:
     installCRDs: true
-    cli:
-      image: ghcr.io/fluxcd/flux-cli
-      tag: v2.3.0
+    policies:
+      create: false
     sourceController:
+      image:
+        tag: v1.6.2
       resources:
         limits:
           cpu: 1000m
@@ -28,6 +29,8 @@ spec:
           cpu: 100m
           memory: 128Mi
     kustomizeController:
+      image:
+        tag: v1.6.1
       resources:
         limits:
           cpu: 1000m
@@ -36,6 +39,8 @@ spec:
           cpu: 100m
           memory: 128Mi
     helmController:
+      image:
+        tag: v1.3.0
       resources:
         limits:
           cpu: 1000m
@@ -44,6 +49,8 @@ spec:
           cpu: 100m
           memory: 128Mi
     notificationController:
+      image:
+        tag: v1.6.0
       resources:
         limits:
           cpu: 1000m
@@ -51,3 +58,9 @@ spec:
         requests:
           cpu: 100m
           memory: 128Mi
+    imageAutomationController:
+      image:
+        tag: v0.41.2
+    imageReflectorController:
+      image:
+        tag: v0.35.2
