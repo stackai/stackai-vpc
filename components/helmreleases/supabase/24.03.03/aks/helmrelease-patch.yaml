@@ -9,17 +9,17 @@ spec:
     db:
       persistence:
         size: 32Gi
-        storageClassName: managed-csi-premium
+        storageClassName: supabase-premium-rwo
     
     storage:
       persistence:
         size: 20Gi
-        storageClassName: managed-csi-premium
+        storageClassName: supabase-premium-rwo
     
     imgproxy:
       persistence:
         size: 10Gi
-        storageClassName: managed-csi-premium
+        storageClassName: supabase-premium-rwo
     
     # Azure-optimized resource settings
     db:

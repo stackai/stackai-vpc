@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: mongodb
 resources:
   - ../base
+  - namespace.yaml
   - storageclass.yaml
 patchesStrategicMerge:
   - helmrelease-patch.yaml
