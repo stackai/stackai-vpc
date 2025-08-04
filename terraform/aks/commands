@@ -1,0 +1,10 @@
+az aks get-credentials --resource-group fullStack-cluster-rg --name fullStack-cluster --overwrite-existing
+
+
+
+az aks nodepool update \
+  --resource-group fullStack-cluster-rg \
+  --cluster-name fullStack-cluster \
+  --name default \
+  --min-count 1 \
+  --max-count 10  --update-cluster-autoscaler
