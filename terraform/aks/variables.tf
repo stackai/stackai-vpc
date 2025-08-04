@@ -58,6 +58,12 @@ variable "node_size" {
   default     = "Standard_D2_v3"
 }
 
+variable "user_suffix" {
+  description = "User identifier suffix for resource naming (e.g., username or initials)"
+  type        = string
+  default     = ""
+}
+
 variable "tags" {
   description = "Tags to apply to all resources"
   type        = map(string)

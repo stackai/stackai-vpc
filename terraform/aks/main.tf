@@ -25,6 +25,16 @@ provider "azurerm" {
 # Get current Azure client configuration
 data "azurerm_client_config" "current" {}
 
+# Get current user from system
+data "external" "whoami" {
+  program = ["sh", "-c", "echo '{\"user\": \"'$(whoami)'\"}'"]
+}
+
+locals {
+  # Use provided user_suffix or fall back to system username
+  effective_user_suffix = var.user_suffix != "" ? var.user_suffix : data.external.whoami.result.user
+}
+
 # Configure the Kubernetes provider
 provider "kubernetes" {
   host                   = azurerm_kubernetes_cluster.aks.kube_config.0.host
@@ -35,17 +45,17 @@ provider "kubernetes" {
 
 # Resource group
 resource "azurerm_resource_group" "aks" {
-  name     = "${var.cluster_name}-rg"
+  name     = "${var.cluster_name}-${local.effective_user_suffix}-rg"
   location = var.location
-  tags     = var.tags
+  tags     = merge(var.tags, { Owner = local.effective_user_suffix })
 }
 
 # AKS Cluster
 resource "azurerm_kubernetes_cluster" "aks" {
-  name                = var.cluster_name
+  name                = "${var.cluster_name}-${local.effective_user_suffix}"
   location            = azurerm_resource_group.aks.location
   resource_group_name = azurerm_resource_group.aks.name
-  dns_prefix          = var.cluster_name
+  dns_prefix          = "${var.cluster_name}-${local.effective_user_suffix}"
   kubernetes_version  = var.kubernetes_version
 
   # Enable workload identity and OIDC for pod authentication
@@ -77,5 +87,5 @@ resource "azurerm_kubernetes_cluster" "aks" {
     dns_service_ip    = var.dns_service_ip
   }
 
-  tags = var.tags
+  tags = merge(var.tags, { Owner = local.effective_user_suffix })
 }
