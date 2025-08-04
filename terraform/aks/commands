@@ -1,10 +1,11 @@
-az aks get-credentials --resource-group fullStack-cluster-rg --name fullStack-cluster --overwrite-existing
+#az aks get-credentials --resource-group fullStack-cluster-rg --name fullStack-cluster --overwrite-existing
+az aks get-credentials --resource-group fullStack-cluster-$(whoami)-rg --name fullStack-cluster-$(whoami) --overwrite-existing
 
 
 
 az aks nodepool update \
-  --resource-group fullStack-cluster-rg \
-  --cluster-name fullStack-cluster \
+  --resource-group fullStack-cluster-$(whoami)-rg \
+  --cluster-name fullStack-cluster-$(whoami) \
   --name default \
   --min-count 1 \
   --max-count 10  --update-cluster-autoscaler
