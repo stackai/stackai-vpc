@@ -49,7 +49,7 @@ variable "min_node_count" {
 variable "max_node_count" {
   description = "Maximum number of nodes for autoscaling"
   type        = number
-  default     = 3
+  default     = 10
 }
 
 variable "node_size" {
