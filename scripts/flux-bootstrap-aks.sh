@@ -75,7 +75,8 @@ flux bootstrap github \
     --owner="$GITHUB_OWNER" \
     --repository="$REPO_NAME" \
     --branch="$BRANCH" \
-    --path="$FLUX_PATH/flux-system" \
+    --path="$FLUX_PATH" \
+    --personal \
     --token-auth \
     --components-extra=image-reflector-controller,image-automation-controller
 
