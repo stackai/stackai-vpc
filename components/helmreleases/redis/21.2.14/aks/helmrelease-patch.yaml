@@ -1,0 +1,44 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: redis
+  namespace: redis
+spec:
+  values:
+    global:
+      storageClass: redis-premium-rwo
+    master:
+      service:
+        type: LoadBalancer
+        annotations:
+          service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+      persistence:
+        storageClass: redis-premium-rwo
+        size: 32Gi
+      resources:
+        limits:
+          cpu: 2000m
+          memory: 2048Mi
+        requests:
+          cpu: 500m
+          memory: 512Mi
+    replica:
+      persistence:
+        storageClass: redis-premium-rwo
+        size: 32Gi
+      resources:
+        limits:
+          cpu: 2000m
+          memory: 2048Mi
+        requests:
+          cpu: 500m
+          memory: 512Mi
+    commonConfiguration: |-
+      # Enable AOF persistence
+      appendonly yes
+      # Performance tuning for Azure
+      tcp-keepalive 60
+      timeout 300
+      tcp-backlog 511
+      # Memory management
+      maxmemory-policy allkeys-lru

@@ -1,0 +1,57 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: mongodb-community-operator
+  namespace: mongodb
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: community-operator
+      version: 0.13.0
+      sourceRef:
+        kind: HelmRepository
+        name: mongodb
+        namespace: mongodb
+  values:
+    operator:
+      name: mongodb-kubernetes-operator
+      replicas: 1
+      version: 0.13.0
+      resources:
+        limits:
+          cpu: 1100m
+          memory: 1Gi
+        requests:
+          cpu: 500m
+          memory: 200Mi
+    
+    agent:
+      name: mongodb-agent-ubi
+      version: 108.0.6.8796-1
+    
+    image:
+      pullPolicy: Always
+    
+    registry:
+      agent: quay.io/mongodb
+      operator: quay.io/mongodb
+      pullPolicy: Always
+    
+    mongodb:
+      name: mongodb
+      repo: docker.io
+    
+    createResource: false
+    
+    resource:
+      name: mongodb-replica-set
+      version: 6.0.3
+      members: 3
+      tls:
+        enabled: false
+    
+    namespace: mongodb
+    
+    community-operator-crds:
+      enabled: false

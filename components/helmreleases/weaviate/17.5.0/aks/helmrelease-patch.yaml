@@ -1,0 +1,41 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: weaviate
+  namespace: weaviate
+spec:
+  values:
+    # Azure-specific storage configuration
+    # IMPORTANT: Use disk.csi.azure.com provisioner, NOT file.csi.azure.com
+    storage:
+      size: 32Gi
+      storageClassName: weaviate-premium-rwo  # Azure managed disk with CSI driver
+    
+    # Azure-optimized resource settings
+    resources:
+      requests:
+        cpu: "1000m"
+        memory: "2Gi"
+      limits:
+        cpu: "2000m"
+        memory: "4Gi"
+    
+    # Service configuration for Azure
+    service:
+      type: LoadBalancer
+      port: 80
+      annotations:
+        service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+        service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "default"
+    
+    # Additional environment variables for Azure
+    env:
+      QUERY_DEFAULTS_LIMIT: 100
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: true
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'none'
+      CLUSTER_GOSSIP_BIND_PORT: "7100"
+      CLUSTER_DATA_BIND_PORT: "7101"
+      # Azure-specific performance tuning
+      GOGC: "100"
+      GOMEMLIMIT: "3500MiB"

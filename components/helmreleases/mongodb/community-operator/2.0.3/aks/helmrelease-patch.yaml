@@ -1,0 +1,46 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: mongodb-community-operator
+  namespace: mongodb
+spec:
+  values:
+    operator:
+      resources:
+        limits:
+          cpu: 2000m
+          memory: 2Gi
+        requests:
+          cpu: 1000m
+          memory: 500Mi
+    
+    resource:
+      storage:
+        storageClassName: mongodb-premium-ssd
+        size: 100Gi
+      
+      statefulSet:
+        spec:
+          template:
+            spec:
+              containers:
+                - name: mongod
+                  resources:
+                    limits:
+                      cpu: 2000m
+                      memory: 4Gi
+                    requests:
+                      cpu: 1000m
+                      memory: 2Gi
+                - name: mongodb-agent
+                  resources:
+                    limits:
+                      cpu: 500m
+                      memory: 500Mi
+                    requests:
+                      cpu: 250m
+                      memory: 250Mi
+    
+    service:
+      annotations:
+        service.beta.kubernetes.io/azure-load-balancer-internal: "true"

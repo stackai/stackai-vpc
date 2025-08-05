@@ -1,0 +1,8 @@
+az aks get-credentials --resource-group fullStack-cluster-rg --name fullStack-cluster --overwrite-existing
+
+
+helm repo add weaviate https://weaviate.github.io/weaviate-helm
+helm install my-weaviate weaviate/weaviate
+
+
+kubectl port-forward svc/weaviate 8080:80
