@@ -1,7 +1,4 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - crds.yaml
-  - system.yaml
-  - stackweb.yaml
-  - stackend.yaml
+  - ../../../components/kustomizations/stackend/VERSION/aks/
