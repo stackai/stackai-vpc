@@ -3,7 +3,6 @@ kind: Kustomization
 namespace: supabase
 resources:
   - ../base
-  - namespace.yaml
   - secrets.yaml
   - storageclass.yaml
 patchesStrategicMerge:
