@@ -70,7 +70,7 @@ if kubectl get crd kustomizations.kustomize.toolkit.fluxcd.io &>/dev/null; then
 fi
 flux uninstall --keep-namespace --silent || true
 
-echo "🚀 Bootstrapping Flux at path: $FLUX_PATH/flux-system..."
+echo "🚀 Bootstrapping Flux at path: $FLUX_PATH..."
 flux bootstrap github \
     --owner="$GITHUB_OWNER" \
     --repository="$REPO_NAME" \
