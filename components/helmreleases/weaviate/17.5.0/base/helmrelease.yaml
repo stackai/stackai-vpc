@@ -17,10 +17,6 @@ spec:
     # Default values for weaviate.
     # You can configure authentication, authorization, replication, resource limits and others.
     replicas: 1
-    image:
-      registry: cr.weaviate.io/
-      repo: semitechnologies/weaviate
-      tag: ""
     resources:
       requests:
         cpu: "500m"
