@@ -11,7 +11,7 @@ spec:
       sourceRef:
         kind: GitRepository
         name: supabase-community
-        namespace: flux-system
+        namespace: supbase
   values:
     secret:
       jwt:

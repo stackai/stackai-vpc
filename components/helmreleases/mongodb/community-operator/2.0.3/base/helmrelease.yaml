@@ -12,7 +12,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: mongodb
-        namespace: flux-system
+        namespace: mongodb
   values:
     operator:
       name: mongodb-kubernetes-operator
