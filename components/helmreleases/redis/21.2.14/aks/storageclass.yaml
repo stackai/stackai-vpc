@@ -3,7 +3,7 @@ kind: StorageClass
 metadata:
   name: redis-premium-rwo
 parameters:
-  skuName: Premium_LRS
+  skuName: Standard_LRS
 provisioner: disk.csi.azure.com
 reclaimPolicy: Retain
 volumeBindingMode: WaitForFirstConsumer

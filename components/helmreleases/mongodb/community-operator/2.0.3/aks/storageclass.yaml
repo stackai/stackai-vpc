@@ -5,7 +5,7 @@ metadata:
   namespace: mongodb
 provisioner: disk.csi.azure.com
 parameters:
-  skuName: Premium_LRS
+  skuName: Standard_LRS
   cachingmode: ReadOnly
 reclaimPolicy: Retain
 volumeBindingMode: WaitForFirstConsumer

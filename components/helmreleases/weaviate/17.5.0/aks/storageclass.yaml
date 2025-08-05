@@ -4,7 +4,7 @@ metadata:
   name: weaviate-premium-rwo
 provisioner: disk.csi.azure.com
 parameters:
-  skuName: Premium_LRS
+  skuName: Standard_LRS
   cachingmode: ReadWrite
 reclaimPolicy: Retain
 volumeBindingMode: WaitForFirstConsumer
