@@ -14,6 +14,8 @@ spec:
         namespace: flux-system
   values:
     secret:
+      analytics:
+        apiKey: 'QlGbMyt31KBgSpACyd8n+rCDt7pYAOGSsYrsUfHJdVLhpytite4TvEg3CuA0jkQMvlBe1nzcQivkmS38NKKmkQ=='
       jwt:
         secretRef: supabase-jwt
       smtp:
@@ -115,7 +117,7 @@ spec:
         KONG_LOG_LEVEL: info
     
     analytics:
-      enabled: false
+      enabled: true
       image:
         tag: 1.4.0
       livenessProbe:
