@@ -43,7 +43,7 @@ spec:
       environment:
         STUDIO_DEFAULT_ORGANIZATION: "My Organization"
         STUDIO_DEFAULT_PROJECT: "My Project"
-        SUPABASE_PUBLIC_URL: https://supabase-supabase-kong.flux-system.svc.cluster.local
+        SUPABASE_PUBLIC_URL: http://supabase-supabase-kong.flux-system.svc.cluster.local
         NEXT_PUBLIC_ENABLE_LOGS: "true"
       livenessProbe:
         httpGet:
@@ -55,8 +55,8 @@ spec:
       image:
         tag: v2.145.0
       environment:
-        API_EXTERNAL_URL: https://supabase-supabase-kong.flux-system.svc.cluster.local
-        GOTRUE_SITE_URL: https://supabase-supabase-kong.flux-system.svc.cluster.local
+        API_EXTERNAL_URL: http://supabase-supabase-kong.flux-system.svc.cluster.local
+        GOTRUE_SITE_URL: http://supabase-supabase-kong.flux-system.svc.cluster.local
         GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
         GOTRUE_MAILER_AUTOCONFIRM: "true"
         GOTRUE_SMTP_ADMIN_EMAIL: "your-mail@supabase-supabase-kong.flux-system.svc.cluster.local"
