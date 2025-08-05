@@ -53,7 +53,7 @@ spec:
     
     auth:
       image:
-        tag: v2.143.0
+        tag: v2.145.0
       environment:
         API_EXTERNAL_URL: http://example.com
         GOTRUE_SITE_URL: http://example.com
