@@ -54,10 +54,10 @@ spec:
               subPath: embeddings_config.toml
           resources:
             requests:
-              cpu: "8"
+              cpu: "6"
               memory: "16Gi"
             limits:
-              cpu: "10"
+              cpu: "7"
               memory: "20Gi"
       imagePullSecrets:
         - name: acr-secret
