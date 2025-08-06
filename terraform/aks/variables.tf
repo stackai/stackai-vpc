@@ -73,3 +73,28 @@ variable "tags" {
     ManagedBy   = "terraform"
   }
 }
+
+# Memory-optimized node pool variables
+variable "memory_node_size" {
+  description = "Size of the memory-optimized nodes (8 vCPU, 64GB RAM)"
+  type        = string
+  default     = "Standard_E8s_v5"
+}
+
+variable "memory_node_count" {
+  description = "Initial number of memory-optimized nodes"
+  type        = number
+  default     = 1
+}
+
+variable "memory_min_node_count" {
+  description = "Minimum number of memory-optimized nodes for autoscaling"
+  type        = number
+  default     = 1
+}
+
+variable "memory_max_node_count" {
+  description = "Maximum number of memory-optimized nodes for autoscaling"
+  type        = number
+  default     = 10
+}
