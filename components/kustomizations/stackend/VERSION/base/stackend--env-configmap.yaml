@@ -22,8 +22,8 @@ data:
   BEDROCK_SECRET_ACCESS_KEY: ""
   CALENDLY_CLIENT_ID: ""
   CALENDLY_CLIENT_SECRET: ""
-  CELERY_BACKEND_URL: redis://redis:6379
-  CELERY_BROKER_URL: redis://redis:6379
+  CELERY_BACKEND_URL: redis://redis-headless.redis.svc.cluster.local:6379
+  CELERY_BROKER_URL: redis://redis-headless.redis.svc.cluster.local:6379
   CEREBRAS_API_KEY: ""
   CHAMALEON_API_KEY: ""
   COHERE_API_KEY: ""
@@ -52,7 +52,7 @@ data:
   HUBSPOT_CLIENT_ID: ""
   HUBSPOT_CLIENT_SECRET: ""
   HUGGINGFACE_API_KEY: ""
-  INDEXING_API_URL: http://d:8000
+  INDEXING_API_URL: http://supabase-supabase-kong.flux-system.svc.cluster.local:8000
   JIRA_CLIENT_ID: ""
   JIRA_CLIENT_SECRET: ""
   LOCAL_CALENDLY_CLIENT_ID: ""
@@ -80,19 +80,19 @@ data:
   POPLARML_KEY: ""
   POSTGRES_DB_HOST: supavisor
   POSTGRES_DB_NAME: postgres
-  POSTGRES_DB_PASSWORD: fzSTYWXaDNX--cJ05xrikDcmHEsnPFhd
+  POSTGRES_DB_PASSWORD: postgres
   POSTGRES_DB_PORT: "6543"
-  POSTGRES_DB_USER: postgres.stackai
+  POSTGRES_DB_USER: postgres
   PSPDFKIT_API_KEY: ""
-  REDIS_URL: redis://redis:6379
+  REDIS_URL: redis://redis-headless.redis.svc.cluster.local:6379
   REDUCTO_AUTH_TOKEN: ""
-  REPL_URL: http://stackrepl:8000/execute_code
+  REPL_URL: http://stackrepl:8000/execute_code #TODO
   REPLICATE_API_TOKEN: ""
   RESEND_API_KEY: ""
   S3_AWS_ACCESS_KEY: supa-storage
   S3_AWS_REGION: us-east-1
   S3_AWS_SECRET_ACCESS_KEY: 4PKqpr8bnIsVSHqnpSaMKPnCy0uC9N8O
-  S3_ENDPOINT_URL: http://d:9000
+  S3_ENDPOINT_URL: http://d:9000 # TODO
   S3_USERCONTENT_PUBLIC_BUCKET: stack-ai-usercontent
   SCRAPIN_API_KEY: ""
   SELF_HOSTED_WEAVIATE: "true"
@@ -101,26 +101,26 @@ data:
   SERVICENOW_CLIENT_ID: ""
   SERVICENOW_CLIENT_SECRET: ""
   STACKAI_LICENCE: d
-  STACKEND_API_URL: http://d:8000
-  STACKWEB_URL: http://d:3000
+  STACKEND_API_URL: http://supabase-supabase-kong.flux-system.svc.cluster.local:8000
+  STACKWEB_URL: http://stackweb.stackweb.svc.cluster.local:3000
   STRIPE_SECRET_KEY: '?'
   STRIPE_WEBHOOK_SECRET: ""
   SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzQ3OTIyOTU1LCJleHAiOjE5MDU2MDI5NTV9.nc_AhXtY05wyIWCO6Pfn13zp4yERxLN0jT9rNDjCSR4
   SUPABASE_SERVICE_ROLE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIiwiaXNzIjoic3VwYWJhc2UiLCJpYXQiOjE3NDc5MjI5NTUsImV4cCI6MTkwNTYwMjk1NX0.sNVS9zwrVlkKGhrhMlZVrsCECsO4Ughb_e6FfNq6nlc
-  SUPABASE_URL: http://kong:8000
+  SUPABASE_URL: http://supabase-supabase-kong.flux-system.svc.cluster.local:8000
   TOGETHER_AI_API_KEY: ""
   TWILIO_AUTH_TOKEN: ""
   TYPEFORM_CLIENT_ID: ""
   TYPEFORM_CLIENT_SECRET: ""
   UNSTRUCTURED_API_KEY: DrJTnB74EbyT
-  UNSTRUCTURED_URL: http://unstructured:8000/general/v0/general
+  UNSTRUCTURED_URL: http://unstructured:8000/general/v0/general # TODO
   VERTEX_AI_PROJECT_ID: ""
   VERTEX_AI_PROJECT_LOCATION: ""
   VERTEX_AI_SERVICE_ACCOUNT_MAIL: ""
   VERTEX_AI_SERVICE_ACCOUNT_PKEY: ""
   VERTEX_AI_SERVICE_ACCOUNT_PKEY_ID: ""
   WEAVIATE_KEY: oSyM0JgYluHi
-  WEAVIATE_URL: weaviate
+  WEAVIATE_URL: weaviate.weaviate.svc.cluster.local # possibly should be weaviate-headless
   WOLFRAM_APP_ID: ""
   XAI_API_KEY: ""
   ZENDESK_CLIENT_ID: ""
