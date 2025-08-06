@@ -2,6 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: stackend
 resources:
+  - namespace.yaml
   - stackend-service.yaml
   - stackend-deployment.yaml
   - stackend-cm0-configmap.yaml
