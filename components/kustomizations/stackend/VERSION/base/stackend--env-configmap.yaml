@@ -85,6 +85,7 @@ data:
   POSTGRES_DB_USER: postgres
   PSPDFKIT_API_KEY: ""
   REDIS_URL: redis://redis-headless.redis.svc.cluster.local:6379
+  REDIS_US_EAST_URL: redis://redis-headless.redis.svc.cluster.local:6379
   REDUCTO_AUTH_TOKEN: ""
   REPL_URL: http://stackrepl:8000/execute_code #TODO
   REPLICATE_API_TOKEN: ""
