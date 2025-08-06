@@ -101,7 +101,6 @@ data:
   SERPER_API_KEY: ""
   SERVICENOW_CLIENT_ID: ""
   SERVICENOW_CLIENT_SECRET: ""
-  STACKAI_LICENCE: d
   STACKEND_API_URL: http://supabase-supabase-kong.flux-system.svc.cluster.local:8000
   STACKWEB_URL: http://stackweb.stackweb.svc.cluster.local:3000
   STRIPE_SECRET_KEY: '?'
