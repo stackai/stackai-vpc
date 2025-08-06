@@ -33,6 +33,12 @@ spec:
         - envFrom:
             - configMapRef:
                 name: stackend--env
+          env:
+            - name: STACKAI_LICENCE
+              valueFrom:
+                secretKeyRef:
+                  name: stackend-licence-secret
+                  key: licence
           image: stackai.azurecr.io/stackai/stackend-backend:latest
           name: stackend
           ports:
