@@ -45,6 +45,8 @@ spec:
               name: stackend-cm2
               readOnly: true
               subPath: embeddings_config.toml
+      imagePullSecrets:
+        - name: acr-secret
       restartPolicy: Always
       volumes:
         - configMap:

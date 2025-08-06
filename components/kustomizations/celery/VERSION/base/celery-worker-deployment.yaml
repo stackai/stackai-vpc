@@ -1,6 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+    kompose.version: 1.36.0 (HEAD)
   labels:
     io.kompose.service: celery-worker
   name: celery-worker
@@ -13,6 +16,9 @@ spec:
     type: Recreate
   template:
     metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+        kompose.version: 1.36.0 (HEAD)
       labels:
         io.kompose.service: celery-worker
     spec:
@@ -34,6 +40,8 @@ spec:
               name: celery-worker-cm2
               readOnly: true
               subPath: embeddings_config.toml
+      imagePullSecrets:
+        - name: acr-secret
       restartPolicy: Always
       volumes:
         - configMap:
