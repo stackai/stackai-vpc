@@ -13,7 +13,7 @@ data:
   NEXT_PUBLIC_GOOGLE_WORKSPACE_CLIENT_ID: <your-google-workspace-client-id>
   NEXT_PUBLIC_HUBSPOT_CLIENT_ID: <your-hubspot-client-id>
   NEXT_PUBLIC_INDEX_URL: http://d:8000/
-  NEXT_PUBLIC_LEADERBOARD_API_URL: ""
+  NEXT_PUBLIC_LEADERBOARD_API_URL: "https://llm-leaderboard-stats-0ztm.onrender.com/"
   NEXT_PUBLIC_NOTION_CLIENT_ID: <your-notion-client-id>
   NEXT_PUBLIC_NOTION_OAUTH_CLIENT_ID: <your-notion-oauth-client-id>
   NEXT_PUBLIC_OUTLOOK_CLIENT_ID: <your-outlook-client-id>
