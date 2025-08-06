@@ -352,7 +352,9 @@ The stackweb docker container requires some of the environment variables here de
    ```bash
    docker compose exec stackend bash -c "cd infra/migrations/postgres && alembic upgrade head"
    ```
+   Note: If you hit an error around needing a StackAI licence, use scripts/generate_on_premise_license.py
 
+   
 ## Stackrepl
 
 1. Open a terminal and navigate to the root folder of the project:
