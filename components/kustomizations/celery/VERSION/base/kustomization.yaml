@@ -3,7 +3,7 @@ kind: Kustomization
 namespace: celery
 resources:
   - namespace.yaml
-  - stackend--env.yaml #TODO
+  - stackend--env-configmap.yaml #TODO
   - celery-worker-cm0-configmap.yaml
   - celery-worker-cm1-configmap.yaml
   - celery-worker-cm2-configmap.yaml
