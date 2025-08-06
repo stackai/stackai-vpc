@@ -22,6 +22,13 @@ spec:
       labels:
         io.kompose.service: stackend
     spec:
+      tolerations:
+        - key: workload
+          operator: Equal
+          value: memory-intensive
+          effect: NoSchedule
+      nodeSelector:
+        nodepool: memory-optimized
       containers:
         - envFrom:
             - configMapRef:
@@ -45,6 +52,13 @@ spec:
               name: stackend-cm2
               readOnly: true
               subPath: embeddings_config.toml
+          resources:
+            requests:
+              cpu: "8"
+              memory: "16Gi"
+            limits:
+              cpu: "10"
+              memory: "20Gi"
       imagePullSecrets:
         - name: acr-secret
       restartPolicy: Always
