@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: celery-worker
+  name: celery-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: celery-worker
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.kompose.service: celery-worker
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: stackend--env
+          image: stackai.azurecr.io/stackai/stackend-celery-worker:latest
+          name: celery-worker
+          volumeMounts:
+            - mountPath: /app/src/apps/config/llm_config.toml
+              name: celery-worker-cm0
+              readOnly: true
+              subPath: llm_config.toml
+            - mountPath: /app/src/apps/config/llm_models_by_providers/llm_local_config.toml
+              name: celery-worker-cm1
+              subPath: llm_local_config.toml
+            - mountPath: /app/src/apps/config/embeddings_config.toml
+              name: celery-worker-cm2
+              readOnly: true
+              subPath: embeddings_config.toml
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: llm_config.toml
+                path: llm_config.toml
+            name: celery-worker-cm0
+          name: celery-worker-cm0
+        - configMap:
+            items:
+              - key: llm_local_config.toml
+                path: llm_local_config.toml
+            name: celery-worker-cm1
+          name: celery-worker-cm1
+        - configMap:
+            items:
+              - key: embeddings_config.toml
+                path: embeddings_config.toml
+            name: celery-worker-cm2
+          name: celery-worker-cm2

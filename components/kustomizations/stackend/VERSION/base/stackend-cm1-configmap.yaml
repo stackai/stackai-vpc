@@ -1,0 +1,78 @@
+apiVersion: v1
+data:
+  llm_local_config.toml: |-
+    # Local LLM models configuration
+    #
+    # This file contains the configuration for the local LLM models that will be available when using StackAI.
+    #
+    # How to use this file:
+    # The set up process has two steps:
+    # 1. Add as many local LLM models as you intend to use (see commented example below)
+    # 2. Set up the default model in the [llms.providers.Local.default] section.
+    #    IMPORTANT: The model_id variable should be the name of the model in the api. For instance, if you were
+    #    to set up the sample llm below as your default, you should set `model_id` to "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo"
+    #    rather than "Meta Llama 3.1 Turbo"
+    #
+    # Common issues solved:
+    # - The provider name for the local llms is "Local", not "local"
+
+
+    [llms.providers.Local]
+    plan_required = "enterprise"
+
+
+    # REFERENCE LOCAL MODEL CONFIGURATION:
+    #
+    # You may add as many local LLM models as you need.
+    # To do so, please use the configuration below as a reference and adjust it to your needs
+    # The most important values to set up are:
+    #
+    # - model name in the api: This needs to be put in the toml header [llms.providers.Local."YOUR MODEL NAME IN YOUR API"]
+    # - endpoint_base_url: The base URL of the OpenAI compatible API. This has to be set up in the toml body.
+    # - api_key: The API key for the OpenAI compatible API. This has to be set up in the toml body.
+    #
+    #
+    # [llms.providers.Local."meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo"]
+    # endpoint_base_url = "https://api.together.xyz/v1"
+    # api_key = "example api key"
+    # model_name = "Meta Llama 3.1 Turbo"
+    # description = "This is a dummy configuration model that you can use as reference to create your own configuration."
+    # context_window = 1024
+    # reasoning = 1
+    # speed = 1
+    # context = 1
+    # date = ""
+    # has_json_format = false
+    # has_json_schema = false
+    # has_vision = false
+    # supported_media_types = []
+    # has_function_calling = false
+
+    [llms.providers.Local.generic_local]
+    model_name = "OpenAI API Compatible Model"
+    endpoint_base_url = "https://api.together.xyz/v1"
+    api_key = "sk-1234-5678-abcd"
+    description = "A local model for testing and development. Go into the node settings and set up the endpoint base url and api key of the node for it to work."
+    context_window = 128000
+    reasoning = 1
+    speed = 1
+    context = 1
+    date = ""
+    has_json_format = false
+    has_json_schema = false
+    has_vision = false
+    supported_media_types = []
+    has_function_calling = false
+
+
+    # Remember to adjust this as well!
+    [llms.providers.Local.default]
+    provider = "Local"
+    model_id = "generic_local"
+kind: ConfigMap
+metadata:
+  annotations:
+    use-subpath: "true"
+  labels:
+    io.kompose.service: stackend
+  name: stackend-cm1
