@@ -56,6 +56,36 @@ resource "azurerm_network_security_rule" "allow_8000" {
   network_security_group_name = azurerm_network_security_group.aks.name
 }
 
+# Security rule to allow port 80 (HTTP)
+resource "azurerm_network_security_rule" "allow_80" {
+  name                        = "allow-port-80"
+  priority                    = 110
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "80"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.aks.name
+  network_security_group_name = azurerm_network_security_group.aks.name
+}
+
+# Security rule to allow port 443 (HTTPS)
+resource "azurerm_network_security_rule" "allow_443" {
+  name                        = "allow-port-443"
+  priority                    = 120
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "443"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.aks.name
+  network_security_group_name = azurerm_network_security_group.aks.name
+}
+
 # Associate NSG with AKS subnet
 resource "azurerm_subnet_network_security_group_association" "aks" {
   subnet_id                 = azurerm_subnet.aks.id
