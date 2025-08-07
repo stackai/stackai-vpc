@@ -81,7 +81,7 @@ data:
   POSTGRES_DB_HOST: supabase-supabase-db.flux-system.svc.cluster.local
   POSTGRES_DB_NAME: postgres
   POSTGRES_DB_PASSWORD: "your-super-secret-and-long-postgres-password"
-  POSTGRES_DB_PORT: "6543"
+  POSTGRES_DB_PORT: "5432"
   POSTGRES_DB_USER: postgres
   PSPDFKIT_API_KEY: ""
   REDIS_URL: redis://redis-headless.redis.svc.cluster.local:6379
