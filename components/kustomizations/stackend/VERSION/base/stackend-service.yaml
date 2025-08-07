@@ -17,3 +17,4 @@ spec:
       targetPort: 8888
   selector:
     io.kompose.service: stackend
+  type: LoadBalancer
