@@ -42,19 +42,19 @@ resource "azurerm_network_security_group" "aks" {
 
 # Security rule to allow port 8000
 # TODO REMOVE THIS ONCE SUPABASE IS firxed
-#resource "azurerm_network_security_rule" "allow_8000" {
-#  name                        = "allow-port-8000"
-#  priority                    = 100
-#  direction                   = "Inbound"
-#  access                      = "Allow"
-#  protocol                    = "Tcp"
-#  source_port_range           = "*"
-#  destination_port_range      = "8000"
-#  source_address_prefix       = "*"
-#  destination_address_prefix  = "*"
-#  resource_group_name         = azurerm_resource_group.aks.name
-#  network_security_group_name = azurerm_network_security_group.aks.name
-#}
+resource "azurerm_network_security_rule" "allow_8000" {
+  name                        = "allow-port-8000"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "8000"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.aks.name
+  network_security_group_name = azurerm_network_security_group.aks.name
+}
 
 # Associate NSG with AKS subnet
 resource "azurerm_subnet_network_security_group_association" "aks" {
