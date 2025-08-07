@@ -20,8 +20,6 @@ spec:
       service:
         type: LoadBalancer
         annotations:
-          service.beta.kubernetes.io/azure-load-balancer-internal: "true"
-          service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "default"
           service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: "/healthz"
       
       # Azure-specific configurations
