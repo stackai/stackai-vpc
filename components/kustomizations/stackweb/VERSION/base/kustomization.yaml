@@ -6,3 +6,4 @@ resources:
   - stackweb--env-configmap.yaml
   - stackweb-deployment.yaml
   - stackweb-service.yaml
+  - stackweb-ingress.yaml
