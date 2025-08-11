@@ -33,7 +33,7 @@ spec:
                 name: stackweb--env
           image: stackai.azurecr.io/stackai/stackweb:latest
           name: stackweb
-          command: ["/bin/sh", "-c", "npm run build && npm run start"]
+          command: ["/bin/sh", "-c", "npm run build && node .next/standalone/server.js"]
           ports:
             - containerPort: 3000
               protocol: TCP
