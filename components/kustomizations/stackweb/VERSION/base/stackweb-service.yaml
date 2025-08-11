@@ -8,7 +8,7 @@ metadata:
     io.kompose.service: stackweb
   name: stackweb
 spec:
-  type: NodePort
+  type: LoadBalancer
   externalTrafficPolicy: Local
   ports:
     - name: "3000"
