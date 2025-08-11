@@ -6,3 +6,6 @@ resources:
   - ../../../components/helmreleases/redis/21.2.14/aks
   - ../../../components/helmreleases/supabase/24.03.03/aks
   - ../../../components/helmreleases/weaviate/17.5.0/aks
+
+  # network policies
+  - ../../../components/kustomizations/network-policies/0.0.1/aks
