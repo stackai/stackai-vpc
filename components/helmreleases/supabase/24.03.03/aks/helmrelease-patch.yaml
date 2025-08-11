@@ -110,7 +110,7 @@ spec:
       
       # Enable ingress for Azure
       ingress:
-        enabled: true
+        enabled: false
         ingressClassName: nginx
         annotations:
           nginx.ingress.kubernetes.io/proxy-body-size: "100m"
@@ -120,8 +120,10 @@ spec:
           nginx.ingress.kubernetes.io/cors-allow-origin: "*"
           nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
           nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,apikey,x-client-info"
-        path: /supabase
-        pathType: Prefix
+        hosts:
+          - paths:
+              - path: /supabase
+                pathType: Prefix
     
     # Additional Azure-specific environment variables
     db:
