@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+    kompose.version: 1.36.0 (HEAD)
+  labels:
+    io.kompose.service: supavisor
+  name: supavisor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: supavisor
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+        kompose.version: 1.36.0 (HEAD)
+      labels:
+        io.kompose.service: supavisor
+    spec:
+      containers:
+        - args:
+            - /bin/sh
+            - -c
+            - /app/bin/migrate && /app/bin/supavisor eval "$()(cat /etc/pooler/pooler.exs)" && /app/bin/server
+          env:
+            - name: API_JWT_SECRET
+              value: H63DAhMRE9aLYdtYnZAsqTFy5OzJ_BjsETt_rEhL
+            - name: CLUSTER_POSTGRES
+              value: "true"
+            - name: DATABASE_URL
+              value: ecto://postgres:your-super-secret-and-long-postgres-password@db:5432/_supabase
+            - name: ERL_AFLAGS
+              value: -proto_dist inet_tcp
+            - name: METRICS_JWT_SECRET
+              value: H63DAhMRE9aLYdtYnZAsqTFy5OzJ_BjsETt_rEhL
+            - name: POOLER_DEFAULT_POOL_SIZE
+              value: "20"
+            - name: POOLER_MAX_CLIENT_CONN
+              value: "100"
+            - name: POOLER_POOL_MODE
+              value: transaction
+            - name: POOLER_TENANT_ID
+              value: stackai
+            - name: PORT
+              value: "4000"
+            - name: POSTGRES_DB
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: your-super-secret-and-long-postgres-password
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: REGION
+              value: local
+            - name: SECRET_KEY_BASE
+              value: UpNVntn3cDxHJpq99YMc1T1AQgQpc8kfYTuRgBiYa15BLrx8etQoXz3gZv1/u2oq
+            - name: VAULT_ENC_KEY
+              value: your-encryption-key-32-chars-min
+          image: supabase/supavisor:1.1.56
+          livenessProbe:
+            exec:
+              command:
+                - curl -sSfL --head -o /dev/null "http://127.0.0.1:4000/api/health"
+            failureThreshold: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+          name: supabase-pooler
+          ports:
+            - containerPort: 5432
+              protocol: TCP
+            - containerPort: 6543
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /etc/pooler/pooler.exs
+              name: supavisor-cm0
+              readOnly: true
+              subPath: pooler.exs
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: pooler.exs
+                path: pooler.exs
+            name: supavisor-cm0
+          name: supavisor-cm0
