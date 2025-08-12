@@ -33,7 +33,7 @@ spec:
             - name: CLUSTER_POSTGRES
               value: "true"
             - name: DATABASE_URL
-              value: ecto://postgres:your-super-secret-and-long-postgres-password@db:5432/_supabase
+              value: ecto://postgres:your-super-secret-and-long-postgres-password@supabase-supabase-db:5432/_supabase
             - name: ERL_AFLAGS
               value: -proto_dist inet_tcp
             - name: METRICS_JWT_SECRET
