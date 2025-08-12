@@ -122,7 +122,7 @@ spec:
           nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,apikey,x-client-info"
         hosts:
           - paths:
-              - path: /supabase
+              - path: /auth
                 pathType: Prefix
     
     # Additional Azure-specific environment variables
