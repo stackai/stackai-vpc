@@ -22,3 +22,17 @@ spec:
                 name: stackend
                 port:
                   number: 8000
+          - path: /organizations
+            pathType: Prefix
+            backend:
+              service:
+                name: stackend
+                port:
+                  number: 8000
+          - path: /roles
+            pathType: Prefix
+            backend:
+              service:
+                name: stackend
+                port:
+                  number: 8000
