@@ -42,7 +42,7 @@ data:
   SPREADSHEET_ID: <your-spreadsheet-id>
   STRIPE_SECRET_KEY: <your-stripe-secret-key>
   STRIPE_WEBHOOK_SECRET: <your-stripe-webhook-secret>
-  SUPABASE_SERVICE_ROLE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIiwiaXNzIjoic3VwYWJhc2UiLCJpYXQiOjE3NDc5MjI5NTUsImV4cCI6MTkwNTYwMjk1NX0.sNVS9zwrVlkKGhrhMlZVrsCECsO4Ughb_e6FfNq6nlc
+  SUPABASE_SERVICE_ROLE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJvbGUiOiJzZXJ2aWNlX3JvbGUiLCJleHAiOjIwMTUxNzY4MDB9.xm8PjidKwC9RmEhkLY2Hth_yxgTXyNsva79nt799fBc
   TIPTAP_PRO_TOKEN: ""
   VERCEL_ENV: development
 kind: ConfigMap
