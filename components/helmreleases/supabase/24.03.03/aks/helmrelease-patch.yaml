@@ -106,11 +106,11 @@ spec:
       
       # Change to ClusterIP for ingress routing
       service:
-        type: LoadBalancer
+        type: ClusterIP
       
       # Enable ingress for Azure
       ingress:
-        enabled: false
+        enabled: true
         ingressClassName: nginx
         annotations:
           nginx.ingress.kubernetes.io/proxy-body-size: "100m"
