@@ -52,7 +52,7 @@ data:
   HUBSPOT_CLIENT_ID: ""
   HUBSPOT_CLIENT_SECRET: ""
   HUGGINGFACE_API_KEY: ""
-  INDEXING_API_URL: http://supabase-supabase-kong.flux-system.svc.cluster.local:8000
+  INDEXING_API_URL: http://74.235.37.119:8000
   JIRA_CLIENT_ID: ""
   JIRA_CLIENT_SECRET: ""
   LOCAL_CALENDLY_CLIENT_ID: ""
@@ -101,13 +101,13 @@ data:
   SERPER_API_KEY: ""
   SERVICENOW_CLIENT_ID: ""
   SERVICENOW_CLIENT_SECRET: ""
-  STACKEND_API_URL: http://supabase-supabase-kong.flux-system.svc.cluster.local:8000
+  STACKEND_API_URL: http://74.235.37.119:8000
   STACKWEB_URL: http://stackweb.stackweb.svc.cluster.local:3000
   STRIPE_SECRET_KEY: '?'
   STRIPE_WEBHOOK_SECRET: ""
   SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJvbGUiOiJhbm9uIiwiZXhwIjoyMDE1MTc2ODAwfQ.Wk-XZoMEJV6vdN3hbYMVz2n3XDmRbUcHxYJ33ej06bE
   SUPABASE_SERVICE_ROLE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIiwiaXNzIjoic3VwYWJhc2UiLCJpYXQiOjE3NDc5MjI5NTUsImV4cCI6MTkwNTYwMjk1NX0.sNVS9zwrVlkKGhrhMlZVrsCECsO4Ughb_e6FfNq6nlc
-  SUPABASE_URL: http://supabase-supabase-kong.flux-system.svc.cluster.local:8000
+  SUPABASE_URL: http://74.235.37.119:8000
   TOGETHER_AI_API_KEY: ""
   TWILIO_AUTH_TOKEN: ""
   TYPEFORM_CLIENT_ID: ""
