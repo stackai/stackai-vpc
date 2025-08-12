@@ -38,6 +38,8 @@ spec:
         initialDelaySeconds: 3
       persistence:
         enabled: true
+      service:
+        type: LoadBalancer
     
     studio:
       image:
