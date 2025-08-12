@@ -35,7 +35,7 @@ data:
   DROPBOX_APP_SECRET: ""
   EASYCRON_KEY: ""
   ELEVEN_LABS_API_KEY: ""
-  ENVIRONMENT: production
+  ENVIRONMENT: development
   EXA_API_KEY: ""
   FIRECRAWL_KEY: ""
   GMAIL_CLIENT_ID: ""
