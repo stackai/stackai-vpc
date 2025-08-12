@@ -6,13 +6,13 @@ data:
   NEXT_PUBLIC_AIRTABLE_CLIENT_ID: <your-airtable-client-id>
   NEXT_PUBLIC_AIRTABLE_CODE_VERIFIER: <your-airtable-code-verifier>
   NEXT_PUBLIC_CHAMALEON_KEY: <your-chamaleon-key>
-  NEXT_PUBLIC_CHAT_BACKEND_URL: http://20.237.59.69:8000/
+  NEXT_PUBLIC_CHAT_BACKEND_URL: http://74.235.37.119:8000/
   NEXT_PUBLIC_CONFLUENCE_CLIENT_ID: <your-confluence-client-id>
   NEXT_PUBLIC_DROPBOX_CLIENT_ID: <your-dropbox-client-id>
   NEXT_PUBLIC_GOOGLE_CLIENT_ID: <your-google-client-id>
   NEXT_PUBLIC_GOOGLE_WORKSPACE_CLIENT_ID: <your-google-workspace-client-id>
   NEXT_PUBLIC_HUBSPOT_CLIENT_ID: <your-hubspot-client-id>
-  NEXT_PUBLIC_INDEX_URL: http://20.237.59.69:8000/
+  NEXT_PUBLIC_INDEX_URL: http://74.235.37.119:8000/
   NEXT_PUBLIC_LEADERBOARD_API_URL: "https://llm-leaderboard-stats-0ztm.onrender.com/"
   NEXT_PUBLIC_NOTION_CLIENT_ID: <your-notion-client-id>
   NEXT_PUBLIC_NOTION_OAUTH_CLIENT_ID: <your-notion-oauth-client-id>
@@ -22,15 +22,15 @@ data:
   NEXT_PUBLIC_REACT_APP_ENV: development
   NEXT_PUBLIC_SENTRY_DSN: ""
   NEXT_PUBLIC_SHAREPOINT_CLIENT_ID: <your-sharepoint-client-id>
-  NEXT_PUBLIC_SITE_URL: http://20.237.59.69:3000
+  NEXT_PUBLIC_SITE_URL: http://74.235.37.119:3000
   NEXT_PUBLIC_STACKEND_INFERENCE_URL: http://stackend.flux-system.svc.cluster.local:8000/
   NEXT_PUBLIC_STACKEND_URL: http://stackend.flux-system.svc.cluster.local:8000/
   NEXT_PUBLIC_STRIPE_CLIENT_ID: <your-stripe-client-id>
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: <your-stripe-publishable-key>
   NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzQ3OTIyOTU1LCJleHAiOjE5MDU2MDI5NTV9.nc_AhXtY05wyIWCO6Pfn13zp4yERxLN0jT9rNDjCSR4
-  NEXT_PUBLIC_SUPABASE_URL: http://20.237.59.69:8000 # 8800 ???
+  NEXT_PUBLIC_SUPABASE_URL: http://74.235.37.119:8000 # 8800 ???
   NEXT_PUBLIC_TYPEFORM_CLIENT_ID: <your-typeform-client-id>
-  NEXT_PUBLIC_URL: http://20.237.59.69:3000
+  NEXT_PUBLIC_URL: http://74.235.37.119:3000
   NEXT_PUBLIC_VERCEL_ENV: development
   NEXT_PUBLIC_ZENDESK_CLIENT_ID: <your-zendesk-client-id>
   NPM_RC: ""
