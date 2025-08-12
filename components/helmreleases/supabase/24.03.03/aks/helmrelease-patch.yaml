@@ -106,7 +106,7 @@ spec:
       
       # Change to ClusterIP for ingress routing
       service:
-        type: ClusterIP
+        type: LoadBalancer
       
       # Enable ingress for Azure
       ingress:
