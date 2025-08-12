@@ -23,8 +23,8 @@ data:
   NEXT_PUBLIC_SENTRY_DSN: ""
   NEXT_PUBLIC_SHAREPOINT_CLIENT_ID: <your-sharepoint-client-id>
   NEXT_PUBLIC_SITE_URL: http://74.235.37.119:3000
-  NEXT_PUBLIC_STACKEND_INFERENCE_URL: http://stackend.flux-system.svc.cluster.local:8000/
-  NEXT_PUBLIC_STACKEND_URL: http://stackend.flux-system.svc.cluster.local:8000/
+  NEXT_PUBLIC_STACKEND_INFERENCE_URL: http://20.72.153.80:8000/
+  NEXT_PUBLIC_STACKEND_URL: http://20.72.153.80:8000/
   NEXT_PUBLIC_STRIPE_CLIENT_ID: <your-stripe-client-id>
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: <your-stripe-publishable-key>
   NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJvbGUiOiJhbm9uIiwiZXhwIjoyMDE1MTc2ODAwfQ.Wk-XZoMEJV6vdN3hbYMVz2n3XDmRbUcHxYJ33ej06bE
