@@ -78,7 +78,7 @@ data:
   PINECONE_ENV: ""
   POLYTOMIC_API_KEY: ""
   POPLARML_KEY: ""
-  POSTGRES_DB_HOST: 4.156.156.28
+  POSTGRES_DB_HOST: supabase-supabase-db.flux-system.cluster.local
   POSTGRES_DB_NAME: postgres
   POSTGRES_DB_PASSWORD: "your-super-secret-and-long-postgres-password"
   POSTGRES_DB_PORT: "5432"
