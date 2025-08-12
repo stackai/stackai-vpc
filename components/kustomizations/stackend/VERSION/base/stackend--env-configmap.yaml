@@ -130,7 +130,7 @@ data:
   sentry_dsn: ""
   sharepoint_client_id: ""
   sharepoint_client_secret: ""
-  supabase_encryption_key: EvZZRZ9To4aRYraXdpvC19O/qLpiJ7m6MEr8Ly6BJM0=
+  supabase_encryption_key: hGC39XYIfOQWtuaGnS8dHNQ6qoUX3izK8a74ss03ybo=
 kind: ConfigMap
 metadata:
   labels:
