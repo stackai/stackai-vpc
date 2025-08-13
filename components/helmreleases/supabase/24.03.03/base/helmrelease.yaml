@@ -15,7 +15,7 @@ spec:
   values:
     secret:
       analytics:
-        apiKey: 'QlGbMyt31KBgSpACyd8n+rCDt7pYAOGSsYrsUfHJdVLhpytite4TvEg3CuA0jkQMvlBe1nzcQivkmS38NKKmkQ=='
+        apiKey: "QlGbMyt31KBgSpACyd8n+rCDt7pYAOGSsYrsUfHJdVLhpytite4TvEg3CuA0jkQMvlBe1nzcQivkmS38NKKmkQ=="
       jwt:
         secretRef: supabase-jwt
       smtp:
@@ -24,7 +24,7 @@ spec:
         secretRef: supabase-dashboard
       db:
         secretRef: supabase-db
-    
+
     db:
       enabled: true
       image:
@@ -40,40 +40,40 @@ spec:
         enabled: true
       service:
         type: LoadBalancer
-    
+
     studio:
       image:
         tag: 20240326-5e5586d
       environment:
         STUDIO_DEFAULT_ORGANIZATION: "My Organization"
         STUDIO_DEFAULT_PROJECT: "My Project"
-        SUPABASE_PUBLIC_URL: http://74.235.37.119:8000
-        SUPABASE_URL: http://74.235.37.119:8000
+        SUPABASE_PUBLIC_URL: http://4.157.182.172:8000
+        SUPABASE_URL: http://4.157.182.172:8000
         NEXT_PUBLIC_ENABLE_LOGS: "true"
       livenessProbe:
         httpGet:
           path: /api/profile
           port: 3000
         initialDelaySeconds: 3
-    
+
     auth:
       image:
         tag: v2.145.0
       environment:
-        API_EXTERNAL_URL: http://74.235.37.119:8000
-        SUPABASE_URL: http://74.235.37.119:8000
-        GOTRUE_SITE_URL: http://74.235.37.119:8000
+        API_EXTERNAL_URL: http://4.157.182.172:8000
+        SUPABASE_URL: http://4.157.182.172:8000
+        GOTRUE_SITE_URL: http://4.157.182.172:8000
         GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
         GOTRUE_MAILER_AUTOCONFIRM: "true"
-        GOTRUE_SMTP_ADMIN_EMAIL: "your-mail@74.235.37.119:8000"
-        GOTRUE_SMTP_HOST: "smtp.74.235.37.119:8000"
+        GOTRUE_SMTP_ADMIN_EMAIL: "your-mail@4.157.182.172:8000"
+        GOTRUE_SMTP_HOST: "smtp.4.157.182.172:8000"
         GOTRUE_SMTP_PORT: "587"
-        GOTRUE_SMTP_SENDER_NAME: "your-mail@74.235.37.119:8000"
-    
+        GOTRUE_SMTP_SENDER_NAME: "your-mail@4.157.182.172:8000"
+
     rest:
       image:
         tag: v12.0.1
-    
+
     realtime:
       image:
         tag: v2.27.5
@@ -82,11 +82,11 @@ spec:
           path: /
           port: 4000
         initialDelaySeconds: 3
-    
+
     meta:
       image:
         tag: v0.80.0
-    
+
     storage:
       image:
         tag: v0.46.4
@@ -97,7 +97,7 @@ spec:
         initialDelaySeconds: 3
       persistence:
         enabled: true
-    
+
     imgproxy:
       image:
         tag: v3.8.0
@@ -111,7 +111,7 @@ spec:
         initialDelaySeconds: 3
       persistence:
         enabled: true
-    
+
     kong:
       image:
         repository: kong
@@ -119,7 +119,7 @@ spec:
       environment:
         KONG_DECLARATIVE_CONFIG: /usr/local/kong/kong.yml
         KONG_LOG_LEVEL: info
-    
+
     analytics:
       enabled: true
       image:
@@ -129,7 +129,7 @@ spec:
           path: /health
           port: 4000
         initialDelaySeconds: 3
-    
+
     vector:
       enabled: false
       image:
@@ -149,7 +149,7 @@ spec:
         - name: pod-logs
           hostPath:
             path: /var/log/pods
-    
+
     functions:
       image:
         tag: v1.41.2
