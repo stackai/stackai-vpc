@@ -124,6 +124,20 @@ spec:
           nginx.ingress.kubernetes.io/rewrite-target: ""
         hosts:
           - paths:
+              - path: /sso
+                pathType: Prefix
+              - path: /analytics/v1
+                pathType: Prefix
+              - path: /functions/v1
+                pathType: Prefix
+              - path: /storage/v1
+                pathType: Prefix
+              - path: /realtime/v1
+                pathType: Prefix
+              - path: /rest/v1
+                pathType: Prefix
+              - path: /graphql/v1
+                pathType: Prefix
               - path: /auth
                 pathType: Prefix
     
