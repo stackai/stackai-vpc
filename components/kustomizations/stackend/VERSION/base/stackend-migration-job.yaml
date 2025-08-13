@@ -1,0 +1,79 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: stackend-db-migration
+  labels:
+    io.kompose.service: stackend-migration
+spec:
+  template:
+    metadata:
+      labels:
+        io.kompose.service: stackend-migration
+    spec:
+      tolerations:
+        - key: workload
+          operator: Equal
+          value: memory-intensive
+          effect: NoSchedule
+      nodeSelector:
+        nodepool: memory-optimized
+      containers:
+        - name: migration
+          image: stackai.azurecr.io/stackai/stackend-backend:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "Running database migrations..."
+              cd infra/migrations/postgres && alembic upgrade head
+              echo "Database migrations completed successfully"
+          envFrom:
+            - configMapRef:
+                name: stackend--env
+          env:
+            - name: STACKAI_LICENCE
+              valueFrom:
+                secretKeyRef:
+                  name: stackend-licence-secret
+                  key: licence
+          volumeMounts:
+            - mountPath: /app/src/apps/config/llm_config.toml
+              name: stackend-cm0
+              readOnly: true
+              subPath: llm_config.toml
+            - mountPath: /app/src/apps/config/llm_models_by_providers/llm_local_config.toml
+              name: stackend-cm1
+              subPath: llm_local_config.toml
+            - mountPath: /app/src/apps/config/embeddings_config.toml
+              name: stackend-cm2
+              readOnly: true
+              subPath: embeddings_config.toml
+          resources:
+            requests:
+              cpu: "1"
+              memory: "2Gi"
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+      imagePullSecrets:
+        - name: acr-secret
+      restartPolicy: OnFailure
+      volumes:
+        - configMap:
+            items:
+              - key: llm_config.toml
+                path: llm_config.toml
+            name: stackend-cm0
+          name: stackend-cm0
+        - configMap:
+            items:
+              - key: llm_local_config.toml
+                path: llm_local_config.toml
+            name: stackend-cm1
+          name: stackend-cm1
+        - configMap:
+            items:
+              - key: embeddings_config.toml
+                path: embeddings_config.toml
+            name: stackend-cm2
+          name: stackend-cm2
+  backoffLimit: 3

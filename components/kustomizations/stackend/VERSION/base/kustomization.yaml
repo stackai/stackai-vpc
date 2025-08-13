@@ -10,3 +10,4 @@ resources:
   - stackend-cm2-configmap.yaml
   - stackend--env-configmap.yaml
   - stackend-ingress.yaml
+  - stackend-migration-job.yaml
