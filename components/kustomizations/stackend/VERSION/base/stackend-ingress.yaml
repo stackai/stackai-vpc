@@ -85,3 +85,17 @@ spec:
                 name: stackend
                 port:
                   number: 8000
+          - path: /profiles
+            pathType: Prefix
+            backend:
+              service:
+                name: stackend
+                port:
+                  number: 8000
+          - path: /agent-builder
+            pathType: Prefix
+            backend:
+              service:
+                name: stackend
+                port:
+                  number: 8000
