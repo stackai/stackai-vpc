@@ -15,7 +15,84 @@ spec:
   rules:
     - http:
         paths:
-          - path: /api
+          - path: /users
+            pathType: Prefix
+            backend:
+              service:
+                name: stackend
+                port:
+                  number: 8000
+          - path: /organizations
+            pathType: Prefix
+            backend:
+              service:
+                name: stackend
+                port:
+                  number: 8000
+          - path: /roles
+            pathType: Prefix
+            backend:
+              service:
+                name: stackend
+                port:
+                  number: 8000
+          - path: /onboarding
+            pathType: Prefix
+            backend:
+              service:
+                name: stackend
+                port:
+                  number: 8000
+          - path: /projects
+            pathType: Prefix
+            backend:
+              service:
+                name: stackend
+                port:
+                  number: 8000
+          - path: /folders
+            pathType: Prefix
+            backend:
+              service:
+                name: stackend
+                port:
+                  number: 8000
+          - path: /connections
+            pathType: Prefix
+            backend:
+              service:
+                name: stackend
+                port:
+                  number: 8000
+          - path: /config
+            pathType: Prefix
+            backend:
+              service:
+                name: stackend
+                port:
+                  number: 8000
+          - path: /knowledge_bases
+            pathType: Prefix
+            backend:
+              service:
+                name: stackend
+                port:
+                  number: 8000
+          - path: /notifications
+            pathType: Prefix
+            backend:
+              service:
+                name: stackend
+                port:
+                  number: 8000
+          - path: /profiles
+            pathType: Prefix
+            backend:
+              service:
+                name: stackend
+                port:
+                  number: 8000
+          - path: /agent-builder
             pathType: Prefix
             backend:
               service:

@@ -11,6 +11,27 @@ spec:
   rules:
     - http:
         paths:
+          - path: /auth/sso
+            pathType: Exact
+            backend:
+              service:
+                name: stackweb
+                port:
+                  number: 3000
+          - path: /auth/login
+            pathType: Exact
+            backend:
+              service:
+                name: stackweb
+                port:
+                  number: 3000
+          - path: /auth/signup
+            pathType: Exact
+            backend:
+              service:
+                name: stackweb
+                port:
+                  number: 3000
           - path: /
             pathType: Prefix
             backend:

@@ -39,7 +39,7 @@ spec:
       pullPolicy: Always
     
     mongodb:
-      name: mongodb
+      name: library/mongodb
       repo: docker.io
     
     createResource: false
