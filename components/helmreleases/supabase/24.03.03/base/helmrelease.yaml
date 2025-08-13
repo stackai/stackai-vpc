@@ -47,8 +47,8 @@ spec:
       environment:
         STUDIO_DEFAULT_ORGANIZATION: "My Organization"
         STUDIO_DEFAULT_PROJECT: "My Project"
-        SUPABASE_PUBLIC_URL: http://57.152.101.171/
-        SUPABASE_URL: http://57.152.101.171/
+        SUPABASE_PUBLIC_URL: http://57.152.90.233/
+        SUPABASE_URL: http://57.152.90.233/
         NEXT_PUBLIC_ENABLE_LOGS: "true"
       livenessProbe:
         httpGet:
@@ -60,15 +60,15 @@ spec:
       image:
         tag: v2.145.0
       environment:
-        API_EXTERNAL_URL: http://57.152.101.171/
-        SUPABASE_URL: http://57.152.101.171/
-        GOTRUE_SITE_URL: http://57.152.101.171/
+        API_EXTERNAL_URL: http://57.152.90.233/
+        SUPABASE_URL: http://57.152.90.233/
+        GOTRUE_SITE_URL: http://57.152.90.233/
         GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
         GOTRUE_MAILER_AUTOCONFIRM: "true"
-        GOTRUE_SMTP_ADMIN_EMAIL: "your-mail@57.152.101.171/"
-        GOTRUE_SMTP_HOST: "smtp.57.152.101.171/"
+        GOTRUE_SMTP_ADMIN_EMAIL: "your-mail@57.152.90.233/"
+        GOTRUE_SMTP_HOST: "smtp.57.152.90.233/"
         GOTRUE_SMTP_PORT: "587"
-        GOTRUE_SMTP_SENDER_NAME: "your-mail@57.152.101.171/"
+        GOTRUE_SMTP_SENDER_NAME: "your-mail@57.152.90.233/"
     
     rest:
       image:
