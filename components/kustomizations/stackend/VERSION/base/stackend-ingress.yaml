@@ -36,3 +36,10 @@ spec:
                 name: stackend
                 port:
                   number: 8000
+          - path: /onboarding
+            pathType: Prefix
+            backend:
+              service:
+                name: stackend
+                port:
+                  number: 8000
