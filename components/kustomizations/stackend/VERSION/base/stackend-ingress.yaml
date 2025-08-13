@@ -57,3 +57,24 @@ spec:
                 name: stackend
                 port:
                   number: 8000
+          - path: /connections
+            pathType: Prefix
+            backend:
+              service:
+                name: stackend
+                port:
+                  number: 8000
+          - path: /config
+            pathType: Prefix
+            backend:
+              service:
+                name: stackend
+                port:
+                  number: 8000
+          - path: /knowledge_bases
+            pathType: Prefix
+            backend:
+              service:
+                name: stackend
+                port:
+                  number: 8000
