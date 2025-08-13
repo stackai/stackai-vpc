@@ -43,3 +43,17 @@ spec:
                 name: stackend
                 port:
                   number: 8000
+          - path: /projects
+            pathType: Prefix
+            backend:
+              service:
+                name: stackend
+                port:
+                  number: 8000
+          - path: /folders
+            pathType: Prefix
+            backend:
+              service:
+                name: stackend
+                port:
+                  number: 8000
