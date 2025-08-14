@@ -1,5 +1,41 @@
+echo "This script will set up a user in supabase for test logins"
+echo "First we do a git pull"
+git pull
+
+
 APIKEY=$(cat components/helmreleases/supabase/24.03.03/aks/secrets.yaml| yq '.stringData.serviceKey' | head -n1)
 LB_IP=$(kubectl get svc -n flux-system | grep supabase-supabase-kong | awk '{print $4}')
+
+# Update Load Balancer IP in helmrelease.yaml
+echo "Updating Load Balancer IP in helmrelease.yaml..."
+echo "New Load Balancer IP: $LB_IP"
+
+# Update all occurrences of IP addresses in URLs with the new LB_IP
+# This will match patterns like http://X.X.X.X:8000 and replace the IP part
+sed -i '' "s|http://[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}:|http://$LB_IP:|g" components/helmreleases/supabase/24.03.03/base/helmrelease.yaml
+echo "Updated helmrelease.yaml with new Load Balancer IP: $LB_IP"
+git diff
+
+# Check if we're not on main branch and commit the changes
+CURRENT_BRANCH=$(git branch --show-current)
+if [ "$CURRENT_BRANCH" != "main" ]; then
+    echo "Committing changes to branch: $CURRENT_BRANCH"
+    git add components/helmreleases/supabase/24.03.03/base/helmrelease.yaml
+    git commit -m "AUTOMATED: Set Supabase LB IP to $LB_IP"
+    git push
+    
+    echo "Triggering flux reconciliation..."
+    flux reconcile ks -n flux-system flux-system --with-source
+    flux reconcile ks -n flux-system crds
+    flux reconcile ks -n flux-system system
+    flux reconcile ks -n flux-system stackend
+    flux reconcile ks -n flux-system stackweb
+    echo "Flux reconciliation triggered"
+else
+    echo "On main branch - skipping automatic commit"
+    echo "You can now commit this change to git"
+fi
+
 
 # Create user and capture response
 RESPONSE=$(curl -X POST http://${LB_IP}:8000/auth/v1/admin/users -H "Authorization: Bearer $APIKEY" -H "Content-Type: application/json" -H "apikey: $APIKEY" -d '{"email":"test69@stack-ai.com","password":"pw123","email_confirm":true}')
@@ -48,6 +84,7 @@ kill $PF_PID
 echo "Port-forward closed"
 
 echo "User setup complete!"
-echo "Email: test1@stack-ai.com"
+echo "Email: test69@stack-ai.com"
 echo "User ID: $USER_ID"
 echo "Organization ID: $ORG_ID"
+
