@@ -23,6 +23,8 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
+              echo "sleeping for 5 minutes before beginning"
+              sleep 300
               echo "Running database migrations..."
               cd infra/migrations/postgres && alembic upgrade head
               echo "Database migrations completed successfully"
