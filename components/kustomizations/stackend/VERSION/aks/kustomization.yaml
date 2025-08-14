@@ -3,6 +3,3 @@ kind: Kustomization
 namespace: flux-system # TODO :stackend
 resources:
   - ../base
-
-patchesStrategicMerge:
-  - stackend-migration-job-patch.yaml
