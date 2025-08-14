@@ -47,8 +47,8 @@ spec:
       environment:
         STUDIO_DEFAULT_ORGANIZATION: "My Organization"
         STUDIO_DEFAULT_PROJECT: "My Project"
-        SUPABASE_PUBLIC_URL: http://4.157.140.151:8000/
-        SUPABASE_URL: http://4.157.140.151:8000/
+        SUPABASE_PUBLIC_URL: http://4.156.71.241:8000/
+        SUPABASE_URL: http://4.156.71.241:8000/
         NEXT_PUBLIC_ENABLE_LOGS: "true"
       livenessProbe:
         httpGet:
@@ -60,9 +60,9 @@ spec:
       image:
         tag: v2.145.0
       environment:
-        API_EXTERNAL_URL: http://4.157.140.151:8000/
-        SUPABASE_URL: http://4.157.140.151:8000/
-        GOTRUE_SITE_URL: http://4.157.140.151:8000/
+        API_EXTERNAL_URL: http://4.156.71.241:8000/
+        SUPABASE_URL: http://4.156.71.241:8000/
+        GOTRUE_SITE_URL: http://4.156.71.241:8000/
         GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
         GOTRUE_MAILER_AUTOCONFIRM: "true"
         GOTRUE_SMTP_ADMIN_EMAIL: "your-mail@4.157.140.151:8000/"
