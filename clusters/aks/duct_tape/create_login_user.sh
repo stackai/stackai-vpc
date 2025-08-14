@@ -2,7 +2,7 @@ echo "This script will set up a user in supabase for test logins"
 echo "First we do a git pull"
 git pull
 
-EMAIL='user09@stack-ai.com'
+EMAIL='user00@stack-ai.com'
 PASSWORD='pw123'
 APIKEY=$(cat components/helmreleases/supabase/24.03.03/aks/secrets.yaml| yq '.stringData.serviceKey' | head -n1)
 ING_IP=$(kubectl get svc -n flux-system | grep supabase-supabase-kong | awk '{print $4}')
@@ -109,3 +109,9 @@ echo "Email: $EMAIL"
 echo "User ID: $USER_ID"
 echo "Organization ID: $ORG_ID"
 
+echo "restarting stackweb and kong pods to complete setup"
+kubectl delete pod -n flux-system $(kubectl get pod -n flux-system | grep kong | awk '{print $1}')
+kubectl delete pod -n flux-system $(kubectl get pod -n flux-system | grep stackweb | awk '{print $1}')
+
+echo "=============="
+echo "setup complete"
