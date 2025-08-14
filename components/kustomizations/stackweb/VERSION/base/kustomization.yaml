@@ -3,7 +3,6 @@ kind: Kustomization
 namespace: flux-system # TODO: stackweb
 resources:
   - namespace.yaml
-  - stackweb--env-configmap.yaml
   - stackweb-deployment.yaml
   - stackweb-service.yaml
   - stackweb-ingress.yaml

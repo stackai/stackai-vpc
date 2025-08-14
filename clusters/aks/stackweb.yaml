@@ -18,5 +18,5 @@ spec:
     - name: flux-system
     - name: crds
     - name: system
-    - name: supabase-setup
+    - name: configuration-setup
     - name: stackend
