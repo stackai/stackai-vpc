@@ -2,6 +2,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ../../../components/helmreleases/mongodb/community-operator/2.0.3/aks
+  - ../../../components/helmreleases/nginx-ingress-controller/4.12.0/aks
   - ../../../components/helmreleases/redis/21.2.14/aks
   - ../../../components/helmreleases/supabase/24.03.03/aks
   - ../../../components/helmreleases/weaviate/17.5.0/aks
+
+  # network policies
+  - ../../../components/kustomizations/network-policies/0.0.1/aks

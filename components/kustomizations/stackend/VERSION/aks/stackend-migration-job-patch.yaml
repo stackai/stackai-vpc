@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: stackend-db-migration
+  annotations:
+    # FluxCD annotations for dependency management
+    kustomize.toolkit.fluxcd.io/depends-on: "flux-system/supabase"
+    # Ensure job runs after database is ready
+    fluxcd.io/automated: "false"
+spec:
+  # Set a reasonable timeout for migration completion
+  activeDeadlineSeconds: 600
+  # Ensure job doesn't run too many times if it keeps failing
+  backoffLimit: 3
+  # Keep successful jobs for audit purposes
+  ttlSecondsAfterFinished: 86400

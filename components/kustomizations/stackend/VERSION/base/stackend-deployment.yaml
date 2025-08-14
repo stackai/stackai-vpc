@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+    kompose.version: 1.36.0 (HEAD)
+  labels:
+    io.kompose.service: stackend
+  name: stackend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: stackend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml --out k8s/
+        kompose.version: 1.36.0 (HEAD)
+      labels:
+        io.kompose.service: stackend
+    spec:
+      tolerations:
+        - key: workload
+          operator: Equal
+          value: memory-intensive
+          effect: NoSchedule
+      nodeSelector:
+        nodepool: memory-optimized
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: stackend--env
+          env:
+            - name: STACKAI_LICENCE
+              valueFrom:
+                secretKeyRef:
+                  name: stackend-licence-secret
+                  key: licence
+          image: stackai.azurecr.io/stackai/stackend-backend:latest
+          name: stackend
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+            - containerPort: 8888
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/src/apps/config/llm_config.toml
+              name: stackend-cm0
+              readOnly: true
+              subPath: llm_config.toml
+            - mountPath: /app/src/apps/config/llm_models_by_providers/llm_local_config.toml
+              name: stackend-cm1
+              subPath: llm_local_config.toml
+            - mountPath: /app/src/apps/config/embeddings_config.toml
+              name: stackend-cm2
+              readOnly: true
+              subPath: embeddings_config.toml
+          resources:
+            requests:
+              cpu: "6"
+              memory: "16Gi"
+            limits:
+              cpu: "7"
+              memory: "20Gi"
+      imagePullSecrets:
+        - name: acr-secret
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: llm_config.toml
+                path: llm_config.toml
+            name: stackend-cm0
+          name: stackend-cm0
+        - configMap:
+            items:
+              - key: llm_local_config.toml
+                path: llm_local_config.toml
+            name: stackend-cm1
+          name: stackend-cm1
+        - configMap:
+            items:
+              - key: embeddings_config.toml
+                path: embeddings_config.toml
+            name: stackend-cm2
+          name: stackend-cm2

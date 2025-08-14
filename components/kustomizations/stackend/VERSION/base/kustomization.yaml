@@ -1,8 +1,13 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: stackend
+namespace: flux-system # TODO: stackend
 resources:
-  - DEPLOYMENT.yaml
-  - SERVICE.yaml
-  - CONFIGMAP.yaml
-  - SECRET.yaml
+  - namespace.yaml
+  - stackend-service.yaml
+  - stackend-deployment.yaml
+  - stackend-cm0-configmap.yaml
+  - stackend-cm1-configmap.yaml
+  - stackend-cm2-configmap.yaml
+  - stackend--env-configmap.yaml
+  - stackend-ingress.yaml
+  - stackend-migration-job.yaml

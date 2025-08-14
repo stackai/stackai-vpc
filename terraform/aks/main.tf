@@ -89,3 +89,32 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   tags = merge(var.tags, { Owner = local.effective_user_suffix })
 }
+
+# Memory-optimized node pool with 8 vCPUs and 64GB RAM
+resource "azurerm_kubernetes_cluster_node_pool" "memory_optimized" {
+  name                  = "memopt"
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
+  vm_size              = var.memory_node_size
+  node_count           = var.memory_node_count
+  
+  # Use the same subnet as the default pool
+  vnet_subnet_id = azurerm_subnet.aks.id
+  
+  enable_auto_scaling = true
+  min_count          = var.memory_min_node_count
+  max_count          = var.memory_max_node_count
+  
+  # Node labels to help with pod scheduling
+  node_labels = {
+    "nodepool" = "memory-optimized"
+    "workload" = "memory-intensive"
+  }
+  
+  # Node taints if you want to ensure only specific pods run on these nodes
+  node_taints = ["workload=memory-intensive:NoSchedule"]
+  
+  tags = merge(var.tags, { 
+    Owner = local.effective_user_suffix,
+    NodePool = "memory-optimized"
+  })
+}

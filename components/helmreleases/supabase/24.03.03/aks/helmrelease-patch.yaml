@@ -104,16 +104,42 @@ spec:
           cpu: "1000m"
           memory: "1Gi"
       
-      # Azure internal load balancer configuration
+      # Change to ClusterIP for ingress routing
       service:
         type: LoadBalancer
-        annotations:
-          service.beta.kubernetes.io/azure-load-balancer-internal: "true"
-          service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "default"
       
-      # Remove AWS-specific ingress configuration
+      # Enable ingress for Azure
       ingress:
-        enabled: false
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+          nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+          nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+          nginx.ingress.kubernetes.io/enable-cors: "true"
+          nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+          nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
+          nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization,apikey,x-client-info"
+          # Disable global rewrite to prevent conflicts with other ingresses
+          nginx.ingress.kubernetes.io/rewrite-target: ""
+        hosts:
+          - paths:
+              - path: /sso
+                pathType: Prefix
+              - path: /analytics/v1
+                pathType: Prefix
+              - path: /functions/v1
+                pathType: Prefix
+              - path: /storage/v1
+                pathType: Prefix
+              - path: /realtime/v1
+                pathType: Prefix
+              - path: /rest/v1
+                pathType: Prefix
+              - path: /graphql/v1
+                pathType: Prefix
+              - path: /auth
+                pathType: Prefix
     
     # Additional Azure-specific environment variables
     db:

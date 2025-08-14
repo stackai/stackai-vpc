@@ -1,0 +1,52 @@
+apiVersion: v1
+data:
+  FONTAWESOME_PACKAGE_TOKEN: <font-awesome-package-token>
+  GOOGLE_CLIENT_EMAIL: mail@example.io
+  GOOGLE_SERVICE_PRIVATE_KEY: <your-private-key>
+  NEXT_PUBLIC_AIRTABLE_CLIENT_ID: <your-airtable-client-id>
+  NEXT_PUBLIC_AIRTABLE_CODE_VERIFIER: <your-airtable-code-verifier>
+  NEXT_PUBLIC_CHAMALEON_KEY: <your-chamaleon-key>
+  NEXT_PUBLIC_CHAT_BACKEND_URL: http://4.255.32.138/
+  NEXT_PUBLIC_CONFLUENCE_CLIENT_ID: <your-confluence-client-id>
+  NEXT_PUBLIC_DROPBOX_CLIENT_ID: <your-dropbox-client-id>
+  NEXT_PUBLIC_GOOGLE_CLIENT_ID: <your-google-client-id>
+  NEXT_PUBLIC_GOOGLE_WORKSPACE_CLIENT_ID: <your-google-workspace-client-id>
+  NEXT_PUBLIC_HUBSPOT_CLIENT_ID: <your-hubspot-client-id>
+  NEXT_PUBLIC_INDEX_URL: http://4.255.32.138/
+  NEXT_PUBLIC_LEADERBOARD_API_URL: "https://llm-leaderboard-stats-0ztm.onrender.com/"
+  NEXT_PUBLIC_NOTION_CLIENT_ID: <your-notion-client-id>
+  NEXT_PUBLIC_NOTION_OAUTH_CLIENT_ID: <your-notion-oauth-client-id>
+  NEXT_PUBLIC_OUTLOOK_CLIENT_ID: <your-outlook-client-id>
+  NEXT_PUBLIC_POSTHOG_API_KEY: <your-posthog-api-key>
+  NEXT_PUBLIC_POSTHOG_HOST: <your-posthog-host>
+  NEXT_PUBLIC_REACT_APP_ENV: development
+  NEXT_PUBLIC_SENTRY_DSN: ""
+  NEXT_PUBLIC_SHAREPOINT_CLIENT_ID: <your-sharepoint-client-id>
+  NEXT_PUBLIC_SITE_URL: http://4.255.32.138/
+  NEXT_PUBLIC_STACKEND_INFERENCE_URL: http://4.255.32.138/
+  NEXT_PUBLIC_STACKEND_URL: http://4.255.32.138/
+  NEXT_PUBLIC_STRIPE_CLIENT_ID: <your-stripe-client-id>
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: <your-stripe-publishable-key>
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJvbGUiOiJhbm9uIiwiZXhwIjoyMDE1MTc2ODAwfQ.Wk-XZoMEJV6vdN3hbYMVz2n3XDmRbUcHxYJ33ej06bE
+  NEXT_PUBLIC_SUPABASE_URL: http://4.255.32.138/
+  NEXT_PUBLIC_TYPEFORM_CLIENT_ID: <your-typeform-client-id>
+  NEXT_PUBLIC_URL: http://4.255.32.138/
+  NEXT_PUBLIC_VERCEL_ENV: development
+  NEXT_PUBLIC_ZENDESK_CLIENT_ID: <your-zendesk-client-id>
+  NPM_RC: ""
+  REACT_APP_ENV: development
+  RESEND_API_KEY: <your-resend-api-key>
+  SHEET_ID: "0"
+  SLACK_CUSTOMER_SUPPORT_WEBHOOK: <your-slack-customer-support-webhook>
+  SLACK_SELF_HOSTED_WEBHOOK: <your-slack-self-hosted-webhook>
+  SPREADSHEET_ID: <your-spreadsheet-id>
+  STRIPE_SECRET_KEY: <your-stripe-secret-key>
+  STRIPE_WEBHOOK_SECRET: <your-stripe-webhook-secret>
+  SUPABASE_SERVICE_ROLE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJvbGUiOiJzZXJ2aWNlX3JvbGUiLCJleHAiOjIwMTUxNzY4MDB9.xm8PjidKwC9RmEhkLY2Hth_yxgTXyNsva79nt799fBc
+  TIPTAP_PRO_TOKEN: ""
+  VERCEL_ENV: development
+kind: ConfigMap
+metadata:
+  labels:
+    io.kompose.service: stackweb-stackweb--env
+  name: stackweb--env

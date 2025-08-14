@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: celery
+resources:
+  - namespace.yaml
+  - stackend--env-configmap.yaml #TODO
+  - celery-worker-cm0-configmap.yaml
+  - celery-worker-cm1-configmap.yaml
+  - celery-worker-cm2-configmap.yaml
+  - celery-worker-deployment.yaml
