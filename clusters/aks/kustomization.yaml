@@ -6,3 +6,4 @@ resources:
   - system.yaml
   - stackweb.yaml
   - stackend.yaml
+  - supabase-setup.yaml
