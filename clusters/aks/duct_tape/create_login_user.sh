@@ -2,26 +2,31 @@ echo "This script will set up a user in supabase for test logins"
 echo "First we do a git pull"
 git pull
 
-
+EMAIL='user09@stack-ai.com'
+PASSWORD='pw123'
 APIKEY=$(cat components/helmreleases/supabase/24.03.03/aks/secrets.yaml| yq '.stringData.serviceKey' | head -n1)
-LB_IP=$(kubectl get svc -n flux-system | grep supabase-supabase-kong | awk '{print $4}')
+ING_IP=$(kubectl get svc -n flux-system | grep supabase-supabase-kong | awk '{print $4}')
+ING_IP=$(kubectl get ing -n flux-system | grep supabase | awk '{print $4}')
 
 # Update Load Balancer IP in helmrelease.yaml
 echo "Updating Load Balancer IP in helmrelease.yaml..."
-echo "New Load Balancer IP: $LB_IP"
+echo "New Load Balancer IP: $ING_IP"
 
-# Update all occurrences of IP addresses in URLs with the new LB_IP
+# Update all occurrences of IP addresses in URLs with the new ING_IP
 # This will match patterns like http://X.X.X.X:8000 and replace the IP part
-sed -i '' "s|http://[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}:|http://$LB_IP:|g" components/helmreleases/supabase/24.03.03/base/helmrelease.yaml
-echo "Updated helmrelease.yaml with new Load Balancer IP: $LB_IP"
-git diff
+sed -i '' "s|http://[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}|http://$ING_IP|g" components/helmreleases/supabase/24.03.03/base/helmrelease.yaml
+sed -i '' "s|http://[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}|http://$ING_IP|g" components/kustomizations/stackweb/VERSION/base/stackweb--env-configmap.yaml
+echo "Updated helmrelease.yaml with new Ingress IP: $ING_IP"
+git diff components/helmreleases/supabase/24.03.03/base/helmrelease.yaml
+git diff components/kustomizations/stackweb/VERSION/base/stackweb--env-configmap.yaml
 
 # Check if we're not on main branch and commit the changes
 CURRENT_BRANCH=$(git branch --show-current)
 if [ "$CURRENT_BRANCH" != "main" ]; then
     echo "Committing changes to branch: $CURRENT_BRANCH"
     git add components/helmreleases/supabase/24.03.03/base/helmrelease.yaml
-    git commit -m "AUTOMATED: Set Supabase LB IP to $LB_IP"
+    git add components/kustomizations/stackweb/VERSION/base/stackweb--env-configmap.yaml
+    git commit -m "AUTOMATED: Set Ingress IP to $ING_IP for supabase and stackweb"
     git push
     
     echo "Triggering flux reconciliation..."
@@ -38,8 +43,24 @@ fi
 
 
 # Create user and capture response
-RESPONSE=$(curl -X POST http://${LB_IP}:8000/auth/v1/admin/users -H "Authorization: Bearer $APIKEY" -H "Content-Type: application/json" -H "apikey: $APIKEY" -d '{"email":"test69@stack-ai.com","password":"pw123","email_confirm":true}')
+echo "Setting up port-forward to Kong..."
+kubectl port-forward -n flux-system svc/supabase-supabase-kong 8000:8000 &
+PF_PID=$!
+echo $PF_PID
+sleep 5  # Give port-forward time to establish
+
+RESPONSE=$(curl -X POST http://localhost:8000/auth/v1/admin/users \
+  -H "Authorization: Bearer $APIKEY" \
+  -H "Content-Type: application/json" \
+  -H "apikey: $APIKEY" \
+  -d "{\"email\":\"$EMAIL\",\"password\":\"$PASSWORD\",\"email_confirm\":true}")
 echo "User creation response: $RESPONSE"
+
+# Stop Kong Port-Forward
+echo "Stopping Kong Port-Forward..."
+kill $PF_PID
+echo "Port-forward closed"
+unset PF_PID
 
 # Extract user_id from response
 USER_ID=$(echo $RESPONSE | jq -r '.id')
@@ -63,7 +84,7 @@ echo "Generated organization ID: $ORG_ID"
 echo "Creating database entries..."
 
 # 1. Add user to profiles table
-psql -h localhost -p 5432 -U postgres -d postgres -c "INSERT INTO profiles (id) VALUES ('$USER_ID');"
+psql -h localhost -p 5432 -U postgres -d postgres -c "INSERT INTO profiles (id, email) VALUES ('$USER_ID', '$EMAIL');"
 echo "Added user to profiles table"
 
 # 2. Create organization
@@ -84,7 +105,7 @@ kill $PF_PID
 echo "Port-forward closed"
 
 echo "User setup complete!"
-echo "Email: test69@stack-ai.com"
+echo "Email: $EMAIL"
 echo "User ID: $USER_ID"
 echo "Organization ID: $ORG_ID"
 
