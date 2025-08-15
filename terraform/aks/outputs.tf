@@ -76,8 +76,8 @@ output "key_vault_uri" {
   value       = azurerm_key_vault.main.vault_uri
 }
 
-output "sops_secret_applied" {
-  description = "Confirmation that SOPS secret was applied"
-  value       = "SOPS secret applied at ${null_resource.apply_sops_secret.id}"
-  depends_on  = [null_resource.apply_sops_secret]
+output "post_deployment_complete" {
+  description = "Confirmation that all post-deployment steps completed"
+  value       = "Post-deployment completed at ${null_resource.create_login_user.id}"
+  depends_on  = [null_resource.create_login_user]
 }
