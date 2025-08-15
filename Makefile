@@ -59,6 +59,12 @@ run-postgres-migrations:
 	docker compose exec stackend bash -c "cd infra/migrations/postgres && alembic upgrade head"
 	@echo "Postgres migrations completed successfully"
 
+.PHONY: run-template-migrations
+run-template-migrations:
+	@echo "Running template migrations..."
+	docker compose exec stackend bash -c "python scripts/on-premise/insert_stackai_project_templates.py"
+	@echo "Template migrations completed successfully"
+
 .PHONY: start-stackai
 start-stackai:
 	docker compose up -d stackweb stackend celery_worker stackrepl storage
