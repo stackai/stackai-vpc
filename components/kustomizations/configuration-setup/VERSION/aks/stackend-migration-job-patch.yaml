@@ -9,7 +9,7 @@ metadata:
     fluxcd.io/automated: "false"
 spec:
   # Set a reasonable timeout for migration completion
-  activeDeadlineSeconds: 600
+  activeDeadlineSeconds: 1200
   # Ensure job doesn't run too many times if it keeps failing
   backoffLimit: 3
   # Keep successful jobs for audit purposes
