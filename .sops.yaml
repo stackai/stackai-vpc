@@ -1,0 +1,28 @@
+creation_rules:
+  # Encrypt cluster keys in sops/clusters with master and GitHub keys
+  - path_regex: sops/clusters/.*\.age\.enc$
+    age: >-
+      age1ryhe6c4xgvenxxfqe0qvnth6x0tjp07gulhnjst3lqecl0edlslq68ywd4,
+      age1w9ctg2zu735muz9zuft7rzp32nuz0pnr3z8fq5jlljsftx0pyfnsw2vj5h
+  
+  # Encrypt all YAML files in sops/clusters with master and GitHub keys
+  - path_regex: sops/clusters/.*\.yaml$
+    age: >-
+      age1ryhe6c4xgvenxxfqe0qvnth6x0tjp07gulhnjst3lqecl0edlslq68ywd4,
+      age1w9ctg2zu735muz9zuft7rzp32nuz0pnr3z8fq5jlljsftx0pyfnsw2vj5h
+  
+  # Encrypt all YAML files in the clusters directory with both master and cluster keys
+  - path_regex: clusters/.*\.yaml$
+    age: >-
+      age1ryhe6c4xgvenxxfqe0qvnth6x0tjp07gulhnjst3lqecl0edlslq68ywd4,
+      age1525zz0ucak8u0hm79cd958393nl8r00k6jvvjy5azanjy9fy34esj4xudc
+  
+  # Encrypt secrets in components directory with all three keys
+  - path_regex: components/.*secret.*\.yaml$
+    age: >-
+      age1ryhe6c4xgvenxxfqe0qvnth6x0tjp07gulhnjst3lqecl0edlslq68ywd4,
+      age1w9ctg2zu735muz9zuft7rzp32nuz0pnr3z8fq5jlljsftx0pyfnsw2vj5h,
+      age1525zz0ucak8u0hm79cd958393nl8r00k6jvvjy5azanjy9fy34esj4xudc
+  
+  # Default rule for any other files
+  - age: age1ryhe6c4xgvenxxfqe0qvnth6x0tjp07gulhnjst3lqecl0edlslq68ywd4

@@ -5,3 +5,5 @@ resources:
   - stackend--env-configmap.yaml
   - stackweb--env-configmap.yaml
   - stackend-migration-job.yaml
+  - acr-secret.enc.yaml
+  - stackend-licence-secret.enc.yaml

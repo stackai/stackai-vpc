@@ -1,0 +1,16 @@
+# Ignore all unencrypted key files
+*.age
+!*.age.enc
+
+# Ignore decrypted files
+*.dec
+*.decrypted
+*.plaintext
+
+# Ignore temporary files
+*.tmp
+*.bak
+
+# Keep encrypted files
+!*.enc
+!*.encrypted
