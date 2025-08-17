@@ -54,7 +54,7 @@ resource "null_resource" "bootstrap_flux" {
     
     environment = {
       KUBECONFIG = self.triggers.kubeconfig_file
-      GITHUB_TOKEN = data.external.validate_environment.result.validated != "" ? "$GITHUB_TOKEN" : ""
+      # GITHUB_TOKEN is inherited from the parent environment
     }
   }
 }

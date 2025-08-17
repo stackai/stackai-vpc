@@ -4,8 +4,9 @@ set -e
 # Default values
 GITHUB_OWNER="stackai"
 REPO_NAME="stackai-onprem"
-BRANCH="on-prem-aks"
-CLUSTER_PATH="./clusters/aks"
+BRANCH="on-prem-aks-auto-flux-bootstrap"
+REPO_BASE="$(git rev-parse --show-toplevel)"
+FLUX_PATH="./clusters/aks"
 
 
 
@@ -20,7 +21,7 @@ usage() {
     echo "  -o    GitHub owner/organization (default: $GITHUB_OWNER)"
     echo "  -r    Repository name (default: $REPO_NAME)"
     echo "  -b    Branch name (default: $BRANCH)"
-    echo "  -p    Cluster path (default: $CLUSTER_PATH)"
+    echo "  -p    FLUX_PATH (default: $FLUX_PATH)"
     echo "  -h    Show this help message"
     exit 1
 }
@@ -31,14 +32,14 @@ while getopts "o:r:b:p:h" opt; do
         o) GITHUB_OWNER="$OPTARG" ;;
         r) REPO_NAME="$OPTARG" ;;
         b) BRANCH="$OPTARG" ;;
-        p) CLUSTER_PATH="$OPTARG" ;;
+        p) FLUX_PATH="$OPTARG" ;;
         h) usage ;;
         \?) echo "Invalid option: -$OPTARG" >&2; usage ;;
     esac
 done
 
-# Use the cluster path directly
-FLUX_PATH="$CLUSTER_PATH"
+CLUSTER_PATH="${REPO_BASE}/${FLUX_PATH}"
+
 # Get the current Git branch name
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
@@ -71,7 +72,7 @@ if ! command -v flux &>/dev/null; then
 fi
 
 echo "🏗️  Checking cluster directory: $FLUX_PATH"
-if [ ! -d "$FLUX_PATH" ]; then
+if [ ! -d "$CLUSTER_PATH" ]; then
     echo "Error: Directory $FLUX_PATH does not exist"
     echo "Please ensure the cluster directory exists before running this script"
     exit 1
