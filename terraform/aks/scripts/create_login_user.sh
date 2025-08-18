@@ -4,28 +4,30 @@ git pull
 
 EMAIL='user00@stack-ai.com'
 PASSWORD='pw123'
-APIKEY=$(cat components/helmreleases/supabase/24.03.03/aks/secrets.yaml| yq '.stringData.serviceKey' | head -n1)
-ING_IP=$(kubectl get svc -n flux-system | grep supabase-supabase-kong | awk '{print $4}')
-ING_IP=$(kubectl get ing -n flux-system | grep supabase | awk '{print $4}')
 
 # Update Load Balancer IP in helmrelease.yaml
 echo "Updating Load Balancer IP in helmrelease.yaml..."
 echo "New Load Balancer IP: $ING_IP"
 
+
+REPO_BASE="$(git rev-parse --show-toplevel)"
+APIKEY=$(cat ${REPO_BASE}/components/helmreleases/supabase/24.03.03/aks/secrets.yaml| yq '.stringData.serviceKey' | head -n1)
+ING_IP=$(kubectl get ing -n flux-system | grep supabase | awk '{print $4}')
+
 # Update all occurrences of IP addresses in URLs with the new ING_IP
 # This will match patterns like http://X.X.X.X:8000 and replace the IP part
-sed -i '' "s|http://[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}|http://$ING_IP|g" components/helmreleases/supabase/24.03.03/base/helmrelease.yaml
-sed -i '' "s|http://[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}|http://$ING_IP|g" components/kustomizations/stackweb/VERSION/base/stackweb--env-configmap.yaml
+sed -i '' "s|http://[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}|http://$ING_IP|g" ${REPO_BASE}/components/helmreleases/supabase/24.03.03/base/helmrelease.yaml
+sed -i '' "s|http://[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}|http://$ING_IP|g" ${REPO_BASE}/components/kustomizations/stackweb/VERSION/base/stackweb--env-configmap.yaml
 echo "Updated helmrelease.yaml with new Ingress IP: $ING_IP"
-git diff components/helmreleases/supabase/24.03.03/base/helmrelease.yaml
-git diff components/kustomizations/stackweb/VERSION/base/stackweb--env-configmap.yaml
+git diff ${REPO_BASE}/components/helmreleases/supabase/24.03.03/base/helmrelease.yaml
+git diff ${REPO_BASE}/components/kustomizations/stackweb/VERSION/base/stackweb--env-configmap.yaml
 
 # Check if we're not on main branch and commit the changes
 CURRENT_BRANCH=$(git branch --show-current)
 if [ "$CURRENT_BRANCH" != "main" ]; then
     echo "Committing changes to branch: $CURRENT_BRANCH"
-    git add components/helmreleases/supabase/24.03.03/base/helmrelease.yaml
-    git add components/kustomizations/configuration-setup/VERSION/base/stackweb--env-configmap.yaml
+    git add ${REPO_BASE}/components/helmreleases/supabase/24.03.03/base/helmrelease.yaml
+    git add ${REPO_BASE}/components/kustomizations/configuration-setup/VERSION/base/stackweb--env-configmap.yaml
     git commit -m "AUTOMATED: Set Ingress IP to $ING_IP for supabase and stackweb"
     git push
     
@@ -73,7 +75,7 @@ PF_PID=$!
 sleep 5  # Give port-forward time to establish
 
 # Get PostgreSQL password
-POSTGRES_PASSWORD=$(cat components/helmreleases/supabase/24.03.03/aks/secrets.yaml | yq '.stringData.password' | head -n1)
+POSTGRES_PASSWORD=$(cat ${REPO_BASE}/components/helmreleases/supabase/24.03.03/aks/secrets.yaml | yq '.stringData.password' | head -n1)
 export PGPASSWORD=$POSTGRES_PASSWORD
 
 # Generate a random organization ID
