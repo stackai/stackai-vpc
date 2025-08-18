@@ -40,7 +40,8 @@ resource "null_resource" "apply_sops_secret" {
 # Bootstrap Flux after SOPS secret is applied
 resource "null_resource" "bootstrap_flux" {
   depends_on = [
-    null_resource.apply_sops_secret
+    null_resource.apply_sops_secret,
+    azurerm_kubernetes_cluster_node_pool.memory_optimized
   ]
 
   triggers = {
