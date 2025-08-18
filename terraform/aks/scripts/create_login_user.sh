@@ -17,10 +17,11 @@ ING_IP=$(kubectl get ing -n flux-system | grep supabase | awk '{print $4}')
 # Update all occurrences of IP addresses in URLs with the new ING_IP
 # This will match patterns like http://X.X.X.X:8000 and replace the IP part
 sed -i '' "s|http://[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}|http://$ING_IP|g" ${REPO_BASE}/components/helmreleases/supabase/24.03.03/base/helmrelease.yaml
-sed -i '' "s|http://[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}|http://$ING_IP|g" ${REPO_BASE}/components/kustomizations/stackweb/VERSION/base/stackweb--env-configmap.yaml
+sed -i '' "s|http://[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}|http://$ING_IP|g" ${REPO_BASE}/components/kustomizations/configuration-setup/VERSION/base/stackweb--env-configmap.yaml
+
 echo "Updated helmrelease.yaml with new Ingress IP: $ING_IP"
 git diff ${REPO_BASE}/components/helmreleases/supabase/24.03.03/base/helmrelease.yaml
-git diff ${REPO_BASE}/components/kustomizations/stackweb/VERSION/base/stackweb--env-configmap.yaml
+git diff ${REPO_BASE}/components/kustomizations/configuration-setup/VERSION/base/stackweb--env-configmap.yaml
 
 # Check if we're not on main branch and commit the changes
 CURRENT_BRANCH=$(git branch --show-current)
