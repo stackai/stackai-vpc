@@ -29,6 +29,7 @@ if [ "$CURRENT_BRANCH" != "main" ]; then
     echo "Committing changes to branch: $CURRENT_BRANCH"
     git add ${REPO_BASE}/components/helmreleases/supabase/24.03.03/base/helmrelease.yaml
     git add ${REPO_BASE}/components/kustomizations/configuration-setup/VERSION/base/stackweb--env-configmap.yaml
+
     git commit -m "AUTOMATED: Set Ingress IP to $ING_IP for supabase and stackweb"
     git push
     

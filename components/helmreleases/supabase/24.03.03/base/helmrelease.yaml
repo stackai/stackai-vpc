@@ -47,8 +47,8 @@ spec:
       environment:
         STUDIO_DEFAULT_ORGANIZATION: "My Organization"
         STUDIO_DEFAULT_PROJECT: "My Project"
-        SUPABASE_PUBLIC_URL: http://20.75.245.93/
-        SUPABASE_URL: http://20.75.245.93/
+        SUPABASE_PUBLIC_URL: http://74.179.240.254/
+        SUPABASE_URL: http://74.179.240.254/
         NEXT_PUBLIC_ENABLE_LOGS: "true"
       livenessProbe:
         httpGet:

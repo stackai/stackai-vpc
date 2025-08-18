@@ -17,7 +17,6 @@ This repository contains the configuration needed to run StackAI locally using d
 - You will need internet access during the setup process.
 - Docker and Docker Compose (compose version v2.26 or higher). Follow instructions below to install them if needed.
 
-
 Check the steps below for instructions on how to check if you meet this requirement.
 
 - You will need access to stackai's container image registry on Azure.
@@ -205,10 +204,11 @@ make install-environment-variables
 2.  Verify the installation by navigating to the url configured in the file `supabase/.env` named as `SUPABASE_PUBLIC_URL` variable. This will
     take you to the supabase dashboard, which is enabled by default (you may disable it manually in the `supabase/docker-compose.yml` file if you want). To log in, you will need to use the `DASHBOARD_USERNAME` and `DASHBOARD_PASSWORD` variables values that can be found in the `supabase/.env` file.
 
-      You can check the `SERVICE_ROLE_KEY` created by running the following script:
-      ```bash
-      scripts/environment_variables/retrieve_anon_supabase.sh
-      ```
+    You can check the `SERVICE_ROLE_KEY` created by running the following script:
+
+    ```bash
+    scripts/environment_variables/retrieve_anon_supabase.sh
+    ```
 
 3.  You may stop the containers by doing a `Ctrl+C` in the terminal where you ran the `make start-supabase` command, or by opening a new terminal, navigating to the project root, and running:
 
@@ -439,6 +439,7 @@ stackend:
 
 ```bash
 docker compose pull
+docker compose up stackend
 ```
 
 In the case of the frontend (stackweb), you will need to rebuild the image with
@@ -447,11 +448,11 @@ In the case of the frontend (stackweb), you will need to rebuild the image with
 docker compose build stackweb
 ```
 
-4. Run database migrations if needed (instructions should be provided in the update README of the update)
+1. Run database migrations if needed
 
 ```bash
-docker compose up stackend
 make run-postgres-migrations
+make run-template-migrations
 ```
 
 5. Start all containers again with `docker compose up`
