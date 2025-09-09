@@ -22,6 +22,11 @@ provider "azurerm" {
   features {}
 }
 
+# Validate environment before proceeding
+data "external" "validate_environment" {
+  program = ["bash", "${path.module}/scripts/validate-environment.sh"]
+}
+
 # Get current Azure client configuration
 data "azurerm_client_config" "current" {}
 

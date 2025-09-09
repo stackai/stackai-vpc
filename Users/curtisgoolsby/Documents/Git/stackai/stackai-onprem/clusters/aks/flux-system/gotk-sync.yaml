@@ -20,7 +20,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./clusters/aks
+  path: ./Users/curtisgoolsby/Documents/Git/stackai/stackai-onprem/clusters/aks
   prune: true
   sourceRef:
     kind: GitRepository

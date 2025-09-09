@@ -75,3 +75,9 @@ output "key_vault_uri" {
   description = "URI of the Key Vault"
   value       = azurerm_key_vault.main.vault_uri
 }
+
+output "post_deployment_complete" {
+  description = "Confirmation that all post-deployment steps completed"
+  value       = "Post-deployment completed at ${null_resource.create_login_user.id}"
+  depends_on  = [null_resource.create_login_user]
+}

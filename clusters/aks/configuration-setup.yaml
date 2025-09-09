@@ -14,6 +14,10 @@ spec:
     substituteFrom:
       - kind: ConfigMap
         name: terraform-outputs
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
   dependsOn:
     - name: flux-system
     - name: crds

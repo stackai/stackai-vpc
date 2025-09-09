@@ -60,9 +60,9 @@ spec:
       image:
         tag: v2.145.0
       environment:
-        API_EXTERNAL_URL: http://74.179.240.254/
-        SUPABASE_URL: http://74.179.240.254/
-        GOTRUE_SITE_URL: http://74.179.240.254/
+        API_EXTERNAL_URL: http://20.75.245.93/
+        SUPABASE_URL: http://20.75.245.93/
+        GOTRUE_SITE_URL: http://20.75.245.93/
         GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
         GOTRUE_MAILER_AUTOCONFIRM: "true"
         GOTRUE_SMTP_ADMIN_EMAIL: "your-mail@4.157.140.151:8000/"
