@@ -6,6 +6,10 @@
       "defaultValue": "stackai",
       "type": "String"
     },
+    "adminUsername": {
+      "type": "String",
+      "defaultValue": "azureuser"
+    },
     "publicIPAddresses_stackai_ip_name": {
       "defaultValue": "stackai-ip",
       "type": "String"
@@ -29,6 +33,12 @@
     "publicIPAddresses_supabase_stackai_ip_name": {
       "defaultValue": "supabase-stackai-ip",
       "type": "String"
+    },
+    "sshKeyData": {
+      "type": "secureString",
+      "metadata": {
+        "description": "SSH public key. Should be the full public key string (e.g., ssh-rsa AAAAB3NzaC1yc2...)"
+      }
     }
   },
   "variables": {},
@@ -217,7 +227,7 @@
         "publicIPAllocationMethod": "Static",
         "idleTimeoutInMinutes": 4,
         "dnsSettings": {
-          "domainNameLabel": "api-stackai",
+          "domainNameLabel": "[concat('api-', parameters('virtualMachines_stackai_name'), '-', uniqueString(resourceGroup().id))]",
           "fqdn": "api-stackai.eastus.cloudapp.azure.com"
         },
         "ipTags": [],
@@ -245,7 +255,7 @@
         "publicIPAllocationMethod": "Static",
         "idleTimeoutInMinutes": 4,
         "dnsSettings": {
-          "domainNameLabel": "stackai",
+          "domainNameLabel": "[concat(parameters('virtualMachines_stackai_name'), '-', uniqueString(resourceGroup().id))]",
           "fqdn": "stackai.eastus.cloudapp.azure.com"
         },
         "ipTags": [],
@@ -273,7 +283,7 @@
         "publicIPAllocationMethod": "Static",
         "idleTimeoutInMinutes": 4,
         "dnsSettings": {
-          "domainNameLabel": "supabase-stackai",
+          "domainNameLabel": "[concat('db-', parameters('virtualMachines_stackai_name'), '-', uniqueString(resourceGroup().id))]",
           "fqdn": "supabase-stackai.eastus.cloudapp.azure.com"
         },
         "ipTags": [],
@@ -357,14 +367,14 @@
         },
         "osProfile": {
           "computerName": "[parameters('virtualMachines_stackai_name')]",
-          "adminUsername": "azureuser",
+          "adminUsername": "[parameters('adminUsername')]",
           "linuxConfiguration": {
             "disablePasswordAuthentication": true,
             "ssh": {
               "publicKeys": [
                 {
-                  "path": "/home/azureuser/.ssh/authorized_keys",
-                  "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC5oOV6f5xinPGJIdkNYBcsZhqwNig3y+gu6xGKhEnf2zL9svnlnQyuzhVRnaRxmXnYFwTimx4IBUlv4pZns6WvxRvn7YJQdkoiUG+TuXbJagb87bvlEMy+4nRM9yn3EvBYXSLayHmnSRr8vrdBR0hO+rVuDVutV4rmzLcTi50QuDMMlMM1ytkhgK83ZpF1QK3Vr5iu466OfCfEL8ueCJxYHTAzMuwIL/WRIPCMx6YrhoXNFs+djY/qTFgi7GmLAb7wC+zM1hExHuRQIyb3+mepcNDA+Oawy+1Xqo/zsKS5z3inU2XkxPhR0vZpibJwaC8AEmWkUXRHcYFg7IZYH55Z+e7lPlxPR6PvPUVJ9+QwnOQUKvFsnSsvDW+6MSDNKdCN4dVV15oZ6BApZ96MlM9KHsJLebpB3hS9vTE5tlb/LiyaaicNEbDQIs1tgvqsnjrdh6BAm6M5MbxVKAx1oV0QZzXabHVY89mIv7CW+qmZHAsHmLX/qgTjU5CJzywGlm0= generated-by-azure"
+                  "path": "[concat('/home/', parameters('adminUsername'), '/.ssh/authorized_keys')]",
+                  "keyData": "[parameters('sshKeyData')]"
                 }
               ]
             },
@@ -678,5 +688,23 @@
         "auxiliarySku": "None"
       }
     }
-  ]
+  ],
+  "outputs": {
+    "virtualMachinePrimaryPublicIp": {
+      "type": "string",
+      "value": "[reference(parameters('publicIPAddresses_stackai_ip_name')).ipAddress]"
+    },
+    "virtualMachinePrimaryDnsName": {
+      "type": "string",
+      "value": "[reference(parameters('publicIPAddresses_stackai_ip_name')).dnsSettings.fqdn]"
+    },
+    "apiDnsName": {
+      "type": "string",
+      "value": "[reference(parameters('publicIPAddresses_api_stackai_ip_name')).dnsSettings.fqdn]"
+    },
+    "databaseDnsName": {
+      "type": "string",
+      "value": "[reference(parameters('publicIPAddresses_supabase_stackai_ip_name')).dnsSettings.fqdn]"
+    }
+  }
 }

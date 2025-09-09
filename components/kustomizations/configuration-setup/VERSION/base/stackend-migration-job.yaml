@@ -1,0 +1,50 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: stackend-db-migration
+  labels:
+    io.kompose.service: stackend-migration
+spec:
+  template:
+    metadata:
+      labels:
+        io.kompose.service: stackend-migration
+    spec:
+      tolerations:
+        - key: workload
+          operator: Equal
+          value: memory-intensive
+          effect: NoSchedule
+      nodeSelector:
+        nodepool: memory-optimized
+      containers:
+        - name: migration
+          image: stackai.azurecr.io/stackai/stackend-backend:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "sleeping for 1 minute before beginning"
+              sleep 60
+              echo "Running database migrations..."
+              cd infra/migrations/postgres && alembic upgrade head
+              echo "Database migrations completed successfully"
+          envFrom:
+            - configMapRef:
+                name: stackend--env
+          env:
+            - name: STACKAI_LICENCE
+              valueFrom:
+                secretKeyRef:
+                  name: stackend-licence-secret
+                  key: licence
+          resources:
+            requests:
+              cpu: "1"
+              memory: "2Gi"
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+      imagePullSecrets:
+        - name: acr-secret
+      restartPolicy: OnFailure
+  backoffLimit: 3

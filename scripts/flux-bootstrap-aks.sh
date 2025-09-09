@@ -7,6 +7,9 @@ REPO_NAME="stackai-onprem"
 BRANCH="on-prem-aks"
 CLUSTER_PATH="./clusters/aks"
 
+
+
+
 # Help message
 usage() {
     echo "Usage: $0 [-o github_owner] [-r repo_name] [-b branch] [-p path]"
@@ -36,6 +39,17 @@ done
 
 # Use the cluster path directly
 FLUX_PATH="$CLUSTER_PATH"
+# Get the current Git branch name
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+# Compare
+if [[ "$CURRENT_BRANCH" != "$BRANCH" ]]; then
+    echo "Current branch '$CURRENT_BRANCH' is NOT '$BRANCH'"
+    # You can add actions here, for example:
+    # exit 1
+else
+    echo "On target branch '$BRANCH'"
+fi
 
 # Check if GITHUB_TOKEN is set
 if [ -z "$GITHUB_TOKEN" ]; then
