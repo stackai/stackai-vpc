@@ -8,4 +8,5 @@ resources:
   - stackend-cm0-configmap.yaml
   - stackend-cm1-configmap.yaml
   - stackend-cm2-configmap.yaml
+  - stackend--env-configmap.yaml
   - stackend-ingress.yaml
