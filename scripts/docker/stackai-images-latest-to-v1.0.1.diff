@@ -1,0 +1,45 @@
+diff --git a/stackend/docker-compose.yml b/stackend/docker-compose.yml
+index 76da827..06849b8 100644
+--- a/stackend/docker-compose.yml
++++ b/stackend/docker-compose.yml
+@@ -7,7 +7,7 @@ services:
+   celery_worker:
+     container_name: celery_worker
+     restart: always
+-    image: stackai.azurecr.io/stackai/stackend-celery-worker:latest
++    image: stackai.azurecr.io/stackai/stackend-celery-worker:v1.0.1
+     env_file:
+       - .env
+     depends_on:
+@@ -24,7 +24,7 @@ services:
+   stackend:
+     container_name: stackend
+     restart: always
+-    image: stackai.azurecr.io/stackai/stackend-backend:latest
++    image: stackai.azurecr.io/stackai/stackend-backend:v1.0.1
+     env_file:
+       - .env
+     depends_on:
+diff --git a/stackrepl/docker-compose.yml b/stackrepl/docker-compose.yml
+index 09259c7..1d376ea 100644
+--- a/stackrepl/docker-compose.yml
++++ b/stackrepl/docker-compose.yml
+@@ -2,6 +2,6 @@ services:
+   stackrepl:
+     container_name: stackrepl
+     restart: always
+-    image: stackai.azurecr.io/stackai/stackrepl/stack-repl:latest
++    image: stackai.azurecr.io/stackai/stackrepl/stack-repl:v1.0.0
+     extra_hosts:
+       - "host.docker.internal:host-gateway"
+\ No newline at end of file
+diff --git a/stackweb/Dockerfile b/stackweb/Dockerfile
+index eb88356..1a73ea4 100644
+--- a/stackweb/Dockerfile
++++ b/stackweb/Dockerfile
+@@ -1,4 +1,4 @@
+-FROM stackai.azurecr.io/stackai/stackweb:latest
++FROM stackai.azurecr.io/stackai/stackweb:v1.0.1
+ 
+ ARG GOOGLE_CLIENT_EMAIL
+ ARG GOOGLE_SERVICE_PRIVATE_KEY

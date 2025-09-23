@@ -1,4 +1,4 @@
-FROM stackai.azurecr.io/stackai/stackweb:v1.0.0
+FROM stackai.azurecr.io/stackai/stackweb:v1.0.1
 
 ARG GOOGLE_CLIENT_EMAIL
 ARG GOOGLE_SERVICE_PRIVATE_KEY
