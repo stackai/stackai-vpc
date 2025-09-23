@@ -418,41 +418,41 @@ In order to update the services, you will need to follow the instructions below:
 1. Stop all the services with `docker compose stop`
 2. Update the `image` field of the docker-compose.yml file of the service you want to update.
 
-Example, to update the stackend service from `d3f54d3` to `f4c8aa0`
+Example, to update the stackend service from `v1.0.0` to `v1.0.1`
 Usually you don't need to do this cause you use the latest version.
 
 This line
 
 ```yaml
 stackend:
-  image: stackai.azurecr.io/stackai/stackend-backend:d3f54d3
+  image: stackai.azurecr.io/stackai/stackend-backend:v1.0.0
 ```
 
 Should be updated to:
 
 ```yaml
 stackend:
-  image: stackai.azurecr.io/stackai/stackend-backend:f4c8aa0
+  image: stackai.azurecr.io/stackai/stackend-backend:v1.0.1
 ```
 
 3. Pull the new images with
 
 ```bash
 docker compose pull
-docker compose up stackend
+docker compose up
 ```
 
 In the case of the frontend (stackweb), you will need to rebuild the image with
 
 ```bash
+docker compose down stackweb
 docker compose build stackweb
+docker compose up stackweb
 ```
 
-1. Run database migrations if needed
+4. Run database migrations if needed
 
 ```bash
 make run-postgres-migrations
 make run-template-migrations
 ```
-
-5. Start all containers again with `docker compose up`
