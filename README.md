@@ -15,6 +15,7 @@ This repository contains the configuration needed to run StackAI locally using d
 - Ubuntu 24.04 LTS
 - Python 3.10 or higher.
 - You will need internet access during the setup process.
+- 
 - Docker and Docker Compose (compose version v2.26 or higher). Follow instructions below to install them if needed.
 
 Check the steps below for instructions on how to check if you meet this requirement.
@@ -56,7 +57,10 @@ Follow the instructions in the order they are presented.
 ## Install make
 
 ```bash
+# linux
 sudo apt install make
+# redhat
+sudo dnf install make
 ```
 
 Make sure that make is installed correctly by running:
@@ -94,13 +98,20 @@ The following commands should work for most Ubuntu based distributions:
 Update the package index:
 
 ```bash
+# linux
 sudo apt update
+# redhat
+sudo dnf update
 ```
 
 Install python3, pip and virtualenv:
 
 ```bash
+# linux
 sudo apt install python3-pip python3-venv
+# redhat
+sudo dnf install python3.11 python3.11-pip
+sudo alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1
 ```
 
 Ensure that python is installed and working correctly. Start by making sure that the python version is >= 3.10:
