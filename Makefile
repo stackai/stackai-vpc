@@ -68,12 +68,12 @@ start-stackai:
 stop-stackai:
 	docker compose down stackweb stackend celery_worker stackrepl storage
 
-.PHONY: instance-configurations
-instance-configurations:
-	@echo "Instance configurations:"
+.PHONY: secrets
+secrets:
+	@echo "Secrets:"
 	@cd scripts/environment_variables && \
-		chmod +x scripts/environment_variables/instance_configurations.sh && \
-		./scripts/environment_variables/instance_configurations.sh
+		chmod +x scripts/environment_variables/secrets.sh && \
+		./scripts/environment_variables/secrets.sh
 
 # ==================================================================================================
 #                                        UPDATE REPOSITORY
