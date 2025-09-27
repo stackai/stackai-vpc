@@ -1,20 +1,17 @@
 .PHONY: help
 help:
 	@echo "Makefile commands:"
-	@echo "  initialize_mongodb: Launch the script that is responsible for installing the templates in the MongoDB database"
 	@echo "  install-environment-variables: Launch the script that is responsible for setting up the environment variables"
+	@echo "  run-template-migrations: Launch the script that is responsible for installing the templates in the MongoDB database"
+	@echo "  instance-configurations: Expose the instance configurations"
 	@echo "  setup-docker-in-ubuntu: Launch the script that is responsible for setting up Docker in Ubuntu"
-	@echo "  start-supabase: Start the Supabase services"
-	@echo "  stop-supabase: Stop the Supabase services"
+	@echo "  run-postgres-migrations: Run the Postgres migrations"
+	@echo "  configure-domains: Configure the service domains in the .env files"
 	@echo "  help: Show this help message"
 
 .PHONY: initialize_mongodb
 initialize_mongodb:
-	@echo "Installing MongoDB templates..."
-	@cd scripts/mongodb && \
-		chmod +x initialize_mongodb.sh && \
-		./initialize_mongodb.sh
-	@echo "MongoDB templates installed successfully"
+	@echo "DEPRECATED: Use 'make run-template-migrations' instead" && exit 1
 
 .PHONY: install-environment-variables
 install-environment-variables:
@@ -43,7 +40,6 @@ stop-supabase:
 	docker compose stop studio kong auth rest realtime storage imgproxy meta functions analytics db vector supavisor
 	@echo "Supabase stopped successfully"
 
-
 .PHONY: setup-docker-in-ubuntu
 setup-docker-in-ubuntu:
 	@echo "Setting up Docker in Ubuntu..."
@@ -51,7 +47,6 @@ setup-docker-in-ubuntu:
 		chmod +x ubuntu_server_pre_setup.sh && \
 		./ubuntu_server_pre_setup.sh
 	@echo "Docker setup in Ubuntu completed successfully"
-
 
 .PHONY: run-postgres-migrations
 run-postgres-migrations:
@@ -72,6 +67,13 @@ start-stackai:
 .PHONY: stop-stackai
 stop-stackai:
 	docker compose down stackweb stackend celery_worker stackrepl storage
+
+.PHONY: instance-configurations
+instance-configurations:
+	@echo "Instance configurations:"
+	@cd scripts/environment_variables && \
+		chmod +x scripts/environment_variables/instance_configurations.sh && \
+		./scripts/environment_variables/instance_configurations.sh
 
 # ==================================================================================================
 #                                        UPDATE REPOSITORY
