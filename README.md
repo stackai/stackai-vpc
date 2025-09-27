@@ -224,6 +224,12 @@ make run-postgres-migrations
 make run-template-migrations
 ```
 
+#### 5. Start application:
+
+````bash
+docker compose up -d
+```
+
 # Updates
 
 In order to update the services, you will need to follow the instructions below:
@@ -239,7 +245,7 @@ This line
 ```yaml
 stackend:
   image: stackai.azurecr.io/stackai/stackend-backend:v1.0.0
-```
+````
 
 Should be updated to:
 
