@@ -58,7 +58,7 @@ Follow the instructions in the order they are presented.
 ```bash
 # linux
 sudo apt install make
-# redhat
+# RHEL
 sudo dnf install make
 ```
 
@@ -99,7 +99,7 @@ Update the package index:
 ```bash
 # linux
 sudo apt update
-# redhat
+# RHEL
 sudo dnf update
 ```
 
@@ -108,7 +108,7 @@ Install python3, pip and virtualenv:
 ```bash
 # linux
 sudo apt install python3-pip python3-venv
-# redhat
+# RHEL
 sudo dnf install python3.11 python3.11-pip
 sudo alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1
 ```
