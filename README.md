@@ -15,7 +15,6 @@ This repository contains the configuration needed to run StackAI locally using d
 - Ubuntu 24.04 LTS
 - Python 3.10 or higher.
 - You will need internet access during the setup process.
-- 
 - Docker and Docker Compose (compose version v2.26 or higher). Follow instructions below to install them if needed.
 
 Check the steps below for instructions on how to check if you meet this requirement.
@@ -180,15 +179,13 @@ It is encouraged that you manually review the generated values after the script 
 
 ### Instructions
 
-a) Read the section above.
-
-b) Open a new terminal and navigate to the root folder of the project:
+#### 1. Open a new terminal and navigate to the root folder of the project:
 
 ```bash
 cd /path/to/stackai-onprem
 ```
 
-c) Run the script that will initialize the environment variables:
+#### 2. Run the script that will initialize the environment variables:
 
 The script will prompt you to input the public ip/ url where the services will be exposed.
 
@@ -196,209 +193,7 @@ The script will prompt you to input the public ip/ url where the services will b
 make install-environment-variables
 ```
 
-## Supabase
-
-1.  Open a terminal and navigate to the root folder of the project:
-
-    ```bash
-    cd /path/to/stackai-onprem
-    ```
-
-    Then run:
-
-    ```bash
-    make start-supabase
-    ```
-
-    This will start the supabase containers and show you the running logs. Once the supabase containers start running, they will start the internal process of setting up the database. This will take about 2-3 minutes.
-
-2.  Verify the installation by navigating to the url configured in the file `supabase/.env` named as `SUPABASE_PUBLIC_URL` variable. This will
-    take you to the supabase dashboard, which is enabled by default (you may disable it manually in the `supabase/docker-compose.yml` file if you want). To log in, you will need to use the `DASHBOARD_USERNAME` and `DASHBOARD_PASSWORD` variables values that can be found in the `supabase/.env` file.
-
-    You can check the `SERVICE_ROLE_KEY` created by running the following script:
-
-    ```bash
-    scripts/environment_variables/retrieve_anon_supabase.sh
-    ```
-
-3.  You may stop the containers by doing a `Ctrl+C` in the terminal where you ran the `make start-supabase` command, or by opening a new terminal, navigating to the project root, and running:
-
-    ```bash
-    cd /path/to/stackai-onprem
-    docker compose down
-    ```
-
-## MongoDB
-
-1. Open a terminal and navigate to the root folder of the project:
-
-   ```bash
-   cd /path/to/stackai-onprem
-   ```
-
-   Then initialize the mongodb container:
-
-   ```bash
-   docker compose up mongodb
-   ```
-
-   Have a look at the logs and make sure everything is running smoothly.
-
-   This will start the mongodb container. Wait a minute to make sure it has been properly initialized. After that, continue with the next step without stopping the container.
-
-2. Initialize the database
-
-   Open a terminal and navigate to the root folder of the project:
-
-   ```bash
-   cd /path/to/stackai-onprem
-   ```
-
-   Then run:
-
-   ```bash
-   make initialize_mongodb
-   ```
-
-3. After the initialization, you can run `docker compose down` to stop mongodb.
-
-## Unstructured
-
-1. Open a terminal and navigate to the root folder of the project:
-
-   ```bash
-   cd /path/to/stackai-onprem
-   ```
-
-   Then initialize the unstructured container:
-
-   ```bash
-   docker compose up unstructured
-   ```
-
-   Have a look at the logs and make sure everything is running smoothly.
-
-2. After the initialization, you can run `docker compose down` to stop unstructured.
-
-## Weaviate
-
-1. Open a terminal and navigate to the root folder of the project:
-
-   ```bash
-   cd /path/to/stackai-onprem
-   ```
-
-   Then initialize the weaviate container:
-
-   ```bash
-   docker compose up weaviate
-   ```
-
-   Have a look at the logs and make sure everything is running smoothly.
-
-2. Wait for about two minutes. After the initialization, you can run `docker compose down` to stop weaviate.
-
-## Stackweb
-
-The stackweb docker container requires some of the environment variables here defined to be built. This is why we need to source the .env file before building the image.
-
-1. Open a terminal and navigate to the root folder of the project:
-
-   ```bash
-   cd /path/to/stackai-onprem
-   ```
-
-   Then initialize the stackweb container:
-
-   a) Source the stackweb environment variables:
-
-   ```bash
-   source stackweb/.env
-   ```
-
-   b) Build the docker image for stackweb:
-
-   ```bash
-   docker compose build stackweb
-   ```
-
-   The build process may take about 5 minutes depending on your internet connection and hardware.
-
-## Stackend
-
-1. Navigate to the `stackend` folder.
-
-2. Configure the embedding models you want to use in the `stackend/embeddings_config.toml` file.
-
-3. Configure the local LLM models you want to use in the `stackend/llm_local_config.toml` file and the `stackend/llm_config.toml` files.
-
-4. Open a terminal and navigate to the root folder of the project:
-
-   ```bash
-   cd /path/to/stackai-onprem
-   ```
-
-   Then pull the backend containers:
-
-   ```bash
-   docker compose pull stackend celery_worker redis
-   ```
-
-5. Start the stackend service and run migrations:
-
-   The database services need to be started first se we can run the migrations against them
-
-   ```bash
-   make start-supabase
-   ```
-
-   Then, open another terminal and start the stackend service:
-
-   ```bash
-   docker compose up stackend
-   ```
-
-   Wait for the stackend container to start. Then, on a new terminal, execute the following command to run the migrations:
-
-   ```bash
-   docker compose exec stackend bash -c "cd infra/migrations/postgres && alembic upgrade head"
-   ```
-
-## Stackrepl
-
-1. Open a terminal and navigate to the root folder of the project:
-
-   ```bash
-   cd /path/to/stackai-onprem
-   ```
-
-   Then build the stackrepl container:
-
-   ```bash
-   docker compose build stackrepl
-   ```
-
-# Launch all services
-
-1. Open a terminal and navigate to the root folder of the project:
-
-   ```bash
-   cd /path/to/stackai-onprem
-   ```
-
-   Then launch all services:
-
-   ```bash
-   docker compose up
-   ```
-
-2. Wait for about 2 minutes for everything to start. Then navigate to the url configured in the file `stackweb/.env` named as `NEXT_PUBLIC_URL` variable. You should see the StackAI landing page.
-
-# SSL Setup
-
-1. If you need to use SSL, configure the [Caddyfile](./caddy/Caddyfile) to use your certificates and keys.
-
-# Domain Setup
+#### 3. Domain Setup
 
 You can configure custom domains for the three main services: the frontend application, the API, and the Supabase backend. We recommend using a primary domain and two subdomains.
 
@@ -410,7 +205,7 @@ For example:
 
 There are two steps to configure your domains:
 
-### 1. Update Environment Variables
+##### 3.1 Update Environment Variables
 
 Run the following command and enter your domains when prompted. This command will update all the necessary `.env` files across the services.
 
@@ -418,9 +213,16 @@ Run the following command and enter your domains when prompted. This command wil
 make configure-domains
 ```
 
-### 2. Configure the Reverse Proxy
+##### 3.2 Configure the Reverse Proxy
 
 You also need to update the [Caddyfile](./caddy/Caddyfile) to reflect your new domains. Replace the placeholder domains in the file with the ones you have configured.
+
+#### 4. Run migrations:
+
+```bash
+make run-postgres-migrations
+make run-template-migrations
+```
 
 # Updates
 
@@ -457,6 +259,7 @@ In the case of the frontend (stackweb), you will need to rebuild the image with
 
 ```bash
 docker compose down stackweb
+source stackweb/.env
 docker compose build stackweb
 docker compose up stackweb
 ```
@@ -466,4 +269,18 @@ docker compose up stackweb
 ```bash
 make run-postgres-migrations
 make run-template-migrations
+```
+
+# FAQ
+
+## How to configurate LLMs?
+
+1. Navigate to the `stackend` folder.
+2. Configure the embedding models you want to use in the `stackend/embeddings_config.toml` file.
+3. Configure the local LLM models you want to use in the `stackend/llm_local_config.toml` file and the `stackend/llm_config.toml` files.
+4. Restart the services that depend on this configuration
+
+```bash
+docker compose dow stackend celery_worker
+docker compose up stackend celery_worker
 ```
