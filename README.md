@@ -286,12 +286,12 @@ make run-template-migrations
 3. Configure the local LLM models you want to use in the `stackend/llm_local_config.toml` file and the `stackend/llm_config.toml` files.
 4. Restart the services that depend on this configuration
 
-### How to activate SSO?
+## How to activate SSO?
 
 1. Run `make saml-enable`. This will config the SAML configuration.
 2. Run `make saml-status`. This will give you the SAML configurations you need to setup in your IdP (Identity Provider)
 
-#### Register Providers
+### Register Providers
 
 1. Run `make saml-add-provider metadata_url='{idp-metadata-ur}' domains='{comma-sepparated-domains}'`
 2. You can list profviders running `make saml-list-providers`
