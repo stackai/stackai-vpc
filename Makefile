@@ -93,6 +93,55 @@ saml-status:
 		chmod +x saml_status.py && \
 		python3 ./saml_status.py
 
+.PHONY: saml-add-provider
+saml-add-provider:
+	@if [ -z "$(metadata_url)" ]; then \
+		echo "❌ Error: metadata_url is required"; \
+		echo ""; \
+		echo "Usage:"; \
+		echo "  make saml-add-provider metadata_url='https://idp.example.com/metadata' domains='example.com'"; \
+		echo "  make saml-add-provider metadata_url='https://idp.example.com/metadata' domains='example.com,test.com'"; \
+		echo ""; \
+		exit 1; \
+	fi
+	@if [ -z "$(domains)" ]; then \
+		echo "❌ Error: domains is required"; \
+		echo ""; \
+		echo "Usage:"; \
+		echo "  make saml-add-provider metadata_url='https://idp.example.com/metadata' domains='example.com'"; \
+		echo "  make saml-add-provider metadata_url='https://idp.example.com/metadata' domains='example.com,test.com'"; \
+		echo ""; \
+		exit 1; \
+	fi
+	@echo "Adding SAML provider..."
+	@cd scripts/supabase && \
+		chmod +x saml_add_provider.sh && \
+		./saml_add_provider.sh "$(metadata_url)" "$(domains)"
+
+.PHONY: saml-list-providers
+saml-list-providers:
+	@echo "Listing SSO providers..."
+	@cd scripts/supabase && \
+		chmod +x saml_list_providers.sh && \
+		./saml_list_providers.sh
+
+.PHONY: saml-delete-provider
+saml-delete-provider:
+	@if [ -z "$(provider_id)" ]; then \
+		echo "❌ Error: provider_id is required"; \
+		echo ""; \
+		echo "Usage:"; \
+		echo "  make saml-delete-provider provider_id='12345678-1234-1234-1234-123456789abc'"; \
+		echo ""; \
+		echo "💡 Use 'make saml-list-providers' to see available provider IDs"; \
+		echo ""; \
+		exit 1; \
+	fi
+	@echo "Deleting SSO provider..."
+	@cd scripts/supabase && \
+		chmod +x saml_delete_provider.sh && \
+		./saml_delete_provider.sh "$(provider_id)"
+
 # ==================================================================================================
 #                                        UPDATE REPOSITORY
 # ==================================================================================================
