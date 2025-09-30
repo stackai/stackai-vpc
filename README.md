@@ -293,7 +293,12 @@ docker compose up stackend celery_worker
 
 ## How to activate SSO?
 
-1. Run `make saml-enable`. This will config the SAML configuration.
+1. Enable SAML in your instance:
+
+   ```sh
+   make saml-enable
+   ```
+
 2. Run `make saml-status`. This will give you the SAML configurations you need to setup in your IdP (Identity Provider)
 
 ### Register Providers
