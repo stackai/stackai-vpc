@@ -291,6 +291,12 @@ make run-template-migrations
 1. Run `make saml-enable`. This will config the SAML configuration.
 2. Run `make saml-status`. This will give you the SAML configurations you need to setup in your IdP (Identity Provider)
 
+#### Register Providers
+
+1. Run `make saml-add-provider metadata_url='{idp-metadata-ur}' domains='{comma-sepparated-domains}'`
+2. You can list profviders running `make saml-list-providers`
+3. You can delete providers running `make saml-delete-provider provider_id='{provider-id}'`
+
 ```bash
 docker compose dow stackend celery_worker
 docker compose up stackend celery_worker
