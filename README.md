@@ -286,6 +286,11 @@ make run-template-migrations
 3. Configure the local LLM models you want to use in the `stackend/llm_local_config.toml` file and the `stackend/llm_config.toml` files.
 4. Restart the services that depend on this configuration
 
+```bash
+docker compose dow stackend celery_worker
+docker compose up stackend celery_worker
+```
+
 ## How to activate SSO?
 
 1. Run `make saml-enable`. This will config the SAML configuration.
@@ -296,8 +301,3 @@ make run-template-migrations
 1. Run `make saml-add-provider metadata_url='{idp-metadata-ur}' domains='{comma-sepparated-domains}'`
 2. You can list profviders running `make saml-list-providers`
 3. You can delete providers running `make saml-delete-provider provider_id='{provider-id}'`
-
-```bash
-docker compose dow stackend celery_worker
-docker compose up stackend celery_worker
-```
