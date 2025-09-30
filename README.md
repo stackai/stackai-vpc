@@ -217,17 +217,17 @@ make configure-domains
 
 You also need to update the [Caddyfile](./caddy/Caddyfile) to reflect your new domains. Replace the placeholder domains in the file with the ones you have configured.
 
+#### 5. Start application:
+
+````bash
+docker compose up -d
+```
+
 #### 4. Run migrations:
 
 ```bash
 make run-postgres-migrations
 make run-template-migrations
-```
-
-#### 5. Start application:
-
-````bash
-docker compose up -d
 ```
 
 # Updates
@@ -285,6 +285,11 @@ make run-template-migrations
 2. Configure the embedding models you want to use in the `stackend/embeddings_config.toml` file.
 3. Configure the local LLM models you want to use in the `stackend/llm_local_config.toml` file and the `stackend/llm_config.toml` files.
 4. Restart the services that depend on this configuration
+
+### How to activate SSO?
+
+1. Run `make saml-enable`. This will config the SAML configuration.
+2. Run `make saml-status`. This will give you the SAML configurations you need to setup in your IdP (Identity Provider)
 
 ```bash
 docker compose dow stackend celery_worker
