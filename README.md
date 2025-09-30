@@ -219,7 +219,7 @@ You also need to update the [Caddyfile](./caddy/Caddyfile) to reflect your new d
 
 #### 5. Start application:
 
-````bash
+```bash
 docker compose up -d
 ```
 
@@ -245,7 +245,7 @@ This line
 ```yaml
 stackend:
   image: stackai.azurecr.io/stackai/stackend-backend:v1.0.0
-````
+```
 
 Should be updated to:
 
