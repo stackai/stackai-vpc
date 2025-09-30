@@ -299,7 +299,7 @@ make run-template-migrations
    make saml-enable
    ```
 
-2. Check the the SAML configurations you need to setup in your IdP _(Identity Provider)_
+2. Check the the SAML configurations you need to setup in your IdP _(Identity Provider)_:
 
    ```sh
    make saml-status
