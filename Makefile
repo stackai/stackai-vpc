@@ -70,10 +70,28 @@ stop-stackai:
 
 .PHONY: secrets
 secrets:
-	@echo "Secrets:"
+	@echo "Secrets: showing the secrets of the instance"
 	@cd scripts/environment_variables && \
 		chmod +x scripts/environment_variables/secrets.sh && \
 		./scripts/environment_variables/secrets.sh
+
+
+# ==================================================================================================
+#                                        SAMl
+# ==================================================================================================
+.PHONY: saml-enable
+saml-enable:
+	@echo "Enabling SAML: enabling SAML authentication in the instance"
+	@cd scripts/supabase && \
+		chmod +x saml_enable.sh && \
+		./saml_enable.sh
+	@echo "SAML enabled successfully"
+
+.PHONY: saml-status
+saml-status:
+	@cd scripts/supabase && \
+		chmod +x saml_status.py && \
+		python3 ./saml_status.py
 
 # ==================================================================================================
 #                                        UPDATE REPOSITORY
