@@ -219,7 +219,7 @@ You also need to update the [Caddyfile](./caddy/Caddyfile) to reflect your new d
 
 #### 5. Start application:
 
-````bash
+```bash
 docker compose up -d
 ```
 
@@ -245,7 +245,7 @@ This line
 ```yaml
 stackend:
   image: stackai.azurecr.io/stackai/stackend-backend:v1.0.0
-````
+```
 
 Should be updated to:
 
@@ -286,18 +286,27 @@ make run-template-migrations
 3. Configure the local LLM models you want to use in the `stackend/llm_local_config.toml` file and the `stackend/llm_config.toml` files.
 4. Restart the services that depend on this configuration
 
-### How to activate SSO?
+   ```bash
+   docker compose dow stackend celery_worker
+   docker compose up stackend celery_worker
+   ```
 
-1. Run `make saml-enable`. This will config the SAML configuration.
-2. Run `make saml-status`. This will give you the SAML configurations you need to setup in your IdP (Identity Provider)
+## How to activate SSO?
 
-#### Register Providers
+1. Enable SAML in your instance:
+
+   ```sh
+   make saml-enable
+   ```
+
+2. Check the the SAML configurations you need to setup in your IdP _(Identity Provider)_:
+
+   ```sh
+   make saml-status
+   ```
+
+### Register Providers
 
 1. Run `make saml-add-provider metadata_url='{idp-metadata-ur}' domains='{comma-sepparated-domains}'`
-2. You can list profviders running `make saml-list-providers`
+2. You can list saml providers running `make saml-list-providers`
 3. You can delete providers running `make saml-delete-provider provider_id='{provider-id}'`
-
-```bash
-docker compose dow stackend celery_worker
-docker compose up stackend celery_worker
-```
