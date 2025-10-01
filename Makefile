@@ -7,6 +7,7 @@ help:
 	@echo "  setup-docker-in-ubuntu: Launch the script that is responsible for setting up Docker in Ubuntu"
 	@echo "  run-postgres-migrations: Run the Postgres migrations"
 	@echo "  configure-domains: Configure the service domains in the .env files"
+	@echo "  stackai-version: Update StackAI service versions (usage: make stackai-version version=1.0.2)"
 	@echo "  help: Show this help message"
 
 .PHONY: initialize_mongodb
@@ -141,6 +142,26 @@ saml-delete-provider:
 	@cd scripts/supabase && \
 		chmod +x saml_delete_provider.sh && \
 		./saml_delete_provider.sh "$(provider_id)"
+
+# ==================================================================================================
+#                                        VERSION MANAGEMENT
+# ==================================================================================================
+.PHONY: stackai-version
+stackai-version:
+	@if [ -z "$(version)" ]; then \
+		echo "❌ Error: version is required"; \
+		echo ""; \
+		echo "Usage:"; \
+		echo "  make stackai-version version=1.0.2"; \
+		echo ""; \
+		echo "Available versions can be found in scripts/docker/stackai-versions.json"; \
+		echo ""; \
+		exit 1; \
+	fi
+	@echo "🔄 Updating StackAI services to version $(version)..."
+	@cd scripts/docker && \
+		chmod +x update_stackai_versions.py && \
+		python3 update_stackai_versions.py "$(version)"
 
 # ==================================================================================================
 #                                        UPDATE REPOSITORY

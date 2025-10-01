@@ -1,0 +1,23 @@
+[
+  {
+    "1.0.0": {
+      "stackend": "v1.0.0",
+      "stackweb": "v1.0.0",
+      "stackrepl": "v1.0.0"
+    }
+  },
+  {
+    "1.0.1": {
+      "stackend": "v1.0.1",
+      "stackweb": "v1.0.1",
+      "stackrepl": "v1.0.0"
+    }
+  },
+  {
+    "1.0.2": {
+      "stackend": "v1.0.2",
+      "stackweb": "v1.0.3",
+      "stackrepl": "v1.0.0"
+    }
+  }
+]
