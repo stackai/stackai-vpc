@@ -19,5 +19,12 @@
       "stackweb": "v1.0.3",
       "stackrepl": "v1.0.0"
     }
+  },
+  {
+    "1.0.3": {
+      "stackend": "v1.0.3",
+      "stackweb": "v1.0.3",
+      "stackrepl": "v1.0.0"
+    }
   }
 ]
