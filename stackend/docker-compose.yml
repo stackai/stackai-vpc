@@ -7,7 +7,7 @@ services:
   celery_worker:
     container_name: celery_worker
     restart: always
-    image: stackai.azurecr.io/stackai/stackend-celery-worker:v1.0.2
+    image: stackai.azurecr.io/stackai/stackend-celery-worker:v1.0.3
     env_file:
       - .env
     depends_on:
@@ -24,7 +24,7 @@ services:
   stackend:
     container_name: stackend
     restart: always
-    image: stackai.azurecr.io/stackai/stackend-backend:v1.0.2
+    image: stackai.azurecr.io/stackai/stackend-backend:v1.0.3
     env_file:
       - .env
     depends_on:
