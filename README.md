@@ -8,7 +8,7 @@ This repository contains the configuration needed to run StackAI locally using d
 
 1. At least 64GB of RAM
 2. At least 16 CPU cores
-3. 1TB of disk space
+3. 1TB of disk space in `/var` directory.
 
 ## Software
 
@@ -316,3 +316,8 @@ make run-template-migrations
 1. Run `make saml-add-provider metadata_url='{idp-metadata-ur}' domains='{comma-sepparated-domains}'`
 2. You can list saml providers running `make saml-list-providers`
 3. You can delete providers running `make saml-delete-provider provider_id='{provider-id}'`
+
+## Docker cleaning
+```sh
+docker compose down --rmi all --volumes --remove-orphans
+```
