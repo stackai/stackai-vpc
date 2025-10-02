@@ -305,6 +305,12 @@ make run-template-migrations
    make saml-status
    ```
 
+3. Register SSO Domains
+
+   ```sh
+   make register-sso-domain provider=example.com org_id=123e4567-e89b-12d3-a456-426614174000 role=editor
+   ```
+
 ### Register Providers
 
 1. Run `make saml-add-provider metadata_url='{idp-metadata-ur}' domains='{comma-sepparated-domains}'`

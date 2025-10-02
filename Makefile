@@ -8,6 +8,7 @@ help:
 	@echo "  run-postgres-migrations: Run the Postgres migrations"
 	@echo "  configure-domains: Configure the service domains in the .env files"
 	@echo "  stackai-version: Update StackAI service versions (usage: make stackai-version version=1.0.2)"
+	@echo "  register-sso-domain: Register SSO domain for organization (usage: make register-sso-domain provider=example.com org_id=uuid [role=admin|editor|viewer|user] [dry_run=true])"
 	@echo "  help: Show this help message"
 
 .PHONY: initialize_mongodb
@@ -61,12 +62,58 @@ run-template-migrations:
 	docker compose exec stackend bash -c "python scripts/on-premise/insert_stackai_project_templates.py"
 	@echo "Template migrations completed successfully"
 
+.PHONY: register-sso-domain
+register-sso-domain:
+	@if [ -z "$(provider)" ]; then \
+		echo "❌ Error: provider is required"; \
+		echo ""; \
+		echo "Usage:"; \
+		echo "  make register-sso-domain provider=example.com org_id=123e4567-e89b-12d3-a456-426614174000"; \
+		echo "  make register-sso-domain provider=example.com org_id=123e4567-e89b-12d3-a456-426614174000 role=admin"; \
+		echo "  make register-sso-domain provider=example.com org_id=123e4567-e89b-12d3-a456-426614174000 role=editor dry_run=true"; \
+		echo ""; \
+		echo "Parameters:"; \
+		echo "  provider  - Provider domain (required)"; \
+		echo "  org_id    - Organization UUID (required)"; \
+		echo "  role      - User role: admin, editor, viewer, user (optional, default: viewer)"; \
+		echo "  dry_run   - Test mode without inserting data (optional, set to 'true' to enable)"; \
+		echo ""; \
+		exit 1; \
+	fi
+	@if [ -z "$(org_id)" ]; then \
+		echo "❌ Error: org_id is required"; \
+		echo ""; \
+		echo "Usage:"; \
+		echo "  make register-sso-domain provider=example.com org_id=123e4567-e89b-12d3-a456-426614174000"; \
+		echo "  make register-sso-domain provider=example.com org_id=123e4567-e89b-12d3-a456-426614174000 role=admin"; \
+		echo "  make register-sso-domain provider=example.com org_id=123e4567-e89b-12d3-a456-426614174000 role=editor dry_run=true"; \
+		echo ""; \
+		echo "Parameters:"; \
+		echo "  provider  - Provider domain (required)"; \
+		echo "  org_id    - Organization UUID (required)"; \
+		echo "  role      - User role: admin, editor, viewer, user (optional, default: viewer)"; \
+		echo "  dry_run   - Test mode without inserting data (optional, set to 'true' to enable)"; \
+		echo ""; \
+		exit 1; \
+	fi
+	@echo "Registering SSO domain '$(provider)' for organization '$(org_id)'..."
+	@cmd="python scripts/on-premise/register_sso_domain.py --provider '$(provider)' --org-id '$(org_id)'"; \
+	if [ -n "$(role)" ]; then \
+		cmd="$$cmd --role '$(role)'"; \
+	fi; \
+	if [ "$(dry_run)" = "true" ]; then \
+		cmd="$$cmd --dry-run"; \
+		echo "🧪 Running in dry-run mode..."; \
+	fi; \
+	docker compose exec stackend bash -c "$$cmd"
+	@echo "SSO domain registration completed successfully"
+
 .PHONY: start-stackai
 start-stackai:
 	docker compose up -d stackweb stackend celery_worker stackrepl storage
 
 .PHONY: stop-stackai
-stop-stackai:
+stop-stackai:G
 	docker compose down stackweb stackend celery_worker stackrepl storage
 
 .PHONY: secrets
