@@ -23,6 +23,13 @@ install-environment-variables:
 		./initialize_variables.sh
 	@echo "Environment variables installed successfully"
 
+
+.PHONY: update-environment-variables
+update-environment-variables:
+	@cd scripts/environment_variables && \
+		chmod +x update_env_vars.sh && \
+		./update_env_vars.sh
+
 .PHONY: configure-domains
 configure-domains:
 	@echo "Configuring service domains in .env files..."
