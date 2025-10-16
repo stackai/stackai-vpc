@@ -1,4 +1,4 @@
-#–– define a reusable "https" snippet with your cert+key
+# –– define a reusable "https" snippet with your cert+key
 # (https) {
 #     tls /etc/caddy/certificates/iteng.nu.chained.crt \
 #         /etc/caddy/certificates/private.key
@@ -8,31 +8,20 @@
 #     }
 # }
 
-# #–– supabase API
+# –– supabase domain/subdomain/ip
 # db.stackai.onprem.com {
 #     import https
-
-#     reverse_proxy /rest/v1/*    kong:8000
-#     reverse_proxy /graphql/v1/* kong:8000
-#     reverse_proxy /auth/v1/*    kong:8000
-#     reverse_proxy /realtime/v1/* kong:8000
-#     reverse_proxy /storage/v1/*  kong:8000
-#     reverse_proxy /functions/v1/* kong:8000
-#     reverse_proxy /analytics/v1/* kong:8000
-#     reverse_proxy /* studio:3000
-#     reverse_proxy /sso/* kong:8000
+#     reverse_proxy /* kong:3000
 # }
 
-# #–– your front-end
+# –– front-end domain/subdomain/ip
 # stackai.onprem.com {
 #     import https
-
 #     reverse_proxy /* stackweb:3000
 # }
 
-# #–– your API backend
+# –– API backend domain/subdomain/ip
 # api.stackai.onprem.com {
 #     import https
-
 #     reverse_proxy /* stackend:8000
 # }
